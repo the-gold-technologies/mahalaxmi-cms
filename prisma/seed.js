@@ -665,7 +665,7 @@ async function main() {
       type: "ContactHero",
       order: 0,
       content: {
-        image: "/contact-us-banner.jpg",
+        image: "https://res.cloudinary.com/dpa93copz/image/upload/v1787738184/mahalaxmi/contact/contact-us-banner.jpg",
         altText: "Contact Us - MAHALAXMI ENTERPRISES",
       },
     },
@@ -950,7 +950,7 @@ async function main() {
       type: "EventsHero",
       order: 0,
       content: {
-        image: "/events-banner.jpg",
+        image: "https://res.cloudinary.com/dpa93copz/image/upload/v1787737913/mahalaxmi/events/events-banner.jpg",
         altText: "MAHALAXMI ENTERPRISES Events & Activities Gallery Banner",
       },
     },
@@ -2820,7 +2820,7 @@ async function main() {
       type: "BlogsHero",
       order: 0,
       content: {
-        image: "/blogs-banner.jpg",
+        image: "https://res.cloudinary.com/dpa93copz/image/upload/v1787738185/mahalaxmi/blogs/blogs-banner.jpg",
         altText: "Blogs - Mahalaxmi Enterprises HP Lubricants",
       },
     },

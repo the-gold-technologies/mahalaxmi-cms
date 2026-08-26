@@ -29,11 +29,8 @@ export function EventsHeroSection({
 
   useEffect(() => {
     if (initialData) {
-      setImages(initialData.image ? [initialData.image] : ["/events-banner.jpg"]);
-      setAltText(
-        initialData.altText ||
-          "MAHALAXMI ENTERPRISES Events & Activities Gallery Banner"
-      );
+      setImages(initialData.image ? [initialData.image] : []);
+      setAltText(initialData.altText || "");
     }
   }, [initialData]);
 

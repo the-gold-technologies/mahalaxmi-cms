@@ -29,12 +29,8 @@ export function BlogsHeroSection({
 
   useEffect(() => {
     if (initialData) {
-      setImages(
-        initialData.image ? [initialData.image] : ["/blogs-banner.jpg"]
-      );
-      setAltText(
-        initialData.altText || "Blogs - Mahalaxmi Enterprises HP Lubricants"
-      );
+      setImages(initialData.image ? [initialData.image] : []);
+      setAltText(initialData.altText || "");
     }
   }, [initialData]);
 

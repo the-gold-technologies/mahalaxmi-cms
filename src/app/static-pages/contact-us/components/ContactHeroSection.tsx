@@ -29,12 +29,8 @@ export function ContactHeroSection({
 
   useEffect(() => {
     if (initialData) {
-      setImages(
-        initialData.image ? [initialData.image] : ["/contact-us-banner.jpg"]
-      );
-      setAltText(
-        initialData.altText || "Contact Us - MAHALAXMI ENTERPRISES"
-      );
+      setImages(initialData.image ? [initialData.image] : []);
+      setAltText(initialData.altText || "");
     }
   }, [initialData]);
 
