@@ -46,16 +46,16 @@ async function main() {
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
-      "facebook": "https://www.facebook.com/hindustanpetroleumcorporateltd",
-      "youtube": "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
-      "instagram": "https://www.instagram.com/hplubricants_hpcl/",
-      "linkedin": "https://www.linkedin.com/company/hpcl",
-      "twitter": "https://twitter.com/hpcl",
-      "hpclBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
-      "indiaGovBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
-      "globalCompactBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg"
-},
-      
+        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
+        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
+        instagram: "https://www.instagram.com/hplubricants_hpcl/",
+        linkedin: "https://www.linkedin.com/company/hpcl",
+        twitter: "https://twitter.com/hpcl",
+        hpclBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+        indiaGovBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
+        globalCompactBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
+      },
     },
     create: {
       id: "global",
@@ -66,16 +66,16 @@ async function main() {
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
-      "facebook": "https://www.facebook.com/hindustanpetroleumcorporateltd",
-      "youtube": "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
-      "instagram": "https://www.instagram.com/hplubricants_hpcl/",
-      "linkedin": "https://www.linkedin.com/company/hpcl",
-      "twitter": "https://twitter.com/hpcl",
-      "hpclBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
-      "indiaGovBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
-      "globalCompactBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg"
-},
-      
+        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
+        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
+        instagram: "https://www.instagram.com/hplubricants_hpcl/",
+        linkedin: "https://www.linkedin.com/company/hpcl",
+        twitter: "https://twitter.com/hpcl",
+        hpclBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+        indiaGovBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
+        globalCompactBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
+      },
     },
   });
   console.log("✓ Global config ready.");
