@@ -46,16 +46,16 @@ async function main() {
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
-        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
-        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
-        instagram: "https://www.instagram.com/hplubricants_hpcl/",
-        linkedin: "https://www.linkedin.com/company/hpcl",
-        twitter: "https://twitter.com/hpcl",
-        hpclBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
-        indiaGovBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
-        globalCompactBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
-        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
-      },
+      "facebook": "https://www.facebook.com/hindustanpetroleumcorporateltd",
+      "youtube": "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
+      "instagram": "https://www.instagram.com/hplubricants_hpcl/",
+      "linkedin": "https://www.linkedin.com/company/hpcl",
+      "twitter": "https://twitter.com/hpcl",
+      "hpclBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+      "indiaGovBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
+      "globalCompactBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+      "copyrightText": "© 2026 Mahalaxmi Enterprises. All rights reserved."
+},
     },
     create: {
       id: "global",
@@ -66,16 +66,16 @@ async function main() {
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
-        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
-        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
-        instagram: "https://www.instagram.com/hplubricants_hpcl/",
-        linkedin: "https://www.linkedin.com/company/hpcl",
-        twitter: "https://twitter.com/hpcl",
-        hpclBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
-        indiaGovBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
-        globalCompactBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
-        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
-      },
+      "facebook": "https://www.facebook.com/hindustanpetroleumcorporateltd",
+      "youtube": "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
+      "instagram": "https://www.instagram.com/hplubricants_hpcl/",
+      "linkedin": "https://www.linkedin.com/company/hpcl",
+      "twitter": "https://twitter.com/hpcl",
+      "hpclBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+      "indiaGovBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
+      "globalCompactBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+      "copyrightText": "© 2026 Mahalaxmi Enterprises. All rights reserved."
+},
     },
   });
   console.log("✓ Global config ready.");
@@ -556,27 +556,61 @@ async function main() {
       type: "AboutHero",
       order: 0,
       content: {
-        image: "/About-HPCL.jpg",
+        bannerImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1787736239/mahalaxmi/about/About-HPCL.jpg",
+        image: "https://res.cloudinary.com/dpa93copz/image/upload/v1787736239/mahalaxmi/about/About-HPCL.jpg",
         altText: "About MAHALAXMI ENTERPRISES Banner",
-      },
+        title: "About MAHALAXMI ENTERPRISES"
+      }
     },
     {
       type: "AboutMahalaxmiContent",
       order: 1,
       content: {
-        badge: "ABOUT MAHALAXMI ENTERPRISES",
-        title: "MAHALAXMI ENTERPRISES",
-        subtitle: "Authorized Industrial Lubricants Distributor - Hindustan Petroleum Corporation Limited (HPCL)",
-        p1: "Mahalaxmi Enterprises is an Authorized Industrial Lubricants Distributor for Hindustan Petroleum Corporation Limited (HPCL), one of India's leading energy and lubricant brands. We specialize in supplying high-performance industrial lubricants, greases, and specialty oils to diverse industries, commercial enterprises, and infrastructure projects across the region.",
-        p2: "Under the leadership of Neha Goyal, Mahalaxmi Enterprises has earned a reputation for reliability, product authenticity, and customer-first service. Our direct association with HPCL ensures that our clients receive 100% genuine lubricants manufactured to the highest global and Indian standards (IS / DIN / ISO / API).",
-        features: [
-          { icon: "Layers", title: "Full Product Range", description: "Complete lubrication and industrial maintenance solutions under one roof." },
-          { icon: "Wrench", title: "Technical Expertise", description: "Professional guidance for selecting the right products for every application." },
-          { icon: "Truck", title: "Reliable Supply", description: "Consistent product availability with timely delivery." },
-          { icon: "ShieldCheck", title: "Quality Assurance", description: "Only genuine, high-performance industrial products." },
-          { icon: "Headphones", title: "Customer-Centric Support", description: "Dedicated service to ensure long-term customer satisfaction." }
-        ]
-      }
+      "title": "ABOUT MAHALAXMI ENTERPRISES",
+      "subtitle": "Neha Goyal – Proprietor, Mahalaxmi Enterprises",
+      "paragraphs": [
+            "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lubricants Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
+            "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
+            "Her focus on long-term relationships, product reliability, and consistent service has positioned Mahalaxmi Enterprises as a dependable partner for industries seeking efficient and cost-effective lubrication solutions. With a vision to continuously expand the company's reach and service capabilities, Neha Goyal remains dedicated to helping customers enhance equipment performance, improve operational efficiency, and reduce maintenance costs through the right lubrication practices."
+      ],
+      "hpclOverview": {
+            "title": "About Hindustan Petroleum Corporation Limited (HPCL)",
+            "description": "HPCL is a Maharatna Central Public Sector Enterprise (CPSE) with a formidable market presence in refining and marketing petroleum products. HP Lubricants is India's largest lube marketer, offering 350+ grades of lubricants, specialties, and greases.",
+            "bullets": [
+                  "Over 350+ premium industrial & automotive lubricant grades",
+                  "State-of-the-art R&D facilities with international OEM approvals",
+                  "Extensive countrywide supply chain network & rapid delivery"
+            ]
+      },
+      "whyChooseTitle": "WHY CHOOSE MAHALAXMI ENTERPRISES",
+      "whyChooseSubtitle": "Delivering Quality. Building Trust.",
+      "whyChooseItems": [
+            {
+                  "title": "Industrial Lube Distributor",
+                  "description": "Catering over 100 plus Industries."
+            },
+            {
+                  "title": "Wide Product Portfolio",
+                  "description": "Complete lubrication and industrial maintenance solutions under one roof."
+            },
+            {
+                  "title": "Technical Expertise",
+                  "description": "Professional guidance for selecting the right products for every application."
+            },
+            {
+                  "title": "Reliable Supply",
+                  "description": "Consistent product availability with timely delivery."
+            },
+            {
+                  "title": "Quality Assurance",
+                  "description": "Only genuine, high-performance industrial products."
+            },
+            {
+                  "title": "Customer-Centric Support",
+                  "description": "Dedicated service to ensure long-term customer satisfaction."
+            }
+      ]
+}
     },
     {
       type: "LubesHeadquarterSection",

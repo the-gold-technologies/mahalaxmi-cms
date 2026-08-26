@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Share2, Award } from "lucide-react";
+import { Share2, Award, Copyright } from "lucide-react";
 import toast from "react-hot-toast";
 import { PageHeader } from "@/components/PageHeader";
 import { InputField } from "@/components/InputField";
@@ -22,10 +22,11 @@ export default function FooterSocialMediaCMSPage() {
   const [youtube, setYoutube] = useState("");
   const [twitter, setTwitter] = useState("");
 
-  // Footer Partner Badges
+  // Footer Partner Badges & Copyright
   const [hpclBadge, setHpclBadge] = useState("");
   const [indiaGovBadge, setIndiaGovBadge] = useState("");
   const [globalCompactBadge, setGlobalCompactBadge] = useState("");
+  const [copyrightText, setCopyrightText] = useState("");
 
   useEffect(() => {
     async function loadConfig() {
@@ -42,6 +43,7 @@ export default function FooterSocialMediaCMSPage() {
           if (s.hpclBadge) setHpclBadge(s.hpclBadge);
           if (s.indiaGovBadge) setIndiaGovBadge(s.indiaGovBadge);
           if (s.globalCompactBadge) setGlobalCompactBadge(s.globalCompactBadge);
+          if (s.copyrightText) setCopyrightText(s.copyrightText);
         }
       } catch (err) {
         console.error("Failed to load footer & social config:", err);
@@ -66,6 +68,7 @@ export default function FooterSocialMediaCMSPage() {
         hpclBadge,
         indiaGovBadge,
         globalCompactBadge,
+        copyrightText,
         ...updatedFields,
       },
     };
@@ -111,10 +114,11 @@ export default function FooterSocialMediaCMSPage() {
         hpclBadge,
         indiaGovBadge,
         globalCompactBadge,
+        copyrightText,
       });
       if (json.success) {
         setSavedBadges(true);
-        toast.success("Footer partner badges updated successfully!");
+        toast.success("Footer partner badges & copyright updated successfully!");
         setTimeout(() => setSavedBadges(false), 3000);
       } else {
         toast.error(json.error || "Failed to save");
@@ -130,7 +134,7 @@ export default function FooterSocialMediaCMSPage() {
     <section className="flex flex-col gap-8 pb-16 w-full max-w-5xl mx-auto">
       <PageHeader
         title="Footer &amp; Social Media Management"
-        description="Manage corporate social media links and official partner accreditation badges displayed in the website footer."
+        description="Manage corporate social media links, official partner accreditation badges, and copyright notice displayed in the website footer."
         badge="Footer &amp; Socials"
       />
 
@@ -194,15 +198,15 @@ export default function FooterSocialMediaCMSPage() {
           </div>
         </div>
 
-        {/* Form 2: Official Partner Badges (Full Width) */}
+        {/* Form 2: Official Partner Badges & Copyright (Full Width) */}
         <div className="w-full border border-slate-200 rounded-3xl bg-white p-7 sm:p-9 shadow-xs flex flex-col gap-6">
           <div className="flex items-center gap-3.5 border-b border-slate-100 pb-4">
             <div className="w-10 h-10 rounded-2xl bg-blue-50 text-[#002B5C] flex items-center justify-center">
               <Award size={20} />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-lg">2. Footer Partner Badges</h3>
-              <p className="text-xs text-slate-500">Upload official accreditation badges and logos directly to Cloudinary</p>
+              <h3 className="font-bold text-slate-900 text-lg">2. Footer Partner Badges &amp; Copyright</h3>
+              <p className="text-xs text-slate-500">Upload official accreditation badges and configure the footer copyright notice</p>
             </div>
           </div>
 
@@ -234,6 +238,17 @@ export default function FooterSocialMediaCMSPage() {
                 onChange={(url) => setGlobalCompactBadge(url)}
                 folder="mahalaxmi/footer"
                 helperText="United Nations Global Compact compliance badge displayed in the partner column."
+              />
+            </div>
+
+            {/* Copyright Text Field */}
+            <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100">
+              <InputField
+                label="Footer Copyright Text Notice"
+                value={copyrightText}
+                onChange={(e) => setCopyrightText(e.target.value)}
+                placeholder="© 2026 Mahalaxmi Enterprises. All rights reserved."
+                helperText="Displays in the bottom-left corner of the website footer."
               />
             </div>
           </div>
