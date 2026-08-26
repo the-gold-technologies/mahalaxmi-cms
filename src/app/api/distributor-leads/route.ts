@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendDistributorLeadNotificationEmail } from "@/lib/mail";
 
 export async function GET(request: Request) {
   try {
@@ -19,17 +20,45 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, firmName, email, phone, city, state } = body;
+    const {
+      name,
+      firmName,
+      email,
+      phone,
+      city,
+      state,
+      existingBusiness,
+      annualTurnover,
+      experienceYears,
+      message,
+    } = body;
 
-    if (!name || !firmName || !email || !phone) {
+    if (!name || !firmName || !phone) {
       return NextResponse.json(
-        { success: false, error: "Required fields missing" },
+        { success: false, error: "Name, firm name, and phone number are required" },
         { status: 400 }
       );
     }
 
     const created = await prisma.distributorApplication.create({
-      data: body,
+      data: {
+        name,
+        firmName,
+        email: email || "noemail@provided.com",
+        phone,
+        city: city || "N/A",
+        state: state || "N/A",
+        existingBusiness: existingBusiness || null,
+        annualTurnover: annualTurnover || null,
+        experienceYears: experienceYears || null,
+        message: message || null,
+        status: "Pending",
+      },
+    });
+
+    // Fire email notifications asynchronously without blocking the response
+    sendDistributorLeadNotificationEmail(created).catch((mailErr) => {
+      console.error("Async email dispatch failed for distributor lead:", mailErr);
     });
 
     return NextResponse.json({ success: true, data: created });

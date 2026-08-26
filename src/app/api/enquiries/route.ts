@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendEnquiryNotificationEmail } from "@/lib/mail";
 
 export async function GET(request: Request) {
   try {
@@ -24,17 +25,32 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email } = body;
+    const { name, email, phone, company, interestedIn, product, budget, message } = body;
 
-    if (!name || !email) {
+    if (!name || (!email && !phone)) {
       return NextResponse.json(
-        { success: false, error: "Name and email are required" },
+        { success: false, error: "Name and at least one contact method (email or phone) are required" },
         { status: 400 }
       );
     }
 
     const created = await prisma.enquiry.create({
-      data: body,
+      data: {
+        name,
+        email: email || "noemail@provided.com",
+        phone: phone || null,
+        company: company || null,
+        interestedIn: interestedIn || null,
+        product: product || interestedIn || null,
+        budget: budget || null,
+        message: message || null,
+        status: "Pending",
+      },
+    });
+
+    // Fire email notifications asynchronously without blocking the response
+    sendEnquiryNotificationEmail(created).catch((mailErr) => {
+      console.error("Async email dispatch failed for enquiry:", mailErr);
     });
 
     return NextResponse.json({ success: true, data: created });

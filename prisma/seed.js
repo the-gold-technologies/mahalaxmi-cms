@@ -3574,42 +3574,6 @@ async function main() {
   }
   console.log(`✓ ${regionalOffices.length} Regional offices ready.`);
 
-  // 12. Sample Inquiries
-  const sampleEnquiries = [
-    {
-      name: "Vikram Malhotra",
-      email: "vikram@malhotralogistics.in",
-      phone: "+91 98111 22334",
-      company: "Malhotra Heavy Transport Corp",
-      interestedIn: "Bulk Commercial Lubricants",
-      product: "HP Milcy Turbo 15W-40 (210L Barrels)",
-      budget: "50+ Barrels Monthly",
-      message: "We operate a fleet of 80 BharatBenz trailers and need monthly bulk supply contract.",
-      status: "Pending",
-    },
-    {
-      name: "Suresh Gupta",
-      email: "suresh.g@guptamachinery.com",
-      phone: "+91 99222 33445",
-      company: "Gupta Precision Tools",
-      interestedIn: "Industrial Hydraulic Oils",
-      product: "ENKLO 68 PREMIUM",
-      budget: "10 Barrels",
-      message: "Require TDS certificate and bulk quote for hydraulic plant maintenance.",
-      status: "Contacted",
-    },
-  ];
-
-  for (const enq of sampleEnquiries) {
-    const existing = await prisma.enquiry.findFirst({
-      where: { email: enq.email },
-    });
-    if (!existing) {
-      await prisma.enquiry.create({ data: enq });
-    }
-  }
-  console.log("✓ Sample inquiries ready.");
-
   console.log("=========================================");
   console.log("Database seeded successfully with 100% website data!");
   console.log("Admin Login: admin@mahalaxmi.com / Admin@123");
