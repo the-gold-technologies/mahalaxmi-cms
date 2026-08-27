@@ -6,34 +6,21 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Starting full database seeding with 100% website data...");
 
-  // 1. Admin & Manager Users
+  // 1. Admin User
   const adminPassword = await bcrypt.hash("Admin@123", 10);
-  const managerPassword = await bcrypt.hash("Manager@123", 10);
 
   await prisma.user.upsert({
     where: { email: "admin@mahalaxmi.com" },
     update: {},
     create: {
       email: "admin@mahalaxmi.com",
-      name: "Neha Goyal",
+      name: "Mahalaxmi Admin",
       password: adminPassword,
       role: "admin",
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
     },
   });
-
-  await prisma.user.upsert({
-    where: { email: "manager@mahalaxmi.com" },
-    update: {},
-    create: {
-      email: "manager@mahalaxmi.com",
-      name: "Operations Desk",
-      password: managerPassword,
-      role: "manager",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
-    },
-  });
-  console.log("✓ Admin & manager users created.");
+  console.log("✓ Admin user created.");
 
   // 2. Global Brand Configuration
   await prisma.globalConfig.upsert({

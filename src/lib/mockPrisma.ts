@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 let mockUsers: any[] = [
   {
     id: "user-1",
-    name: "Neha Goyal",
+    name: "Mahalaxmi Admin",
     email: "admin@mahalaxmi.com",
     role: "admin",
     password: "$2a$10$YourHashedPasswordHere",
@@ -12,22 +12,12 @@ let mockUsers: any[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-  {
-    id: "user-2",
-    name: "Operations Desk",
-    email: "manager@mahalaxmi.com",
-    role: "manager",
-    password: "$2a$10$YourHashedPasswordHere",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
 ];
 
 let mockSettings: Record<string, string> = {
   site_name: "Mahalaxmi Enterprises",
   company_tagline: "Authorized Industrial Lubricants Division (ILD) - HPCL",
-  proprietor_name: "Neha Goyal",
+  proprietor_name: "Mahalaxmi Enterprises",
   contact_email: "sales@mahalaxmienterprises.com",
   contact_phone: "+91 98765 43210",
   contact_address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",

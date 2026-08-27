@@ -19,15 +19,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         });
 
         if (!user || !user.password) {
-          // Dev convenience fallback for test login
-          if (emailStr === "admin@mahalaxmi.com" && credentials.password === "Admin@123") {
-            return {
-              id: "user-admin-1",
-              name: "Mahalaxmi Admin",
-              email: "admin@mahalaxmi.com",
-              role: "admin",
-            };
-          }
           return null;
         }
 
@@ -37,14 +28,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         );
 
         if (!isValid) {
-          if (emailStr === "admin@mahalaxmi.com" && credentials.password === "Admin@123") {
-            return {
-              id: user.id || "user-admin-1",
-              name: user.name || "Mahalaxmi Admin",
-              email: user.email || "admin@mahalaxmi.com",
-              role: (user as any).role || "admin",
-            };
-          }
           return null;
         }
 
