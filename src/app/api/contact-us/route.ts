@@ -21,12 +21,26 @@ export async function GET() {
       orderBy: { order: "asc" },
     });
 
+    const seo = page
+      ? {
+          title: page.metaTitle || page.title,
+          metaTitle: page.metaTitle || page.title,
+          metaDescription: page.metaDescription,
+          targetKeywords: page.targetKeywords,
+          canonicalUrl: page.canonicalUrl,
+          noIndex: page.noIndex,
+          schema: page.schema,
+          headingOptions: page.headingOptions,
+        }
+      : null;
+
     return NextResponse.json({
       success: true,
       data: {
         sections: sectionsMap,
         offices: offices || [],
       },
+      seo,
     });
   } catch (error) {
     console.error("Error fetching contact-us:", error);
@@ -58,7 +72,7 @@ export async function PUT(request: Request) {
       if (body.section === "RegionalOffices" && Array.isArray(body.content.offices)) {
         // Save section content
         const existing = await prisma.section.findFirst({
-          where: { pageId: page.id, type: body.section },
+          where: { pageId: page.id, type: "RegionalOffices" },
         });
 
         if (existing) {
@@ -70,44 +84,70 @@ export async function PUT(request: Request) {
           await prisma.section.create({
             data: {
               pageId: page.id,
-              type: body.section,
+              type: "RegionalOffices",
               content: body.content,
-              order: 2,
+              order: 1,
             },
           });
         }
 
-        // Also sync officeLocation table
-        for (const off of body.content.offices) {
-          const offData = {
-            name: off.name,
-            type: `${off.region} Regional Office`,
-            address: off.address,
-            phone: off.contactNo,
-            email: off.email,
-            contactPerson: off.contactName,
-          };
+        // Sync individual offices
+        const incomingOffices = body.content.offices;
+        const incomingIds = incomingOffices.map((o: any) => o.id).filter(Boolean);
 
-          const existingOff = await prisma.officeLocation.findFirst({
-            where: { name: off.name },
+        if (incomingIds.length > 0) {
+          await prisma.officeLocation.deleteMany({
+            where: { id: { notIn: incomingIds } },
           });
+        }
 
-          if (existingOff) {
-            await prisma.officeLocation.update({
-              where: { id: existingOff.id },
-              data: offData,
+        for (let i = 0; i < incomingOffices.length; i++) {
+          const off = incomingOffices[i];
+          if (off.id && !off.id.startsWith("temp-") && !off.id.startsWith("office-")) {
+            await prisma.officeLocation.upsert({
+              where: { id: off.id },
+              update: {
+                name: off.name,
+                type: off.type || "Branch Depot",
+                address: off.address,
+                phone: off.phone,
+                email: off.email,
+                contactPerson: off.contactPerson,
+                mapUrl: off.mapUrl,
+                order: i,
+              },
+              create: {
+                id: off.id,
+                name: off.name,
+                type: off.type || "Branch Depot",
+                address: off.address,
+                phone: off.phone,
+                email: off.email,
+                contactPerson: off.contactPerson,
+                mapUrl: off.mapUrl,
+                order: i,
+              },
             });
           } else {
             await prisma.officeLocation.create({
-              data: offData,
+              data: {
+                name: off.name,
+                type: off.type || "Branch Depot",
+                address: off.address,
+                phone: off.phone,
+                email: off.email,
+                contactPerson: off.contactPerson,
+                mapUrl: off.mapUrl,
+                order: i,
+              },
             });
           }
         }
 
-        return NextResponse.json({ success: true, message: "Directory saved" });
+        return NextResponse.json({ success: true });
       }
 
-      // Other sections (e.g. ContactHero, ContactHeadquarter)
+      // Generic section save
       const existing = await prisma.section.findFirst({
         where: { pageId: page.id, type: body.section },
       });
@@ -118,77 +158,49 @@ export async function PUT(request: Request) {
           data: { content: body.content },
         });
       } else {
+        const count = await prisma.section.count({ where: { pageId: page.id } });
         await prisma.section.create({
           data: {
             pageId: page.id,
             type: body.section,
             content: body.content,
+            order: count,
           },
         });
       }
 
-      return NextResponse.json({ success: true, message: "Section saved" });
+      return NextResponse.json({ success: true });
     }
 
-    if (body.office) {
-      const { id, ...officeData } = body.office;
-      if (id) {
-        await prisma.officeLocation.update({
-          where: { id },
-          data: officeData,
+    // 2. Full object update
+    for (const [sectionType, content] of Object.entries(body)) {
+      if (sectionType === "sections" || sectionType === "offices" || sectionType === "seo") continue;
+
+      const existing = await prisma.section.findFirst({
+        where: { pageId: page.id, type: sectionType },
+      });
+
+      if (existing) {
+        await prisma.section.update({
+          where: { id: existing.id },
+          data: { content: content as any },
         });
       } else {
-        await prisma.officeLocation.create({
-          data: officeData,
+        const count = await prisma.section.count({ where: { pageId: page.id } });
+        await prisma.section.create({
+          data: {
+            pageId: page.id,
+            type: sectionType,
+            content: content as any,
+            order: count,
+          },
         });
       }
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error updating contact-us:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    if (body.office) {
-      const created = await prisma.officeLocation.create({
-        data: body.office,
-      });
-      return NextResponse.json({ success: true, data: created });
-    }
-    return NextResponse.json({ success: false, error: "Invalid payload" }, { status: 400 });
-  } catch (error) {
-    console.error("Error creating depot office:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const officeId = searchParams.get("officeId");
-    if (!officeId) {
-      return NextResponse.json(
-        { success: false, error: "officeId is required" },
-        { status: 400 }
-      );
-    }
-    await prisma.officeLocation.delete({
-      where: { id: officeId },
-    });
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Error deleting depot office:", error);
+    console.error("Error updating contact-us sections:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500 }

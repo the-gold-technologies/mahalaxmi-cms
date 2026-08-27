@@ -15,7 +15,7 @@ export async function GET() {
     });
 
     if (!page) {
-      return NextResponse.json({ success: true, data: {} });
+      return NextResponse.json({ success: true, data: {}, seo: null });
     }
 
     const sectionsMap: Record<string, any> = {};
@@ -23,7 +23,19 @@ export async function GET() {
       sectionsMap[section.type] = section.content;
     }
 
-    return NextResponse.json({ success: true, data: sectionsMap });
+    // SEO object outside data
+    const seo = {
+      title: page.metaTitle || page.title,
+      metaTitle: page.metaTitle || page.title,
+      metaDescription: page.metaDescription,
+      targetKeywords: page.targetKeywords,
+      canonicalUrl: page.canonicalUrl,
+      noIndex: page.noIndex,
+      schema: page.schema,
+      headingOptions: page.headingOptions,
+    };
+
+    return NextResponse.json({ success: true, data: sectionsMap, seo });
   } catch (error) {
     console.error("Error fetching home page content:", error);
     return NextResponse.json(
@@ -58,32 +70,37 @@ export async function PUT(request: Request) {
     });
 
     const existingSection = await prisma.section.findFirst({
-      where: { pageId: page.id, type: sectionName },
+      where: {
+        pageId: page.id,
+        type: sectionName,
+      },
     });
 
-    let savedSection;
     if (existingSection) {
-      savedSection = await prisma.section.update({
+      await prisma.section.update({
         where: { id: existingSection.id },
         data: { content },
       });
     } else {
-      const sectionCount = await prisma.section.count({
+      const highestOrder = await prisma.section.aggregate({
         where: { pageId: page.id },
+        _max: { order: true },
       });
-      savedSection = await prisma.section.create({
+      const newOrder = (highestOrder._max.order ?? -1) + 1;
+
+      await prisma.section.create({
         data: {
           pageId: page.id,
           type: sectionName,
           content,
-          order: sectionCount,
+          order: newOrder,
         },
       });
     }
 
-    return NextResponse.json({ success: true, data: savedSection });
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error saving home page section:", error);
+    console.error("Error saving home section:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500 }

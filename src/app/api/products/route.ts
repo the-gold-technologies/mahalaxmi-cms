@@ -12,14 +12,14 @@ export async function GET(request: Request) {
       const product = await prisma.product.findUnique({
         where: { id },
       });
-      return NextResponse.json({ success: true, data: product });
+      return NextResponse.json({ success: true, data: product, seo: null });
     }
 
     if (slug) {
       const product = await prisma.product.findUnique({
         where: { slug },
       });
-      return NextResponse.json({ success: true, data: product });
+      return NextResponse.json({ success: true, data: product, seo: null });
     }
 
     const where: any = {};
@@ -36,9 +36,27 @@ export async function GET(request: Request) {
       orderBy: { order: "asc" },
     });
 
+    const productsPage = await prisma.page.findUnique({
+      where: { slug: "products" },
+    });
+
+    const seo = productsPage
+      ? {
+          title: productsPage.metaTitle || productsPage.title,
+          metaTitle: productsPage.metaTitle || productsPage.title,
+          metaDescription: productsPage.metaDescription,
+          targetKeywords: productsPage.targetKeywords,
+          canonicalUrl: productsPage.canonicalUrl,
+          noIndex: productsPage.noIndex,
+          schema: productsPage.schema,
+          headingOptions: productsPage.headingOptions,
+        }
+      : null;
+
     return NextResponse.json({
       success: true,
       data: { products, categories },
+      seo,
     });
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -61,11 +79,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const created = await prisma.product.create({
-      data: { name, slug, ...rest },
+    const highestOrder = await prisma.product.aggregate({
+      _max: { order: true },
+    });
+    const order = (highestOrder._max.order ?? -1) + 1;
+
+    const product = await prisma.product.create({
+      data: {
+        name,
+        slug,
+        order,
+        ...rest,
+      },
     });
 
-    return NextResponse.json({ success: true, data: created });
+    return NextResponse.json({ success: true, data: product });
   } catch (error) {
     console.error("Error creating product:", error);
     return NextResponse.json(
@@ -82,17 +110,17 @@ export async function PUT(request: Request) {
 
     if (!id) {
       return NextResponse.json(
-        { success: false, error: "Product ID is required for update" },
+        { success: false, error: "Product ID is required" },
         { status: 400 }
       );
     }
 
-    const updated = await prisma.product.update({
+    const product = await prisma.product.update({
       where: { id },
       data,
     });
 
-    return NextResponse.json({ success: true, data: updated });
+    return NextResponse.json({ success: true, data: product });
   } catch (error) {
     console.error("Error updating product:", error);
     return NextResponse.json(

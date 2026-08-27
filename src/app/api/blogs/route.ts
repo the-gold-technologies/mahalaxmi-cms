@@ -8,16 +8,48 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     const slug = searchParams.get("slug");
-    const mode = searchParams.get("mode");
 
     if (id) {
       const blog = await prisma.blogPost.findUnique({ where: { id } });
-      return NextResponse.json({ success: true, data: blog });
+      if (blog) {
+        const blogPage = await prisma.page.findUnique({
+          where: { slug: `blogs/${blog.slug}` },
+        });
+        const seo = {
+          title: blogPage?.metaTitle || blog.title,
+          metaTitle: blogPage?.metaTitle || blog.title,
+          metaDescription: blogPage?.metaDescription || blog.excerpt,
+          targetKeywords: blogPage?.targetKeywords || blog.category,
+          canonicalUrl: blogPage?.canonicalUrl || `https://mahalaxmilubricants.com/blogs/${blog.slug}`,
+          noIndex: blogPage?.noIndex ?? false,
+          schema: blogPage?.schema,
+          headingOptions: blogPage?.headingOptions,
+        };
+        return NextResponse.json({ success: true, data: blog, seo });
+      }
+      return NextResponse.json({ success: true, data: blog, seo: null });
     }
 
     if (slug && slug !== BLOGS_SLUG) {
-      const blog = await prisma.blogPost.findUnique({ where: { slug } });
-      return NextResponse.json({ success: true, data: blog });
+      const pureSlug = slug.replace(/^blogs\//, "");
+      const blog = await prisma.blogPost.findUnique({ where: { slug: pureSlug } });
+      if (blog) {
+        const blogPage = await prisma.page.findUnique({
+          where: { slug: `blogs/${pureSlug}` },
+        });
+        const seo = {
+          title: blogPage?.metaTitle || blog.title,
+          metaTitle: blogPage?.metaTitle || blog.title,
+          metaDescription: blogPage?.metaDescription || blog.excerpt,
+          targetKeywords: blogPage?.targetKeywords || blog.category,
+          canonicalUrl: blogPage?.canonicalUrl || `https://mahalaxmilubricants.com/blogs/${pureSlug}`,
+          noIndex: blogPage?.noIndex ?? false,
+          schema: blogPage?.schema,
+          headingOptions: blogPage?.headingOptions,
+        };
+        return NextResponse.json({ success: true, data: blog, seo });
+      }
+      return NextResponse.json({ success: true, data: blog, seo: null });
     }
 
     // 1. Fetch blogs list
@@ -38,12 +70,26 @@ export async function GET(request: Request) {
       }
     }
 
+    const seo = page
+      ? {
+          title: page.metaTitle || page.title,
+          metaTitle: page.metaTitle || page.title,
+          metaDescription: page.metaDescription,
+          targetKeywords: page.targetKeywords,
+          canonicalUrl: page.canonicalUrl,
+          noIndex: page.noIndex,
+          schema: page.schema,
+          headingOptions: page.headingOptions,
+        }
+      : null;
+
     return NextResponse.json({
       success: true,
       data: {
         blogs,
         sections: sectionsMap,
       },
+      seo,
     });
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -57,7 +103,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, slug, ...rest } = body;
+    const { title, slug, category, publishDate, readTime, author, excerpt, coverImage, content, recommendedProducts, isPublished } = body;
 
     if (!title || !slug) {
       return NextResponse.json(
@@ -67,12 +113,24 @@ export async function POST(request: Request) {
     }
 
     const created = await prisma.blogPost.create({
-      data: { title, slug, ...rest },
+      data: {
+        title,
+        slug,
+        category: category || "Automotive",
+        publishDate: publishDate || new Date().toISOString().split("T")[0],
+        readTime: readTime || "5 min read",
+        author: author || "HPCL Technical Team",
+        excerpt: excerpt || "",
+        coverImage: coverImage || null,
+        content: content || {},
+        recommendedProducts: recommendedProducts || [],
+        isPublished: isPublished !== false,
+      },
     });
 
     return NextResponse.json({ success: true, data: created });
   } catch (error) {
-    console.error("Error creating blog:", error);
+    console.error("Error creating blog post:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500 }
@@ -83,58 +141,35 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
+    const { id, title, slug, category, publishDate, readTime, author, excerpt, coverImage, content, recommendedProducts, isPublished } = body;
 
-    // Check if this is a section-level update (e.g. BlogsHero)
-    if (body.section && body.content !== undefined) {
-      const page = await prisma.page.upsert({
-        where: { slug: BLOGS_SLUG },
-        create: {
-          title: "Technical Articles & Lubrication Insights",
-          slug: BLOGS_SLUG,
-          type: "static",
-          visibility: "published",
-        },
-        update: {},
-      });
-
-      const existing = await prisma.section.findFirst({
-        where: { pageId: page.id, type: body.section },
-      });
-
-      if (existing) {
-        await prisma.section.update({
-          where: { id: existing.id },
-          data: { content: body.content },
-        });
-      } else {
-        await prisma.section.create({
-          data: {
-            pageId: page.id,
-            type: body.section,
-            content: body.content,
-          },
-        });
-      }
-
-      return NextResponse.json({ success: true, message: "Section saved" });
-    }
-
-    const { id, ...data } = body;
     if (!id) {
       return NextResponse.json(
-        { success: false, error: "id is required for update" },
+        { success: false, error: "Blog ID is required" },
         { status: 400 }
       );
     }
 
     const updated = await prisma.blogPost.update({
       where: { id },
-      data,
+      data: {
+        title,
+        slug,
+        category,
+        publishDate,
+        readTime,
+        author,
+        excerpt,
+        coverImage,
+        content,
+        recommendedProducts,
+        isPublished,
+      },
     });
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
-    console.error("Error updating blog:", error);
+    console.error("Error updating blog post:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500 }
@@ -146,16 +181,18 @@ export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
+
     if (!id) {
       return NextResponse.json(
-        { success: false, error: "id is required" },
+        { success: false, error: "Blog ID is required" },
         { status: 400 }
       );
     }
+
     await prisma.blogPost.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error deleting blog:", error);
+    console.error("Error deleting blog post:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500 }

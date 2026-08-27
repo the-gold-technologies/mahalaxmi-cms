@@ -82,12 +82,12 @@ async function main() {
 
   // 3. Navigation Links
   const navLinks = [
-    { label: "Home", title: "HOME", url: "/", order: 0, isStatic: true },
-    { label: "About Us", title: "ABOUT US", url: "/about-us", order: 1, isStatic: true },
-    { label: "Products & Services", title: "PRODUCTS & SERVICES", url: "/products", order: 2, isStatic: true },
-    { label: "Events & Gallery", title: "EVENTS & GALLERY", url: "/events", order: 3, isStatic: true },
-    { label: "Blogs", title: "BLOGS", url: "/blogs", order: 4, isStatic: true },
-    { label: "Contact Us", title: "CONTACT US", url: "/contact-us", order: 5, isStatic: true },
+    { label: "Home", title: "HOME", url: "/", order: 0 },
+    { label: "About Us", title: "ABOUT US", url: "/about-us", order: 1 },
+    { label: "Products & Services", title: "PRODUCTS & SERVICES", url: "/products", order: 2 },
+    { label: "Events & Gallery", title: "EVENTS & GALLERY", url: "/events", order: 3 },
+    { label: "Blogs", title: "BLOGS", url: "/blogs", order: 4 },
+    { label: "Contact Us", title: "CONTACT US", url: "/contact-us", order: 5 },
   ];
 
   for (const n of navLinks) {

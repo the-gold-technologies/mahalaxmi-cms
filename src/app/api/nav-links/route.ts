@@ -1,12 +1,26 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const links = await prisma.navLink.findMany({
       orderBy: { order: "asc" },
     });
-    return NextResponse.json({ success: true, data: links });
+
+    // Deduplicate by normalized label to ensure clean navigation hierarchy without duplicate rows
+    const seen = new Set<string>();
+    const uniqueLinks = links.filter((l: any) => {
+      const normalizedLabel = l.label.toLowerCase().trim();
+      if (seen.has(normalizedLabel)) {
+        return false;
+      }
+      seen.add(normalizedLabel);
+      return true;
+    });
+
+    return NextResponse.json({ success: true, data: uniqueLinks });
   } catch (error) {
     console.error("Error fetching nav links:", error);
     return NextResponse.json(
@@ -28,6 +42,18 @@ export async function PUT(request: Request) {
       );
     }
 
+    // 1. Remove deleted links from database
+    const incomingIds = links
+      .filter((l: any) => l.id && !l.id.startsWith("nav-"))
+      .map((l: any) => l.id);
+
+    await prisma.navLink.deleteMany({
+      where: {
+        id: { notIn: incomingIds },
+      },
+    });
+
+    // 2. Upsert existing & new links with updated order
     for (let i = 0; i < links.length; i++) {
       const link = links[i];
       const navData = {

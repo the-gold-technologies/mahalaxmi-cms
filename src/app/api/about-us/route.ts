@@ -11,7 +11,7 @@ export async function GET() {
     });
 
     if (!page) {
-      return NextResponse.json({ success: true, data: {} });
+      return NextResponse.json({ success: true, data: {}, seo: null });
     }
 
     const sectionsMap: Record<string, any> = {};
@@ -19,7 +19,19 @@ export async function GET() {
       sectionsMap[section.type] = section.content;
     }
 
-    return NextResponse.json({ success: true, data: sectionsMap });
+    // SEO object outside data
+    const seo = {
+      title: page.metaTitle || page.title,
+      metaTitle: page.metaTitle || page.title,
+      metaDescription: page.metaDescription,
+      targetKeywords: page.targetKeywords,
+      canonicalUrl: page.canonicalUrl,
+      noIndex: page.noIndex,
+      schema: page.schema,
+      headingOptions: page.headingOptions,
+    };
+
+    return NextResponse.json({ success: true, data: sectionsMap, seo });
   } catch (error) {
     console.error("Error fetching about-us:", error);
     return NextResponse.json(
@@ -55,7 +67,7 @@ export async function PUT(request: Request) {
     }
 
     for (const [sectionType, content] of Object.entries(sectionsToSave)) {
-      if (sectionType === "sections" || sectionType === "section" || sectionType === "content") continue;
+      if (sectionType === "sections" || sectionType === "section" || sectionType === "content" || sectionType === "seo") continue;
       const existing = await prisma.section.findFirst({
         where: { pageId: page.id, type: sectionType },
       });

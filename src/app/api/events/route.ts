@@ -10,7 +10,7 @@ export async function GET(request: Request) {
 
     if (slug && slug !== EVENTS_SLUG) {
       const event = await prisma.event.findUnique({ where: { slug } });
-      return NextResponse.json({ success: true, data: event });
+      return NextResponse.json({ success: true, data: event, seo: null });
     }
 
     // 1. Fetch static Page Sections for events page
@@ -26,9 +26,23 @@ export async function GET(request: Request) {
       }
     }
 
+    const seo = page
+      ? {
+          title: page.metaTitle || page.title,
+          metaTitle: page.metaTitle || page.title,
+          metaDescription: page.metaDescription,
+          targetKeywords: page.targetKeywords,
+          canonicalUrl: page.canonicalUrl,
+          noIndex: page.noIndex,
+          schema: page.schema,
+          headingOptions: page.headingOptions,
+        }
+      : null;
+
     return NextResponse.json({
       success: true,
       data: sectionsMap,
+      seo,
     });
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -66,13 +80,7 @@ export async function PUT(request: Request) {
     }
 
     for (const [sectionType, content] of Object.entries(sectionsToSave)) {
-      if (
-        sectionType === "sections" ||
-        sectionType === "section" ||
-        sectionType === "content"
-      )
-        continue;
-
+      if (sectionType === "sections" || sectionType === "section" || sectionType === "content" || sectionType === "seo") continue;
       const existing = await prisma.section.findFirst({
         where: { pageId: page.id, type: sectionType },
       });
@@ -83,54 +91,21 @@ export async function PUT(request: Request) {
           data: { content: content as any },
         });
       } else {
+        const count = await prisma.section.count({ where: { pageId: page.id } });
         await prisma.section.create({
           data: {
             pageId: page.id,
             type: sectionType,
             content: content as any,
+            order: count,
           },
         });
       }
     }
 
-    return NextResponse.json({ success: true, message: "Saved successfully" });
-  } catch (error) {
-    console.error("Error updating events section:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const created = await prisma.event.create({ data: body });
-    return NextResponse.json({ success: true, data: created });
-  } catch (error) {
-    console.error("Error creating event:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-    if (!id) {
-      return NextResponse.json(
-        { success: false, error: "id is required" },
-        { status: 400 }
-      );
-    }
-    await prisma.event.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error deleting event:", error);
+    console.error("Error saving events sections:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500 }

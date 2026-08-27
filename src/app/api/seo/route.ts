@@ -38,9 +38,14 @@ export async function PUT(request: Request) {
           { status: 400 }
         );
       }
-      const updated = await prisma.page.update({
+      const updated = await prisma.page.upsert({
         where: { slug },
-        data: seoData,
+        create: {
+          slug,
+          title: seoData.title || slug.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()),
+          ...seoData,
+        },
+        update: seoData,
       });
       return NextResponse.json({ success: true, data: updated });
     }

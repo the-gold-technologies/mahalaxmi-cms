@@ -2,224 +2,306 @@
 
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "@/components/PageHeader";
-import { InputField } from "@/components/InputField";
-import { TextAreaField } from "@/components/TextAreaField";
-import { SaveButton } from "@/components/SaveButton";
-import { Globe, Search, Loader2, Check } from "lucide-react";
-import toast from "react-hot-toast";
+import Link from "next/link";
+import { Edit2, Search, ChevronDown, ChevronRight } from "lucide-react";
 
-interface PageSEO {
+interface PageSEOSummary {
   id: string;
+  pageId: string | null;
   title: string;
   slug: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  targetKeywords?: string;
-  canonicalUrl?: string;
-  noIndex?: boolean;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  type: string;
+  visibility: string;
+  parent: string;
+  order: number;
+  description?: string;
+  navTitle?: string;
+  isStatic?: boolean;
 }
 
-export default function PagesSEOPage() {
-  const [pages, setPages] = useState<PageSEO[]>([]);
-  const [selectedSlug, setSelectedSlug] = useState("home");
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-
-  const [metaTitle, setMetaTitle] = useState("");
-  const [metaDescription, setMetaDescription] = useState("");
-  const [targetKeywords, setTargetKeywords] = useState("");
-  const [canonicalUrl, setCanonicalUrl] = useState("");
-  const [noIndex, setNoIndex] = useState(false);
-
-  const fetchPages = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/seo?type=pages");
-      const json = await res.json();
-      if (json.success && json.data) {
-        setPages(json.data);
-        const homePage = json.data.find((p: PageSEO) => p.slug === "home") || json.data[0];
-        if (homePage) {
-          setSelectedSlug(homePage.slug);
-          setMetaTitle(homePage.metaTitle || "");
-          setMetaDescription(homePage.metaDescription || "");
-          setTargetKeywords(homePage.targetKeywords || "");
-          setCanonicalUrl(homePage.canonicalUrl || "");
-          setNoIndex(!!homePage.noIndex);
-        }
-      }
-    } catch {
-      toast.error("Failed to load pages SEO");
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function PageSEODashboard() {
+  const [pages, setPages] = useState<PageSEOSummary[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedParents, setExpandedParents] = useState<
+    Record<string, boolean>
+  >({});
 
   useEffect(() => {
+    async function fetchPages() {
+      try {
+        const res = await fetch("/api/seo/pages");
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          const seen = new Set<string>();
+          const uniquePages = json.data.filter((p: PageSEOSummary) => {
+            if (p.slug === "home") return false;
+            const norm = p.slug.toLowerCase().trim();
+            if (seen.has(norm)) return false;
+            seen.add(norm);
+            return true;
+          });
+          setPages(uniquePages);
+        }
+      } catch (error) {
+        console.error("Error fetching pages for SEO:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
     fetchPages();
   }, []);
 
-  const handleSelectPage = (slug: string) => {
-    setSelectedSlug(slug);
-    const p = pages.find((page) => page.slug === slug);
-    if (p) {
-      setMetaTitle(p.metaTitle || "");
-      setMetaDescription(p.metaDescription || "");
-      setTargetKeywords(p.targetKeywords || "");
-      setCanonicalUrl(p.canonicalUrl || "");
-      setNoIndex(!!p.noIndex);
-    }
+  const toggleParent = (id: string) => {
+    setExpandedParents((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    setSaved(false);
-    try {
-      const res = await fetch("/api/seo?type=pages", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug: selectedSlug,
-          metaTitle,
-          metaDescription,
-          targetKeywords,
-          canonicalUrl,
-          noIndex,
-        }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        setSaved(true);
-        toast.success(`SEO updated for /${selectedSlug}`);
-        setTimeout(() => setSaved(false), 3000);
-        fetchPages();
-      } else {
-        toast.error(json.error || "Failed to save");
-      }
-    } catch {
-      toast.error("Network error while saving");
-    } finally {
-      setSaving(false);
-    }
-  };
+  const filteredPages = pages.filter(
+    (page) =>
+      page.slug !== "home" &&
+      (page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        page.slug.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
-  const activePage = pages.find((p) => p.slug === selectedSlug);
+  const rootLinks = filteredPages
+    .filter((l) => l.parent === "-" || !pages.some((p) => p.id === l.parent))
+    .sort((a, b) => a.order - b.order);
 
   return (
-    <section className="flex flex-col gap-8 pb-12">
+    <div className="flex flex-col gap-6 max-w-6xl mx-auto pb-20 animate-in fade-in duration-500">
       <PageHeader
-        title="Page-by-Page SEO &amp; SERP Snippets"
-        description="Fine-tune individual page search titles, target keywords, canonical links, and social snippet descriptions."
-        action={{
-          label: "Save Page SEO",
-          onClick: handleSave,
-        }}
+        title="Page Specific SEO"
+        description="Monitor and manage SEO metadata, OG tags, and canonical URLs for every page on your site."
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Page Selector */}
-        <div className="lg:col-span-4 bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col gap-3">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
-            Select Website Page
-          </h3>
-          {loading ? (
-            <div className="py-8 flex justify-center">
-              <Loader2 className="w-6 h-6 animate-spin text-[#D8232A]" />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-1.5">
-              {pages.map((p) => (
-                <button
-                  key={p.slug}
-                  type="button"
-                  onClick={() => handleSelectPage(p.slug)}
-                  className={`px-4 py-3 rounded-2xl text-left text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
-                    selectedSlug === p.slug
-                      ? "bg-[#0B0F29] text-white shadow-sm"
-                      : "bg-gray-50 text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className="capitalize">{p.title || p.slug}</span>
-                  <span className="font-mono text-[11px] opacity-70">
-                    /{p.slug === "home" ? "" : p.slug}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* SEO Editor Form */}
-        <div className="lg:col-span-8 bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col gap-6">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-            <div>
-              <h3 className="text-base font-bold text-[#0B0F29]">
-                Editing SEO for &ldquo;{activePage?.title || selectedSlug}&rdquo;
-              </h3>
-              <p className="text-xs text-gray-400 font-mono mt-0.5">
-                Path: /{selectedSlug === "home" ? "" : selectedSlug}
-              </p>
-            </div>
-          </div>
-
-          <InputField
-            label="SERP Meta Title"
-            value={metaTitle}
-            onChange={(e) => setMetaTitle(e.target.value)}
-            placeholder="e.g. Authorized HP Lubricants Distributor | Fast Logistics"
-          />
-
-          <TextAreaField
-            label="Meta Description (Target ~155 Characters)"
-            rows={3}
-            value={metaDescription}
-            onChange={(e) => setMetaDescription(e.target.value)}
-            placeholder="Compelling description for Google search result snippets..."
-          />
-
-          <InputField
-            label="Focus Keywords (Comma separated)"
-            value={targetKeywords}
-            onChange={(e) => setTargetKeywords(e.target.value)}
-            placeholder="HPCL lubricants, industrial oil, hydraulic oil, engine oil dealer"
-          />
-
-          <InputField
-            label="Canonical URL"
-            value={canonicalUrl}
-            onChange={(e) => setCanonicalUrl(e.target.value)}
-            placeholder="https://mahalaxmilubricants.com/products"
-          />
-
-          {/* Google Preview */}
-          <div className="mt-2 p-5 bg-gray-50/70 rounded-2xl border border-gray-200/80 flex flex-col gap-1">
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
-              <Globe className="w-3 h-3 text-[#D8232A]" /> Google Search Result Preview
-            </span>
-            <span className="text-xs text-emerald-800 font-mono">
-              https://mahalaxmilubricants.com/{selectedSlug === "home" ? "" : selectedSlug}
-            </span>
-            <h4 className="text-sm font-semibold text-blue-700 hover:underline cursor-pointer">
-              {metaTitle || `${activePage?.title || selectedSlug} | Mahalaxmi Enterprises`}
-            </h4>
-            <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed mt-0.5">
-              {metaDescription ||
-                "Authorized distributor for HPCL Lubricants offering genuine automotive oils, industrial lubricants, and greases."}
-            </p>
-          </div>
-
-          <div className="flex justify-end pt-4 border-t border-gray-100">
-            <SaveButton
-              loading={saving}
-              saved={saved}
-              onClick={handleSave}
-              label={`Save /${selectedSlug} SEO`}
-              className="w-auto px-8"
-            />
-          </div>
+      {/* Search Filter Box */}
+      <div className="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4 px-6 focus-within:ring-2 focus-within:ring-[#002B5C]/20 transition-all">
+        <Search className="w-5 h-5 text-gray-400 shrink-0" />
+        <input
+          type="text"
+          placeholder="Search pages by title or slug..."
+          className="flex-1 bg-transparent border-none outline-none text-sm font-medium text-gray-700 placeholder:text-gray-400"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <div className="text-xs font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+          {filteredPages.length} Results
         </div>
       </div>
-    </section>
+
+      {/* Table Card */}
+      <div className="overflow-hidden rounded-[2.5rem] bg-white shadow-sm ring-1 ring-gray-100/50">
+        <div className="overflow-x-auto p-4">
+          <table className="min-w-full divide-y divide-gray-100/50">
+            <thead>
+              <tr>
+                <th className="px-6 py-5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[80px] whitespace-nowrap">
+                  Order
+                </th>
+                <th className="px-6 py-5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                  Label / Title
+                </th>
+                <th className="px-6 py-5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap min-w-[180px]">
+                  SEO Status
+                </th>
+                <th className="px-6 py-5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap min-w-[140px]">
+                  Type
+                </th>
+                <th className="px-6 py-5 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider min-w-[200px] max-w-[280px]">
+                  URL
+                </th>
+                <th className="px-6 py-5 text-right text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap w-24">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="py-20 text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#D8232A] mx-auto"></div>
+                  </td>
+                </tr>
+              ) : rootLinks.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-sm text-gray-400">
+                    No pages found matching your search.
+                  </td>
+                </tr>
+              ) : (
+                rootLinks.map((root, rootIndex) => {
+                  const children = filteredPages.filter((c) => c.parent === root.id);
+                  const hasChildren = children.length > 0;
+                  const isExpanded = !!expandedParents[root.id];
+
+                  const hasTitle = Boolean(root.metaTitle && root.metaTitle.trim().length > 0);
+                  const hasDesc = Boolean(root.metaDescription && root.metaDescription.trim().length > 0);
+
+                  return (
+                    <React.Fragment key={root.id}>
+                      <tr className="hover:bg-slate-50/70 transition-colors group">
+                        <td className="px-6 py-5 text-sm font-semibold text-gray-500 whitespace-nowrap">
+                          {rootIndex + 1}
+                        </td>
+                        <td className="px-6 py-5">
+                          <div className="flex items-center gap-3">
+                            {hasChildren ? (
+                              <button
+                                type="button"
+                                onClick={() => toggleParent(root.id)}
+                                className="p-1 hover:bg-gray-100 rounded-md transition-colors text-gray-400 cursor-pointer"
+                              >
+                                {isExpanded ? (
+                                  <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                  <ChevronRight className="w-4 h-4" />
+                                )}
+                              </button>
+                            ) : (
+                              <div className="w-6" />
+                            )}
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-bold text-sm text-gray-900 group-hover:text-[#002B5C] transition-colors whitespace-nowrap">
+                                {root.title}
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-5 whitespace-nowrap">
+                          {root.type === "Dropdown" ? (
+                            <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest whitespace-nowrap">
+                              Group Container
+                            </span>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${
+                                  hasTitle
+                                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                                    : "bg-red-50 text-[#D8232A] border border-red-100"
+                                }`}
+                              >
+                                {hasTitle ? "Title ✓" : "Title ✗"}
+                              </span>
+                              <span
+                                className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${
+                                  hasDesc
+                                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                                    : "bg-red-50 text-[#D8232A] border border-red-100"
+                                }`}
+                              >
+                                {hasDesc ? "Desc ✓" : "Desc ✗"}
+                              </span>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-6 py-5 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${
+                              root.type === "Main Link"
+                                ? "bg-blue-50 text-[#002B5C]"
+                                : root.type === "Dropdown"
+                                ? "bg-purple-50 text-purple-600"
+                                : "bg-gray-100 text-gray-600"
+                            }`}
+                          >
+                            {root.type}
+                          </span>
+                        </td>
+                        <td className="px-6 py-5 font-mono text-xs text-gray-500 break-words max-w-[260px] leading-relaxed">
+                          /{root.slug}
+                        </td>
+                        <td className="px-6 py-5 whitespace-nowrap text-right">
+                          <div className="flex items-center gap-3 justify-end">
+                            {root.type !== "Dropdown" && (
+                              <Link
+                                href={`/seo/pages/${root.slug}`}
+                                className="p-2 bg-gray-50 text-slate-600 rounded-xl hover:bg-[#002B5C] hover:text-white transition-all group inline-flex items-center justify-center"
+                                title="Edit Page SEO"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </Link>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                      {isExpanded &&
+                        children.map((child, childIndex) => {
+                          const childHasTitle = !!child.metaTitle;
+                          const childHasDesc = !!child.metaDescription;
+
+                          return (
+                            <tr
+                              key={child.id}
+                              className="bg-[#fcfdff]/50 hover:bg-[#f5f8ff] transition-colors group"
+                            >
+                              <td className="px-6 py-4 text-sm font-medium text-gray-400 pl-12 whitespace-nowrap">
+                                {rootIndex + 1}.{childIndex + 1}
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3 pl-6 border-l-2 border-gray-100/50">
+                                  <span className="text-gray-300 text-lg">↳</span>
+                                  <span className="font-medium text-xs text-gray-700 group-hover:text-[#002B5C] transition-colors">
+                                    {child.title}
+                                  </span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${
+                                      childHasTitle
+                                        ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                                        : "bg-red-50 text-[#D8232A] border border-red-100"
+                                    }`}
+                                  >
+                                    {childHasTitle ? "Title ✓" : "Title ✗"}
+                                  </span>
+                                  <span
+                                    className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${
+                                      childHasDesc
+                                        ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                                        : "bg-red-50 text-[#D8232A] border border-red-100"
+                                    }`}
+                                  >
+                                    {childHasDesc ? "Desc ✓" : "Desc ✗"}
+                                  </span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest bg-gray-50 text-gray-500 border border-gray-100 whitespace-nowrap">
+                                  {child.type}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 text-xs font-mono text-gray-400 break-words max-w-[260px] leading-relaxed">
+                                /{child.slug}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right">
+                                <div className="flex items-center gap-3 justify-end">
+                                  <Link
+                                    href={`/seo/pages/${child.slug}`}
+                                    className="p-1.5 bg-white border border-gray-100 text-gray-400 rounded-lg hover:border-[#002B5C] hover:text-[#002B5C] transition-all inline-flex items-center justify-center"
+                                  >
+                                    <Edit2 className="w-3.5 h-3.5" />
+                                  </Link>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </React.Fragment>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   );
 }
