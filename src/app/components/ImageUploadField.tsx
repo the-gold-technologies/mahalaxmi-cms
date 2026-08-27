@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState, useRef } from "react";
-import { CloudUpload, X, HelpCircle } from "lucide-react";
-import { deleteFileFromCloudinary } from "@/lib/uploadHelpers";
+import { CloudUpload, X, HelpCircle, Loader2, Link as LinkIcon, CheckCircle2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface ImageUploadFieldProps {
   label?: string;
@@ -9,6 +11,7 @@ interface ImageUploadFieldProps {
   maxImages?: number;
   containerClassName?: string;
   tooltip?: string;
+  folder?: string;
 }
 
 export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
@@ -18,14 +21,19 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   maxImages = 1,
   containerClassName = "",
   tooltip,
+  folder = "mahalaxmi/uploads",
 }) => {
-  const [internalImages, setInternalImages] = useState<
-    (File | string | null)[]
-  >([]);
+  const [internalImages, setInternalImages] = useState<(File | string | null)[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgressText, setUploadProgressText] = useState("");
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [manualUrl, setManualUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const images = controlledImages ?? internalImages;
+  const images = (controlledImages ?? internalImages).filter(
+    (img): img is string | File => Boolean(img)
+  );
 
   const handleUpdate = (newImages: (File | string | null)[]) => {
     if (!controlledImages) {
@@ -34,120 +42,242 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
     onImagesChange?.(newImages);
   };
 
+  // Upload single or multiple files to /api/upload
+  const uploadAndAddFiles = async (files: File[]) => {
+    if (!files || files.length === 0) return;
+
+    // Filter valid image files
+    const validFiles = files.filter(
+      (f) =>
+        f.type.startsWith("image/") ||
+        f.name.endsWith(".ico") ||
+        f.name.endsWith(".svg") ||
+        f.name.endsWith(".png") ||
+        f.name.endsWith(".jpg") ||
+        f.name.endsWith(".jpeg") ||
+        f.name.endsWith(".webp")
+    );
+
+    if (validFiles.length === 0) {
+      toast.error("Please select valid image files (PNG, JPG, WebP, ICO, SVG)");
+      return;
+    }
+
+    // Limit to maxImages available slots
+    const availableSlots = maxImages === 1 ? 1 : maxImages - images.length;
+    if (availableSlots <= 0 && maxImages > 1) {
+      toast.error(`Maximum ${maxImages} images allowed.`);
+      return;
+    }
+
+    const filesToUpload = validFiles.slice(0, availableSlots > 0 ? availableSlots : 1);
+
+    setIsUploading(true);
+    const uploadedUrls: string[] = [];
+
+    for (let i = 0; i < filesToUpload.length; i++) {
+      const file = filesToUpload[i];
+      setUploadProgressText(
+        filesToUpload.length > 1
+          ? `Uploading ${i + 1}/${filesToUpload.length}: ${file.name}...`
+          : `Uploading ${file.name}...`
+      );
+
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("folder", folder);
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const json = await res.json();
+        if (json.success && json.url) {
+          uploadedUrls.push(json.url);
+        } else {
+          toast.error(json.error || `Failed to upload ${file.name}`);
+        }
+      } catch (err: any) {
+        console.error("Upload error:", err);
+        toast.error(err?.message || `Failed to upload ${file.name}`);
+      }
+    }
+
+    setIsUploading(false);
+    setUploadProgressText("");
+
+    if (uploadedUrls.length > 0) {
+      if (maxImages === 1) {
+        handleUpdate([uploadedUrls[0]]);
+      } else {
+        const currentStringImages = images.map((img) =>
+          typeof img === "string" ? img : ""
+        ).filter(Boolean);
+        handleUpdate([...currentStringImages, ...uploadedUrls].slice(0, maxImages));
+      }
+      toast.success(
+        uploadedUrls.length === 1
+          ? "Image uploaded successfully!"
+          : `${uploadedUrls.length} images uploaded successfully!`
+      );
+    }
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsDragging(true);
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsDragging(false);
   };
 
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsDragging(false);
 
-    if (e.dataTransfer.files) {
-      const droppedFiles = Array.from(e.dataTransfer.files).filter((file) =>
-        file.type.startsWith("image/")
-      );
-      if (maxImages === 1 && images[0] && typeof images[0] === "string") {
-        await deleteFileFromCloudinary(images[0]);
-      }
-      const newImages = [...images, ...droppedFiles].slice(0, maxImages);
-      handleUpdate(newImages);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      await uploadAndAddFiles(droppedFiles);
     }
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       const selectedFiles = Array.from(e.target.files);
-      if (maxImages === 1 && images[0] && typeof images[0] === "string") {
-        await deleteFileFromCloudinary(images[0]);
-      }
-      const newImages = [...images, ...selectedFiles].slice(0, maxImages);
-      handleUpdate(newImages);
+      await uploadAndAddFiles(selectedFiles);
       e.target.value = "";
     }
   };
 
-  const removeImage = async (index: number) => {
-    const img = images[index];
-    if (img && typeof img === "string") {
-      await deleteFileFromCloudinary(img);
+  const removeImage = (index: number) => {
+    const nextImages = images.filter((_, i) => i !== index);
+    handleUpdate(nextImages);
+  };
+
+  const handleAddManualUrl = () => {
+    if (!manualUrl.trim()) return;
+    const url = manualUrl.trim();
+    if (maxImages === 1) {
+      handleUpdate([url]);
+    } else {
+      const currentStringImages = images.map((img) =>
+        typeof img === "string" ? img : ""
+      ).filter(Boolean);
+      handleUpdate([...currentStringImages, url].slice(0, maxImages));
     }
-    handleUpdate(images.filter((_, i) => i !== index));
+    setManualUrl("");
+    setShowUrlInput(false);
+    toast.success("Image URL added!");
   };
 
   return (
-    <div className={`flex flex-col gap-1.5 ${containerClassName}`}>
-      {label && (
-        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-4 flex items-center gap-1.5 relative">
-          {label}
-          {tooltip && (
-            <div className="group relative flex items-center">
-              <HelpCircle className="w-3.5 h-3.5 cursor-help text-gray-300 hover:text-[#D8232A] transition-colors" />
-              {/* Tooltip Bubble */}
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-max max-w-[280px] px-4 py-3 bg-white text-gray-900 text-[11px] font-medium rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 normal-case tracking-normal text-center leading-relaxed backdrop-blur-sm">
-                {tooltip}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-white"></div>
+    <div className={`flex flex-col gap-2 w-full ${containerClassName}`}>
+      {/* Label and Actions */}
+      <div className="flex items-center justify-between">
+        {label && (
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5 relative">
+            {label}
+            {tooltip && (
+              <div className="group relative flex items-center">
+                <HelpCircle className="w-3.5 h-3.5 cursor-help text-gray-400 hover:text-[#002B5C] transition-colors" />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-max max-w-[280px] px-4 py-3 bg-slate-900 text-white text-[11px] font-medium rounded-2xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-50 normal-case tracking-normal text-center leading-relaxed">
+                  {tooltip}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-slate-900"></div>
+                </div>
               </div>
-            </div>
-          )}
-        </label>
+            )}
+          </label>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setShowUrlInput(!showUrlInput)}
+          className="text-[11px] text-[#002B5C] hover:text-[#D8232A] font-semibold transition-colors cursor-pointer"
+        >
+          {showUrlInput ? "Hide Direct URL" : "Paste Direct URL"}
+        </button>
+      </div>
+
+      {/* Manual URL input fallback */}
+      {showUrlInput && (
+        <div className="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-2xl">
+          <LinkIcon className="w-4 h-4 text-slate-400 ml-2 shrink-0" />
+          <input
+            type="text"
+            placeholder="Paste direct image URL (https://...)"
+            value={manualUrl}
+            onChange={(e) => setManualUrl(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleAddManualUrl()}
+            className="flex-1 bg-transparent border-none outline-none text-xs text-slate-800 placeholder:text-slate-400 font-mono"
+          />
+          <button
+            type="button"
+            onClick={handleAddManualUrl}
+            className="px-3 py-1.5 bg-[#002B5C] text-white text-xs font-bold rounded-xl hover:bg-[#D8232A] transition cursor-pointer"
+          >
+            Add
+          </button>
+        </div>
       )}
 
+      {/* Hidden File Input */}
       <input
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept="image/png, image/jpeg, image/webp"
+        accept="image/png, image/jpeg, image/webp, image/svg+xml, image/x-icon, .ico, .svg, .png, .jpg, .jpeg, .webp"
         multiple={maxImages > 1}
         className="hidden"
       />
 
+      {/* Uploaded Images List */}
       {images.length > 0 && (
-        <div className="flex flex-col gap-2 mt-1 mb-1">
+        <div className="flex flex-col gap-2">
           {images.map((img, idx) => {
             if (!img) return null;
+            const imgSrc = typeof img === "string" ? img : URL.createObjectURL(img as Blob);
+            const fileName =
+              typeof img === "string"
+                ? img.split("/").pop() || "Uploaded Image"
+                : (img as File).name || "Image";
+
             return (
               <div
                 key={idx}
-                className="w-full border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between p-3 px-4 relative overflow-hidden group"
+                className="w-full border border-gray-200 rounded-2xl bg-slate-50/70 flex items-center justify-between p-3 px-4 relative overflow-hidden group hover:border-slate-300 transition-all shadow-xs"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3.5 min-w-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={
-                      typeof img === "string"
-                        ? img
-                        : URL.createObjectURL(img as Blob)
-                    }
+                    src={imgSrc}
                     alt={`Preview ${idx + 1}`}
-                    className="w-12 h-12 object-cover rounded-md shadow-sm border border-gray-200"
+                    className="w-12 h-12 object-contain bg-white rounded-xl shadow-xs border border-gray-200 shrink-0 p-0.5"
                   />
-                  <div className="flex flex-col">
-                    <span className="text-gray-900 font-semibold text-sm truncate max-w-[200px]">
-                      {typeof img === "string"
-                        ? "Uploaded Image"
-                        : (img as File).name || "Unknown"}
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-slate-900 font-bold text-xs truncate max-w-[220px] sm:max-w-[340px]">
+                      {fileName}
                     </span>
-                    <span className="text-gray-500 font-medium text-[12px]">
-                      {typeof img === "string"
-                        ? "Cloud / Remote"
-                        : (img as File).size
-                        ? ((img as File).size / 1024 / 1024).toFixed(2) + " MB"
-                        : "Unknown size"}
+                    <span className="text-emerald-600 font-semibold text-[11px] flex items-center gap-1 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      Uploaded & Ready
                     </span>
                   </div>
                 </div>
+
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.preventDefault();
                     removeImage(idx);
                   }}
-                  className="p-1.5 bg-white text-gray-500 hover:text-red-500 rounded-full shadow-sm ring-1 ring-gray-100 transition-colors cursor-pointer relative z-10"
+                  className="p-1.5 bg-white text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl border border-gray-200 shadow-xs transition-colors cursor-pointer"
                   title="Remove image"
                 >
                   <X className="w-4 h-4" />
@@ -158,49 +288,60 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
         </div>
       )}
 
+      {/* Upload Dropzone */}
       {images.length < maxImages && (
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-          className={`mt-1 w-full border-2 border-dashed rounded-xl flex flex-col items-center justify-center p-6 lg:p-8 transition-colors cursor-pointer group
+          onClick={() => !isUploading && fileInputRef.current?.click()}
+          className={`w-full border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-6 sm:p-8 transition-all cursor-pointer group
           ${
             isDragging
-              ? "border-[#0A0F29] border-solid bg-gray-100"
-              : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+              ? "border-[#002B5C] bg-blue-50/50 scale-[0.99]"
+              : "border-gray-200 bg-slate-50/60 hover:bg-slate-100/70 hover:border-slate-300"
           }
+          ${isUploading ? "opacity-75 pointer-events-none" : ""}
         `}
         >
-          <span className="text-gray-600 font-medium text-sm mb-4">
-            {maxImages > 1
-              ? `Slider Image (${images.length}/${maxImages} selected)`
-              : "Provide an image or lubricant graphic"}
-          </span>
+          {isUploading ? (
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="w-8 h-8 text-[#002B5C] animate-spin" />
+              <p className="text-xs font-bold text-slate-700">
+                {uploadProgressText || "Uploading image to Cloudinary..."}
+              </p>
+              <p className="text-[11px] text-slate-400">Please wait a moment</p>
+            </div>
+          ) : (
+            <>
+              <span className="text-slate-600 font-semibold text-xs sm:text-sm mb-3">
+                {maxImages > 1
+                  ? `Upload Images (${images.length}/${maxImages} selected)`
+                  : "Provide an image or lubricant graphic"}
+              </span>
 
-          <div
-            className={`p-3 rounded-full shadow-sm ring-1 ring-gray-100 mb-4 transition-transform
-          ${
-            isDragging
-              ? "bg-[#0A0F29] text-white scale-110"
-              : "bg-white text-[#0A0F29] group-hover:scale-110"
-          }
-        `}
-          >
-            <CloudUpload className="w-6 h-6" strokeWidth={2} />
-          </div>
+              <div
+                className={`p-3 rounded-2xl shadow-xs border mb-3 transition-transform ${
+                  isDragging
+                    ? "bg-[#002B5C] text-white scale-110 border-[#002B5C]"
+                    : "bg-white text-[#002B5C] border-gray-100 group-hover:scale-110"
+                }`}
+              >
+                <CloudUpload className="w-6 h-6" strokeWidth={2} />
+              </div>
 
-          <p className="text-gray-500 text-sm mb-2 text-center">
-            <span className="text-[#D8232A] font-semibold hover:underline mr-1">
-              Click to upload
-            </span>
-            <br className="lg:hidden" />
-            <span className="hidden lg:inline">or </span>drag and drop
-          </p>
-          <p className="text-gray-400 text-[13px] font-medium text-center">
-            PNG, JPG or WebP (800×400px).{" "}
-            {maxImages > 1 ? `Max ${maxImages} images.` : ""}
-          </p>
+              <p className="text-slate-600 text-xs sm:text-sm mb-1 text-center font-medium">
+                <span className="text-[#D8232A] font-bold hover:underline mr-1">
+                  Click to upload
+                </span>
+                or drag and drop
+              </p>
+              <p className="text-slate-400 text-[11px] text-center font-normal">
+                PNG, JPG, WebP, SVG or ICO (up to 10MB).
+                {maxImages > 1 ? ` Max ${maxImages} images.` : ""}
+              </p>
+            </>
+          )}
         </div>
       )}
     </div>

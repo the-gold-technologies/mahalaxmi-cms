@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -19,7 +21,7 @@ export async function GET(request: Request) {
     console.error("Error fetching SEO config:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -35,14 +37,18 @@ export async function PUT(request: Request) {
       if (!slug) {
         return NextResponse.json(
           { success: false, error: "slug is required" },
-          { status: 400 }
+          { status: 400 },
         );
       }
       const updated = await prisma.page.upsert({
         where: { slug },
         create: {
           slug,
-          title: seoData.title || slug.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()),
+          title:
+            seoData.title ||
+            slug
+              .replace(/-/g, " ")
+              .replace(/\b\w/g, (l: string) => l.toUpperCase()),
           ...seoData,
         },
         update: seoData,
@@ -61,12 +67,32 @@ export async function PUT(request: Request) {
       update: body,
     });
 
+    // Also sync home page headingOptions and metaTitle/metaDescription
+    if (body.headingOptions || body.siteTitle || body.siteDescription) {
+      await prisma.page.upsert({
+        where: { slug: "home" },
+        update: {
+          metaTitle: body.siteTitle,
+          metaDescription: body.siteDescription,
+          headingOptions: body.headingOptions,
+        },
+        create: {
+          slug: "home",
+          title: "Home",
+          metaTitle: body.siteTitle,
+          metaDescription: body.siteDescription,
+          headingOptions: body.headingOptions,
+          visibility: "published",
+        },
+      });
+    }
+
     return NextResponse.json({ success: true, data: updatedConfig });
   } catch (error) {
     console.error("Error saving SEO config:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

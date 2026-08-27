@@ -1,31 +1,27 @@
 import nodemailer from "nodemailer";
 
-interface EnquiryEmailData {
-  id?: string;
+export interface EnquiryEmailData {
   name: string;
-  email: string;
-  phone?: string | null;
-  company?: string | null;
-  product?: string | null;
-  interestedIn?: string | null;
-  budget?: string | null;
-  message?: string | null;
-  createdAt?: Date;
+  email?: string;
+  phone?: string;
+  company?: string;
+  product?: string;
+  interestedIn?: string;
+  budget?: string;
+  message?: string;
 }
 
-interface DistributorLeadEmailData {
-  id?: string;
+export interface DistributorLeadEmailData {
   name: string;
   firmName: string;
   email: string;
   phone: string;
-  city: string;
-  state: string;
-  existingBusiness?: string | null;
-  annualTurnover?: string | null;
-  experienceYears?: string | null;
-  message?: string | null;
-  createdAt?: Date;
+  city?: string;
+  state?: string;
+  existingBusiness?: string;
+  annualTurnover?: string;
+  experienceYears?: string;
+  message?: string;
 }
 
 /**
@@ -34,7 +30,7 @@ interface DistributorLeadEmailData {
  */
 function getMailTransporter() {
   const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT || "587", 10);
+  const port = parseInt(process.env.SMTP_PORT || "465", 10);
   const secure = process.env.SMTP_SECURE === "true" || port === 465;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
@@ -54,6 +50,21 @@ function getMailTransporter() {
   });
 }
 
+function getFromAddress(): string {
+  if (process.env.SMTP_FROM) {
+    return process.env.SMTP_FROM;
+  }
+  if (process.env.SMTP_FROM_EMAIL) {
+    const name = process.env.SMTP_FROM_NAME || "Mahalaxmi Enterprises";
+    return `"${name}" <${process.env.SMTP_FROM_EMAIL}>`;
+  }
+  if (process.env.SMTP_USER) {
+    const name = process.env.SMTP_FROM_NAME || "Mahalaxmi Enterprises";
+    return `"${name}" <${process.env.SMTP_USER}>`;
+  }
+  return '"Mahalaxmi Enterprises" <jwel.inventory@tgtpartner.com>';
+}
+
 /**
  * Send an email notification when a new customer enquiry is received.
  */
@@ -61,9 +72,8 @@ export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
   try {
     const transporter = getMailTransporter();
     const adminEmail =
-      process.env.ADMIN_NOTIFICATION_EMAIL || "admin@mahalaxmilubricants.com";
-    const fromAddress =
-      process.env.SMTP_FROM || "Mahalaxmi Enterprises <no-reply@mahalaxmilubricants.com>";
+      process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
+    const fromAddress = getFromAddress();
 
     if (!transporter) {
       console.log(
@@ -73,92 +83,294 @@ export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
       return { sent: false, reason: "SMTP not configured" };
     }
 
+    const cleanPhone = (data.phone || "").replace(/\s+/g, "");
+    const initials = data.name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+
     const htmlContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #ffffff;">
-        <div style="background-color: #002b5c; padding: 16px 20px; border-radius: 6px 6px 0 0; text-align: center;">
-          <h2 style="color: #ffffff; margin: 0; font-size: 20px; text-transform: uppercase; letter-spacing: 1px;">New Customer Enquiry</h2>
-        </div>
-        <div style="padding: 24px 20px; color: #374151;">
-          <p style="font-size: 15px; margin-top: 0;">You have received a new inquiry from the Mahalaxmi Enterprises website:</p>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px;">
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; width: 35%; color: #6b7280;">Full Name:</td>
-              <td style="padding: 10px 0; color: #111827; font-weight: 600;">${data.name}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Email Address:</td>
-              <td style="padding: 10px 0; color: #111827;">${data.email || "N/A"}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Phone Number:</td>
-              <td style="padding: 10px 0; color: #111827; font-weight: 600;">${data.phone || "N/A"}</td>
-            </tr>
-            ${
-              data.company
-                ? `<tr style="border-bottom: 1px solid #f3f4f6;">
-                    <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Company / Firm:</td>
-                    <td style="padding: 10px 0; color: #111827;">${data.company}</td>
-                  </tr>`
-                : ""
-            }
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Product / Requirement:</td>
-              <td style="padding: 10px 0; color: #D8232A; font-weight: bold;">${data.product || data.interestedIn || "General Inquiry"}</td>
-            </tr>
-            ${
-              data.budget
-                ? `<tr style="border-bottom: 1px solid #f3f4f6;">
-                    <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Budget:</td>
-                    <td style="padding: 10px 0; color: #111827;">${data.budget}</td>
-                  </tr>`
-                : ""
-            }
-          </table>
-          ${
-            data.message
-              ? `<div style="margin-top: 20px; padding: 14px; background-color: #f9fafb; border-radius: 6px; border-left: 4px solid #002b5c;">
-                  <strong style="display: block; font-size: 12px; text-transform: uppercase; color: #6b7280; margin-bottom: 6px;">Customer Note / Message:</strong>
-                  <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #374151;">${data.message}</p>
-                </div>`
-              : ""
-          }
-        </div>
-        <div style="padding: 14px 20px; background-color: #f9fafb; border-radius: 0 0 6px 6px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #f3f4f6;">
-          Mahalaxmi Enterprises CMS &bull; Automated Lead Notification
-        </div>
-      </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Customer Enquiry</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F1F5F9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" max-width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #FFFFFF; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); border: 1px solid #E2E8F0;">
+          
+          <!-- Header Banner with Brand Accent -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #002B5C 0%, #001A38 100%); padding: 32px 30px; text-align: center; border-top: 4px solid #D8232A;">
+              <p style="margin: 0 0 6px 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
+                HPCL Authorized Industrial Lubricants Division
+              </p>
+              <h1 style="margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">
+                MAHALAXMI ENTERPRISES
+              </h1>
+              <div style="margin-top: 16px; display: inline-block; background-color: rgba(216, 35, 42, 0.2); border: 1px solid rgba(216, 35, 42, 0.4); color: #FF6B72; font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 30px; text-transform: uppercase; letter-spacing: 1.5px;">
+                🔔 New Customer Inquiry
+              </div>
+            </td>
+          </tr>
+
+          <!-- Main Body Content -->
+          <tr>
+            <td style="padding: 32px 30px;">
+              
+              <!-- Customer Profile Card -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+                <tr>
+                  <td width="52" valign="middle" style="padding-right: 14px;">
+                    <div style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #002B5C 0%, #D8232A 100%); color: #FFFFFF; font-size: 18px; font-weight: 800; line-height: 50px; text-align: center;">
+                      ${initials || "ME"}
+                    </div>
+                  </td>
+                  <td valign="middle">
+                    <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: #0F172A;">
+                      ${data.name}
+                    </h2>
+                    <p style="margin: 3px 0 0 0; font-size: 12px; color: #64748B;">
+                      Submitted via Website Enquiry Form
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Quick Action Call/Email Buttons -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 28px;">
+                <tr>
+                  ${
+                    cleanPhone
+                      ? `<td width="48%" align="center">
+                          <a href="tel:${cleanPhone}" style="display: block; background-color: #002B5C; color: #FFFFFF; text-decoration: none; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center;">
+                            📞 Call Customer
+                          </a>
+                        </td>
+                        <td width="4%"></td>`
+                      : ""
+                  }
+                  ${
+                    data.email && !data.email.includes("noemail@")
+                      ? `<td width="${cleanPhone ? "48%" : "100%"}" align="center">
+                          <a href="mailto:${data.email}" style="display: block; background-color: #D8232A; color: #FFFFFF; text-decoration: none; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center;">
+                            ✉️ Reply via Email
+                          </a>
+                        </td>`
+                      : ""
+                  }
+                </tr>
+              </table>
+
+              <!-- Detailed Inquiry Grid Table -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                <tr>
+                  <td colspan="2" style="padding-bottom: 12px; font-size: 12px; font-weight: 800; color: #002B5C; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #002B5C;">
+                    Inquiry Details
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; width: 40%; border-bottom: 1px solid #F1F5F9;">
+                    Customer Name:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                    ${data.name}
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                    Phone Number:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                    ${
+                      cleanPhone
+                        ? `<a href="tel:${cleanPhone}" style="color: #002B5C; text-decoration: none; font-weight: 800;">${data.phone}</a>`
+                        : '<span style="color: #94A3B8;">Not Provided</span>'
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                    Email Address:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; border-bottom: 1px solid #F1F5F9;">
+                    ${
+                      data.email && !data.email.includes("noemail@")
+                        ? `<a href="mailto:${data.email}" style="color: #002B5C; text-decoration: underline; font-weight: 600;">${data.email}</a>`
+                        : '<span style="color: #94A3B8;">Not Provided</span>'
+                    }
+                  </td>
+                </tr>
+                ${
+                  data.company
+                    ? `<tr>
+                        <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                          Company / Firm:
+                        </td>
+                        <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                          ${data.company}
+                        </td>
+                      </tr>`
+                    : ""
+                }
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                    Product / Requirement:
+                  </td>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #F1F5F9;">
+                    <span style="display: inline-block; background-color: #FFF1F2; color: #D8232A; font-size: 13px; font-weight: 800; padding: 4px 10px; border-radius: 6px; border: 1px solid #FFE4E6;">
+                      ${data.product || data.interestedIn || "General Lubricant Requirement"}
+                    </span>
+                  </td>
+                </tr>
+                ${
+                  data.budget
+                    ? `<tr>
+                        <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                          Estimated Budget:
+                        </td>
+                        <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                          ${data.budget}
+                        </td>
+                      </tr>`
+                    : ""
+                }
+              </table>
+
+              <!-- Customer Message / Notes Block -->
+              ${
+                data.message
+                  ? `<div style="background-color: #F8FAFC; border-left: 4px solid #002B5C; padding: 18px 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px;">
+                      <p style="margin: 0 0 6px 0; font-size: 11px; font-weight: 800; text-transform: uppercase; color: #002B5C; letter-spacing: 1px;">
+                        Customer Message / Special Note:
+                      </p>
+                      <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #334155;">
+                        &ldquo;${data.message}&rdquo;
+                      </p>
+                    </div>`
+                  : ""
+              }
+
+            </td>
+          </tr>
+
+          <!-- Corporate Footer -->
+          <tr>
+            <td style="background-color: #F8FAFC; padding: 24px 30px; border-top: 1px solid #E2E8F0; text-align: center;">
+              <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 700; color: #475569;">
+                Mahalaxmi Enterprises CMS &bull; Real-time Lead Dispatch
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #94A3B8;">
+                Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
     `;
 
     // 1. Admin Alert
     await transporter.sendMail({
       from: fromAddress,
       to: adminEmail,
-      subject: `🔔 New Enquiry: ${data.name} - ${data.product || "Product Quote"}`,
+      subject: `🔔 New Enquiry: ${data.name} — ${data.product || data.interestedIn || "Product Quote"}`,
       html: htmlContent,
     });
 
     // 2. Customer Confirmation (if valid customer email provided)
     if (data.email && !data.email.includes("noemail@")) {
       const customerAckHtml = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #ffffff;">
-          <div style="background-color: #002b5c; padding: 16px 20px; border-radius: 6px 6px 0 0; text-align: center;">
-            <h2 style="color: #ffffff; margin: 0; font-size: 20px;">Thank You for Contacting Mahalaxmi Enterprises</h2>
-          </div>
-          <div style="padding: 24px 20px; color: #374151; line-height: 1.6;">
-            <p style="font-size: 15px; margin-top: 0;">Dear <strong>${data.name}</strong>,</p>
-            <p>We have received your enquiry regarding <strong>${data.product || "our products & lubricants"}</strong>.</p>
-            <p>Our dedicated sales & technical team will review your requirement and reach out to you shortly at <strong>${data.phone || data.email}</strong>.</p>
-            <p style="margin-top: 20px; font-size: 13px; color: #6b7280;">Warm regards,<br><strong style="color: #002b5c;">Mahalaxmi Enterprises Team</strong><br>Authorized HPCL Lubricants & Greases Distributor</p>
-          </div>
-        </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You for Contacting Us</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F1F5F9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" max-width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #FFFFFF; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); border: 1px solid #E2E8F0;">
+          
+          <tr>
+            <td style="background: linear-gradient(135deg, #002B5C 0%, #001A38 100%); padding: 32px 30px; text-align: center; border-top: 4px solid #D8232A;">
+              <h1 style="margin: 0; color: #FFFFFF; font-size: 22px; font-weight: 800;">
+                MAHALAXMI ENTERPRISES
+              </h1>
+              <p style="margin: 6px 0 0 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">
+                Authorized HPCL Industrial Lubricants Division
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 36px 30px; line-height: 1.6;">
+              <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #002B5C;">
+                Thank You for Reaching Out, ${data.name}!
+              </h2>
+              <p style="margin: 0 0 16px 0; font-size: 14px; color: #475569;">
+                We have successfully received your enquiry regarding <strong>${data.product || data.interestedIn || "our industrial lubricants"}</strong>.
+              </p>
+              <p style="margin: 0 0 24px 0; font-size: 14px; color: #475569;">
+                Our technical sales engineering team is reviewing your requirements and will contact you promptly with product specifications and commercial pricing.
+              </p>
+
+              <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+                <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: 800; text-transform: uppercase; color: #002B5C; letter-spacing: 0.5px;">
+                  Our Product Divisions:
+                </p>
+                <p style="margin: 0; font-size: 13px; color: #64748B; line-height: 1.5;">
+                  &bull; Industrial Lubricants (Hydraulic, Turbine, Gear Oils)<br>
+                  &bull; Industrial & Wheel Bearing Greases<br>
+                  &bull; Automotive & Fleet Engine Lubricants<br>
+                  &bull; 4T Bike Engine Oils & Speciality Fluids
+                </p>
+              </div>
+
+              <p style="margin: 0; font-size: 13px; color: #64748B;">
+                Warm regards,<br>
+                <strong style="color: #002B5C; font-size: 14px;">Mahalaxmi Enterprises Team</strong><br>
+                Authorized HPCL Lubricants & Greases Distributor
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background-color: #F8FAFC; padding: 20px 30px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
+              &copy; 2026 Mahalaxmi Enterprises. All rights reserved.
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
       `;
 
-      await transporter.sendMail({
-        from: fromAddress,
-        to: data.email,
-        subject: `Enquiry Received: Mahalaxmi Enterprises`,
-        html: customerAckHtml,
-      }).catch((e) => console.error("Error sending customer acknowledgement email:", e));
+      await transporter
+        .sendMail({
+          from: fromAddress,
+          to: data.email,
+          subject: `Thank you for contacting Mahalaxmi Enterprises (HPCL Distributor)`,
+          html: customerAckHtml,
+        })
+        .catch((e) =>
+          console.error("Error sending customer acknowledgement email:", e)
+        );
     }
 
     return { sent: true };
@@ -177,9 +389,8 @@ export async function sendDistributorLeadNotificationEmail(
   try {
     const transporter = getMailTransporter();
     const adminEmail =
-      process.env.ADMIN_NOTIFICATION_EMAIL || "admin@mahalaxmilubricants.com";
-    const fromAddress =
-      process.env.SMTP_FROM || "Mahalaxmi Enterprises <no-reply@mahalaxmilubricants.com>";
+      process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
+    const fromAddress = getFromAddress();
 
     if (!transporter) {
       console.log(
@@ -189,104 +400,295 @@ export async function sendDistributorLeadNotificationEmail(
       return { sent: false, reason: "SMTP not configured" };
     }
 
+    const cleanPhone = (data.phone || "").replace(/\s+/g, "");
+    const initials = data.firmName
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+
     const htmlContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #ffffff;">
-        <div style="background-color: #D8232A; padding: 16px 20px; border-radius: 6px 6px 0 0; text-align: center;">
-          <h2 style="color: #ffffff; margin: 0; font-size: 20px; text-transform: uppercase; letter-spacing: 1px;">New Distribution Leader Application</h2>
-        </div>
-        <div style="padding: 24px 20px; color: #374151;">
-          <p style="font-size: 15px; margin-top: 0;">A new dealership / distributorship application has been submitted:</p>
-          <table style="width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px;">
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; width: 38%; color: #6b7280;">Firm / Company:</td>
-              <td style="padding: 10px 0; color: #111827; font-weight: bold; font-size: 15px;">${data.firmName}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Applicant Name:</td>
-              <td style="padding: 10px 0; color: #111827; font-weight: 600;">${data.name}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Phone Number:</td>
-              <td style="padding: 10px 0; color: #111827; font-weight: 600;">${data.phone}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Email Address:</td>
-              <td style="padding: 10px 0; color: #111827;">${data.email}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Territory / Location:</td>
-              <td style="padding: 10px 0; color: #111827; font-weight: 600;">${data.city}, ${data.state}</td>
-            </tr>
-            ${
-              data.existingBusiness
-                ? `<tr style="border-bottom: 1px solid #f3f4f6;">
-                    <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Existing Business:</td>
-                    <td style="padding: 10px 0; color: #111827;">${data.existingBusiness}</td>
-                  </tr>`
-                : ""
-            }
-            ${
-              data.annualTurnover
-                ? `<tr style="border-bottom: 1px solid #f3f4f6;">
-                    <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Annual Turnover:</td>
-                    <td style="padding: 10px 0; color: #111827;">${data.annualTurnover}</td>
-                  </tr>`
-                : ""
-            }
-            ${
-              data.experienceYears
-                ? `<tr style="border-bottom: 1px solid #f3f4f6;">
-                    <td style="padding: 10px 0; font-weight: bold; color: #6b7280;">Industry Experience:</td>
-                    <td style="padding: 10px 0; color: #111827;">${data.experienceYears} Years</td>
-                  </tr>`
-                : ""
-            }
-          </table>
-          ${
-            data.message
-              ? `<div style="margin-top: 20px; padding: 14px; background-color: #f9fafb; border-radius: 6px; border-left: 4px solid #D8232A;">
-                  <strong style="display: block; font-size: 12px; text-transform: uppercase; color: #6b7280; margin-bottom: 6px;">Application Note / Territory Coverage:</strong>
-                  <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #374151;">${data.message}</p>
-                </div>`
-              : ""
-          }
-        </div>
-        <div style="padding: 14px 20px; background-color: #f9fafb; border-radius: 0 0 6px 6px; text-align: center; font-size: 12px; color: #9ca3af; border-top: 1px solid #f3f4f6;">
-          Mahalaxmi Enterprises CMS &bull; Distribution Leaders Application
-        </div>
-      </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Dealership Application</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F1F5F9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" max-width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #FFFFFF; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); border: 1px solid #E2E8F0;">
+          
+          <!-- Header Banner with Red Accent -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #002B5C 0%, #D8232A 100%); padding: 32px 30px; text-align: center;">
+              <p style="margin: 0 0 6px 0; color: #E2E8F0; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
+                Distribution Network Expansion
+              </p>
+              <h1 style="margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">
+                DEALERSHIP APPLICATION
+              </h1>
+              <div style="margin-top: 16px; display: inline-block; background-color: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: #FFFFFF; font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 30px; text-transform: uppercase; letter-spacing: 1.5px;">
+                🚀 New Distributor Lead
+              </div>
+            </td>
+          </tr>
+
+          <!-- Main Body Content -->
+          <tr>
+            <td style="padding: 32px 30px;">
+              
+              <!-- Firm Profile Card -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+                <tr>
+                  <td width="52" valign="middle" style="padding-right: 14px;">
+                    <div style="width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, #D8232A 0%, #002B5C 100%); color: #FFFFFF; font-size: 18px; font-weight: 800; line-height: 50px; text-align: center;">
+                      ${initials || "DL"}
+                    </div>
+                  </td>
+                  <td valign="middle">
+                    <h2 style="margin: 0; font-size: 19px; font-weight: 800; color: #0F172A;">
+                      ${data.firmName}
+                    </h2>
+                    <p style="margin: 3px 0 0 0; font-size: 13px; color: #D8232A; font-weight: 700;">
+                      Applicant: ${data.name}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Quick Action Call/Email Buttons -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 28px;">
+                <tr>
+                  ${
+                    cleanPhone
+                      ? `<td width="48%" align="center">
+                          <a href="tel:${cleanPhone}" style="display: block; background-color: #002B5C; color: #FFFFFF; text-decoration: none; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center;">
+                            📞 Call Applicant
+                          </a>
+                        </td>
+                        <td width="4%"></td>`
+                      : ""
+                  }
+                  ${
+                    data.email
+                      ? `<td width="${cleanPhone ? "48%" : "100%"}" align="center">
+                          <a href="mailto:${data.email}" style="display: block; background-color: #D8232A; color: #FFFFFF; text-decoration: none; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center;">
+                            ✉️ Reply via Email
+                          </a>
+                        </td>`
+                      : ""
+                  }
+                </tr>
+              </table>
+
+              <!-- Application Details Grid -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 24px;">
+                <tr>
+                  <td colspan="2" style="padding-bottom: 12px; font-size: 12px; font-weight: 800; color: #D8232A; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #D8232A;">
+                    Applicant & Business Credentials
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; width: 42%; border-bottom: 1px solid #F1F5F9;">
+                    Firm / Company:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 800; border-bottom: 1px solid #F1F5F9;">
+                    ${data.firmName}
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                    Contact Person:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                    ${data.name}
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                    Phone Number:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                    <a href="tel:${cleanPhone}" style="color: #002B5C; text-decoration: none; font-weight: 800;">${data.phone}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                    Email Address:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; border-bottom: 1px solid #F1F5F9;">
+                    <a href="mailto:${data.email}" style="color: #002B5C; text-decoration: underline; font-weight: 600;">${data.email}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                    Target Territory / City:
+                  </td>
+                  <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                    ${data.city || "Not Specified"}${data.state ? `, ${data.state}` : ""}
+                  </td>
+                </tr>
+                ${
+                  data.existingBusiness
+                    ? `<tr>
+                        <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                          Existing Business:
+                        </td>
+                        <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                          ${data.existingBusiness}
+                        </td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  data.annualTurnover
+                    ? `<tr>
+                        <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                          Annual Turnover:
+                        </td>
+                        <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                          ${data.annualTurnover}
+                        </td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  data.experienceYears
+                    ? `<tr>
+                        <td style="padding: 12px 0; font-size: 13px; color: #64748B; font-weight: 600; border-bottom: 1px solid #F1F5F9;">
+                          Industry Experience:
+                        </td>
+                        <td style="padding: 12px 0; font-size: 14px; color: #0F172A; font-weight: 700; border-bottom: 1px solid #F1F5F9;">
+                          ${data.experienceYears} Years
+                        </td>
+                      </tr>`
+                    : ""
+                }
+              </table>
+
+              <!-- Applicant Note / Message -->
+              ${
+                data.message
+                  ? `<div style="background-color: #F8FAFC; border-left: 4px solid #D8232A; padding: 18px 20px; border-radius: 0 12px 12px 0; margin-bottom: 24px;">
+                      <p style="margin: 0 0 6px 0; font-size: 11px; font-weight: 800; text-transform: uppercase; color: #D8232A; letter-spacing: 1px;">
+                        Application Remarks / Cover Note:
+                      </p>
+                      <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #334155;">
+                        &ldquo;${data.message}&rdquo;
+                      </p>
+                    </div>`
+                  : ""
+              }
+
+            </td>
+          </tr>
+
+          <!-- Corporate Footer -->
+          <tr>
+            <td style="background-color: #F8FAFC; padding: 24px 30px; border-top: 1px solid #E2E8F0; text-align: center;">
+              <p style="margin: 0 0 4px 0; font-size: 12px; font-weight: 700; color: #475569;">
+                Mahalaxmi Enterprises CMS &bull; Distribution Lead Management
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #94A3B8;">
+                Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
     `;
 
     // 1. Admin Alert
     await transporter.sendMail({
       from: fromAddress,
       to: adminEmail,
-      subject: `💼 Dealership Application: ${data.firmName} (${data.city}, ${data.state})`,
+      subject: `🚀 Dealership Application: ${data.firmName} (${data.city || data.state || "UP"})`,
       html: htmlContent,
     });
 
-    // 2. Applicant Confirmation
-    if (data.email && !data.email.includes("noemail@")) {
+    // 2. Applicant Confirmation Email
+    if (data.email) {
       const applicantAckHtml = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #ffffff;">
-          <div style="background-color: #002b5c; padding: 16px 20px; border-radius: 6px 6px 0 0; text-align: center;">
-            <h2 style="color: #ffffff; margin: 0; font-size: 20px;">Distributor Application Received</h2>
-          </div>
-          <div style="padding: 24px 20px; color: #374151; line-height: 1.6;">
-            <p style="font-size: 15px; margin-top: 0;">Dear <strong>${data.name}</strong> (${data.firmName}),</p>
-            <p>Thank you for expressing interest in joining our distribution network for HPCL lubricants and industrial greases.</p>
-            <p>Our channel development manager will review your firm's details and get in touch with you regarding partnership opportunities in <strong>${data.city}, ${data.state}</strong>.</p>
-            <p style="margin-top: 20px; font-size: 13px; color: #6b7280;">Warm regards,<br><strong style="color: #002b5c;">Mahalaxmi Enterprises</strong><br>Channel & Network Management</p>
-          </div>
-        </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Received</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F1F5F9; padding: 30px 10px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" max-width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #FFFFFF; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); border: 1px solid #E2E8F0;">
+          
+          <tr>
+            <td style="background: linear-gradient(135deg, #002B5C 0%, #001A38 100%); padding: 32px 30px; text-align: center; border-top: 4px solid #D8232A;">
+              <h1 style="margin: 0; color: #FFFFFF; font-size: 22px; font-weight: 800;">
+                MAHALAXMI ENTERPRISES
+              </h1>
+              <p style="margin: 6px 0 0 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">
+                HPCL Dealership & Distributorship Network
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 36px 30px; line-height: 1.6;">
+              <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #002B5C;">
+                Application Received for ${data.firmName}!
+              </h2>
+              <p style="margin: 0 0 16px 0; font-size: 14px; color: #475569;">
+                Dear <strong>${data.name}</strong>,
+              </p>
+              <p style="margin: 0 0 20px 0; font-size: 14px; color: #475569;">
+                Thank you for applying to become an authorized Distribution Partner / Dealership with Mahalaxmi Enterprises (HPCL Industrial Lubricants Division).
+              </p>
+              <p style="margin: 0 0 24px 0; font-size: 14px; color: #475569;">
+                Our network expansion team will review your business profile and contact you at <strong>${data.phone}</strong> regarding commercial onboarding terms, margin structures, and stockist agreements.
+              </p>
+
+              <p style="margin: 0; font-size: 13px; color: #64748B;">
+                Warm regards,<br>
+                <strong style="color: #002B5C; font-size: 14px;">Distribution Onboarding Team</strong><br>
+                Mahalaxmi Enterprises &bull; HPCL Lubricants Division
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background-color: #F8FAFC; padding: 20px 30px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #94A3B8;">
+              &copy; 2026 Mahalaxmi Enterprises. All rights reserved.
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
       `;
 
-      await transporter.sendMail({
-        from: fromAddress,
-        to: data.email,
-        subject: `Application Acknowledged: Mahalaxmi Distribution Network`,
-        html: applicantAckHtml,
-      }).catch((e) => console.error("Error sending applicant acknowledgement email:", e));
+      await transporter
+        .sendMail({
+          from: fromAddress,
+          to: data.email,
+          subject: `Dealership Application Received: ${data.firmName} (Mahalaxmi Enterprises)`,
+          html: applicantAckHtml,
+        })
+        .catch((e) =>
+          console.error("Error sending applicant acknowledgement email:", e)
+        );
     }
 
     return { sent: true };

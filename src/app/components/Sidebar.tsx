@@ -49,6 +49,7 @@ const sidebarLinks: SidebarLink[] = [
       { title: "Events", href: "/static-pages/events" },
       { title: "Blogs", href: "/static-pages/blogs" },
       { title: "Contact", href: "/static-pages/contact-us" },
+      { title: "Privacy Policy", href: "/static-pages/privacy-policy" },
     ],
   },
   {

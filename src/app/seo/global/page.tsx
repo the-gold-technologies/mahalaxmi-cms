@@ -20,6 +20,7 @@ export default function GlobalSEOPage() {
     customHeaderScripts: "",
     customFooterScripts: "",
     schema: "",
+    headingOptions: { heroHeadingTag: "h1", h1: "h1" },
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +49,10 @@ export default function GlobalSEOPage() {
                 : data.schema
                 ? JSON.stringify(data.schema, null, 2)
                 : "",
+            headingOptions:
+              typeof data.headingOptions === "object" && data.headingOptions !== null
+                ? data.headingOptions
+                : { heroHeadingTag: "h1", h1: "h1" },
           });
         }
       } catch (error) {
@@ -141,7 +146,7 @@ export default function GlobalSEOPage() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <PageHeader
           title="Global SEO & Tracking"
-          description="Manage website-wide meta tags, tracking codes, favicon, and social profiles."
+          description="Manage website-wide meta tags, landing page heading hierarchy, tracking codes, and favicon."
         />
         <div className="mb-2 shrink-0">
           <SaveButton
@@ -183,6 +188,44 @@ export default function GlobalSEOPage() {
             rows={3}
             tooltip="A summary of your website (approx. 150-160 characters). Used by search engines for the result snippet."
           />
+
+          {/* Hero Headline Tag (SEO) for Landing Page */}
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              Hero Headline Tag (SEO)
+            </label>
+            <select
+              value={
+                formData.headingOptions?.heroHeadingTag ||
+                formData.headingOptions?.h1 ||
+                "h1"
+              }
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  headingOptions: {
+                    ...prev.headingOptions,
+                    heroHeadingTag: e.target.value,
+                    h1: e.target.value,
+                  },
+                }))
+              }
+              className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#002B5C] transition shadow-xs cursor-pointer"
+            >
+              <option value="h1">
+                H1 (Recommended standard title tag)
+              </option>
+              <option value="h2">H2 (Secondary section tag)</option>
+              <option value="h3">H3 (Subsection tag)</option>
+              <option value="h4">H4 (Minor subsection tag)</option>
+              <option value="h5">H5 (Deep nested tag)</option>
+              <option value="h6">H6 (Smallest heading tag)</option>
+            </select>
+            <p className="text-[11px] text-slate-400">
+              Select the semantic HTML heading tag used for the home landing page hero title.
+            </p>
+          </div>
+
           <div className="mt-2">
             <ImageUploadField
               label="Favicon (.ico or .png)"
@@ -199,7 +242,7 @@ export default function GlobalSEOPage() {
           </div>
         </div>
 
-        {/* Tracking & Canonical */}
+        {/* Tracking & Analytics */}
         <div className="flex flex-col gap-6 bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-2xl">
@@ -218,8 +261,7 @@ export default function GlobalSEOPage() {
                 setFormData({ ...formData, googleAnalyticsId: e.target.value })
               }
               placeholder="e.g. G-XXXXXXX"
-              tooltip="Measurement ID (G-XXXXXXX). 
-Go to Google Analytics → Admin → Data Streams → select your website → copy the ID starting with G-."
+              tooltip="Your Google Analytics 4 Measurement ID (starts with G-)."
             />
             <InputField
               label="GTM Container ID"
@@ -228,10 +270,10 @@ Go to Google Analytics → Admin → Data Streams → select your website → co
                 setFormData({ ...formData, gtmId: e.target.value })
               }
               placeholder="e.g. GTM-XXXXXXX"
-              tooltip="Container ID (GTM-XXXXXXX). 
-Open Google Tag Manager → select workspace → copy the ID at the top starting with GTM-."
+              tooltip="Your Google Tag Manager Container ID."
             />
           </div>
+
           <InputField
             label="Search Console Verification ID"
             value={formData.searchConsoleId}
@@ -239,87 +281,91 @@ Open Google Tag Manager → select workspace → copy the ID at the top starting
               setFormData({ ...formData, searchConsoleId: e.target.value })
             }
             placeholder="Enter the google-site-verification code"
-            tooltip={`Copy the verification code from the HTML tag in Google Search Console.
-Example tag:
-<meta name="google-site-verification" content="XXXXXXXX" />
-Paste only XXXXXXXX`}
+            tooltip="The verification token from Google Search Console (HTML tag method)."
           />
         </div>
+      </div>
 
-        {/* Custom Scripts */}
-        <div className="flex flex-col gap-6 bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 lg:col-span-2">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2.5 bg-amber-50 text-amber-600 rounded-2xl">
-              <Shield className="w-5 h-5" />
-            </div>
-            <h2 className="text-xl font-bold text-[#0B0F29]">
-              Custom Code Injection
-            </h2>
+      {/* Custom Code Injection */}
+      <div className="flex flex-col gap-6 bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2.5 bg-amber-50 text-amber-600 rounded-2xl">
+            <Shield className="w-5 h-5" />
           </div>
+          <h2 className="text-xl font-bold text-[#0B0F29]">
+            Custom Code Injection
+          </h2>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <TextAreaField
-              label="Custom Header Scripts (<head>)"
-              value={formData.customHeaderScripts}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  customHeaderScripts: e.target.value,
-                })
-              }
-              placeholder="Paste your scripts to be injected into the head..."
-              rows={8}
-              className="font-mono text-xs"
-            />
-            <TextAreaField
-              label="Custom Footer Scripts (before </body>)"
-              value={formData.customFooterScripts}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  customFooterScripts: e.target.value,
-                })
-              }
-              placeholder="Paste your scripts to be injected before the closing body tag..."
-              rows={8}
-              className="font-mono text-xs"
-            />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TextAreaField
+            label="Custom Header Scripts (<head>)"
+            value={formData.customHeaderScripts}
+            onChange={(e) =>
+              setFormData({ ...formData, customHeaderScripts: e.target.value })
+            }
+            placeholder="Paste your scripts to be injected into the head..."
+            rows={5}
+            tooltip="HTML or script tags to insert right before </head> on all pages (e.g. Meta Pixel, Heatmaps)."
+          />
+          <TextAreaField
+            label="Custom Footer Scripts (Before </body>)"
+            value={formData.customFooterScripts}
+            onChange={(e) =>
+              setFormData({ ...formData, customFooterScripts: e.target.value })
+            }
+            placeholder="Paste your scripts to be injected before the closing body tag..."
+            rows={5}
+            tooltip="HTML or script tags to insert right before </body> on all pages (e.g. Live chat widgets)."
+          />
+        </div>
+      </div>
 
-          <div className="flex flex-col gap-2 mt-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-4">
-                Global JSON-LD Schema Markup (e.g. Organization/WebSite)
-              </span>
-              <div>
-                <input
-                  type="file"
-                  ref={schemaInputRef}
-                  onChange={handleSchemaUpload}
-                  accept=".json,application/json"
-                  className="hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => schemaInputRef.current?.click()}
-                  className="flex items-center gap-1.5 py-1.5 px-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl text-[10px] font-bold text-gray-600 transition-colors cursor-pointer"
-                >
-                  <Upload className="w-3.5 h-3.5" />
-                  Upload Schema (.json)
-                </button>
-              </div>
+      {/* Schema / JSON-LD Structured Data Card */}
+      <div className="flex flex-col gap-6 bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-purple-50 text-purple-600 rounded-2xl">
+              <Globe className="w-5 h-5" />
             </div>
-            <textarea
-              value={formData.schema}
-              onChange={(e) =>
-                setFormData({ ...formData, schema: e.target.value })
-              }
-              placeholder='e.g. {"@context": "https://schema.org", "@type": "Organization", "name": "Mahalaxmi Enterprises", ...}'
-              rows={8}
-              className="w-full font-mono text-xs p-4 bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#002B5C] focus:bg-white transition-all rounded-2xl outline-none"
+            <div>
+              <h2 className="text-xl font-bold text-[#0B0F29]">
+                Structured Data (JSON-LD)
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Site-wide organization schema or custom JSON-LD for rich snippets.
+              </p>
+            </div>
+          </div>
+          <div>
+            <input
+              type="file"
+              ref={schemaInputRef}
+              onChange={handleSchemaUpload}
+              accept=".json,application/json"
+              className="hidden"
             />
+            <button
+              type="button"
+              onClick={() => schemaInputRef.current?.click()}
+              className="flex items-center gap-2 px-4 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
+            >
+              <Upload className="w-4 h-4" />
+              Upload Schema (.json)
+            </button>
           </div>
         </div>
+
+        <TextAreaField
+          label="JSON-LD Schema Markup"
+          value={formData.schema}
+          onChange={(e) =>
+            setFormData({ ...formData, schema: e.target.value })
+          }
+          placeholder='{\n  "@context": "https://schema.org",\n  "@type": "LocalBusiness",\n  "name": "Mahalaxmi Enterprises"\n}'
+          rows={6}
+          tooltip="Raw JSON-LD markup to provide structured business data to Google."
+        />
       </div>
     </div>
   );

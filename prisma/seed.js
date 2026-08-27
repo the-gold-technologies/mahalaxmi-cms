@@ -3574,6 +3574,81 @@ async function main() {
   }
   console.log(`✓ ${regionalOffices.length} Regional offices ready.`);
 
+  // 10. Privacy Policy Page & Content
+  const privacyPage = await prisma.page.upsert({
+    where: { slug: "privacy-policy" },
+    update: {},
+    create: {
+      title: "Privacy Policy",
+      slug: "privacy-policy",
+      type: "legal",
+      visibility: "published",
+      order: 50,
+      metaTitle: "Privacy Policy | Mahalaxmi Enterprises",
+      metaDescription:
+        "Read the Privacy Policy of Mahalaxmi Enterprises, authorized Industrial Lubricants Division (ILD) for HPCL lubricants and greases.",
+      targetKeywords:
+        "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
+      canonicalUrl: "/privacy-policy",
+      noIndex: false,
+    },
+  });
+
+  const privacyContent = {
+    title: "Privacy Policy",
+    lastUpdated: "August 2026",
+    content: `<p>Welcome to <strong>Mahalaxmi Enterprises</strong> ("we", "our", or "us"). We are an Authorized Industrial Lubricants Division (ILD) master distributor for <strong>Hindustan Petroleum Corporation Limited (HPCL)</strong>.</p>
+<p>We are committed to protecting and respecting your personal privacy. This Privacy Policy explains how we collect, use, store, and safeguard your personal information when you visit our website or interact with our enquiry, dealership, and quotation forms.</p>
+
+<h2>1. Information We Collect</h2>
+<p>We may collect and process the following personal and commercial information:</p>
+<ul>
+  <li><strong>Contact Information:</strong> Name, business/firm name, email address, phone number, city, and state submitted via enquiry or distributor application forms.</li>
+  <li><strong>Product Interests:</strong> Lubricant categories, Technical Data Sheet (TDS) / Material Safety Data Sheet (MSDS) download requests, and bulk procurement queries.</li>
+  <li><strong>Technical Data:</strong> IP address, browser type, device details, and interaction logs through cookies and Google Analytics to improve website responsiveness.</li>
+</ul>
+
+<h2>2. How We Use Your Information</h2>
+<p>We utilize the collected information strictly for legitimate commercial and customer service purposes:</p>
+<ul>
+  <li>To provide product specifications, quotation pricing, and technical lubrication recommendations.</li>
+  <li>To process Industrial Lube Distributor (ILD) / Bazaar Lube Distributor (BLD) dealership applications.</li>
+  <li>To coordinate dispatch, doorstep supply logistics, and after-sales support across Uttar Pradesh and North India.</li>
+  <li>To enhance website performance, security, and user experience.</li>
+</ul>
+
+<h2>3. Information Sharing & Protection</h2>
+<p>We do <strong>not</strong> sell, rent, trade, or commercially exploit your personal contact data. Your information is only shared with authorized sales engineers, regional supply depots, or HPCL technical representatives solely to fulfill your product delivery and service requests.</p>
+
+<h2>4. Cookies & Analytics</h2>
+<p>We utilize standard cookies, Google Tag Manager (GTM), and Google Analytics to understand website traffic patterns and improve responsiveness. You can adjust your browser settings to decline cookies if preferred.</p>
+
+<h2>5. Contact Us Regarding Your Privacy</h2>
+<p>If you have any questions, feedback, or requests regarding this Privacy Policy or data retention, please contact our compliance desk at <strong>sales@mahalaxmienterprises.com</strong>.</p>`,
+    isPublished: true,
+  };
+
+  const existingPrivacySection = await prisma.section.findFirst({
+    where: { pageId: privacyPage.id, type: "PrivacyPolicyContent" },
+  });
+
+  if (existingPrivacySection) {
+    await prisma.section.update({
+      where: { id: existingPrivacySection.id },
+      data: { content: privacyContent },
+    });
+  } else {
+    await prisma.section.create({
+      data: {
+        pageId: privacyPage.id,
+        type: "PrivacyPolicyContent",
+        content: privacyContent,
+        order: 0,
+      },
+    });
+  }
+  console.log("✓ Privacy Policy page & content ready.");
+
   console.log("=========================================");
   console.log("Database seeded successfully with 100% website data!");
   console.log("Admin Login: admin@mahalaxmi.com / Admin@123");
