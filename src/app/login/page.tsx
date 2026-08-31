@@ -55,7 +55,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="admin@mahalaxmi.com"
+            placeholder="Enter your email address"
             className="w-full px-4 py-2.5 rounded-2xl font-medium"
             containerClassName="mx-0"
           />
