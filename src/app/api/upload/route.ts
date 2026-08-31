@@ -3,8 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
   cloud_name:
-    process.env.CLOUDINARY_CLOUD_NAME ||
-    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true,
@@ -32,7 +31,7 @@ export async function POST(request: Request) {
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
-        }
+        },
       );
       uploadStream.end(buffer);
     });
@@ -48,7 +47,7 @@ export async function POST(request: Request) {
     console.error("Cloudinary upload error:", error);
     return NextResponse.json(
       { success: false, error: error?.message || "Upload failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

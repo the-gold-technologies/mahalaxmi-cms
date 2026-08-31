@@ -140,7 +140,7 @@ export default function SitemapRobotsPage() {
     );
   }
 
-  const websiteBaseUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || "";
+  const websiteBaseUrl = process.env.NEXT_WEBSITE_URL || "";
 
   return (
     <div className="flex flex-col gap-8 max-w-6xl mx-auto pb-24 animate-in fade-in duration-500">
