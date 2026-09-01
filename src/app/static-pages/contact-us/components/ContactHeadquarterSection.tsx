@@ -10,10 +10,12 @@ import { SaveButton } from "@/components/SaveButton";
 interface HeadquarterData {
   companyName?: string;
   badge?: string;
+  description?: string;
   proprietor?: string;
   address?: string;
   phone?: string;
   email?: string;
+  whatsapp?: string;
   workingHours?: string;
 }
 
@@ -27,30 +29,34 @@ export function ContactHeadquarterSection({
   onSave,
 }: ContactHeadquarterSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
-  const [companyName, setCompanyName] = useState("MAHALAXMI ENTERPRISES");
-  const [badge, setBadge] = useState(
-    "AUTHORIZED INDUSTRIAL LUBRICANTS DISTRIBUTOR (ILD)"
+  const [companyName, setCompanyName] = useState("Mahalaxmi Enterprises");
+  const [badge, setBadge] = useState("Authorized HP Lubricants Distributor");
+  const [description, setDescription] = useState(
+    "Connect with our team for bulk HP Lubricants supply, dealership opportunities, technical data sheets, and custom quotes."
   );
   const [proprietor, setProprietor] = useState("Neha Goyal");
   const [address, setAddress] = useState(
-    "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India."
+    "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601"
   );
-  const [phone, setPhone] = useState("+91 98765 43210");
+  const [phone, setPhone] = useState("+91 88007 78032");
   const [email, setEmail] = useState("sales@mahalaxmienterprises.com");
+  const [whatsapp, setWhatsapp] = useState("+91 88007 78032");
   const [workingHours, setWorkingHours] = useState(
-    "Working Hours Monday to Saturday from 9.00 am to 6.00pm except for Public Holidays."
+    "Monday to Saturday: 9:00 AM – 6:00 PM"
   );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
-      if (initialData.companyName) setCompanyName(initialData.companyName);
-      if (initialData.badge) setBadge(initialData.badge);
-      if (initialData.proprietor) setProprietor(initialData.proprietor);
-      if (initialData.address) setAddress(initialData.address);
-      if (initialData.phone) setPhone(initialData.phone);
-      if (initialData.email) setEmail(initialData.email);
-      if (initialData.workingHours) setWorkingHours(initialData.workingHours);
+      if (initialData.companyName !== undefined) setCompanyName(initialData.companyName);
+      if (initialData.badge !== undefined) setBadge(initialData.badge);
+      if (initialData.description !== undefined) setDescription(initialData.description);
+      if (initialData.proprietor !== undefined) setProprietor(initialData.proprietor);
+      if (initialData.address !== undefined) setAddress(initialData.address);
+      if (initialData.phone !== undefined) setPhone(initialData.phone);
+      if (initialData.email !== undefined) setEmail(initialData.email);
+      if (initialData.whatsapp !== undefined) setWhatsapp(initialData.whatsapp);
+      if (initialData.workingHours !== undefined) setWorkingHours(initialData.workingHours);
     }
   }, [initialData]);
 
@@ -62,10 +68,12 @@ export function ContactHeadquarterSection({
       const payload: HeadquarterData = {
         companyName: companyName.trim(),
         badge: badge.trim(),
+        description: description.trim(),
         proprietor: proprietor.trim(),
         address: address.trim(),
         phone: phone.trim(),
         email: email.trim(),
+        whatsapp: whatsapp.trim(),
         workingHours: workingHours.trim(),
       };
 
@@ -116,18 +124,26 @@ export function ContactHeadquarterSection({
                 label="Enterprise Name *"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="MAHALAXMI ENTERPRISES"
+                placeholder="Mahalaxmi Enterprises"
                 required
               />
               <InputField
                 label="Distributor Designation / Badge"
                 value={badge}
                 onChange={(e) => setBadge(e.target.value)}
-                placeholder="AUTHORIZED INDUSTRIAL LUBRICANTS DISTRIBUTOR (ILD)"
+                placeholder="Authorized HP Lubricants Distributor"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <TextAreaField
+              label="Overview / Short Description"
+              rows={2}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Connect with our team for bulk HP Lubricants supply, dealership opportunities, technical data sheets, and custom quotes."
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
               <InputField
                 label="Proprietor / Key Contact"
                 value={proprietor}
@@ -138,8 +154,14 @@ export function ContactHeadquarterSection({
                 label="Direct Phone Number *"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+91 98765 43210"
+                placeholder="+91 88007 78032"
                 required
+              />
+              <InputField
+                label="WhatsApp Number / Contact"
+                value={whatsapp}
+                onChange={(e) => setWhatsapp(e.target.value)}
+                placeholder="+91 88007 78032"
               />
               <InputField
                 label="Official Email *"
@@ -155,7 +177,7 @@ export function ContactHeadquarterSection({
               rows={2}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India."
+              placeholder="HPCL Petrol Pump, Ground & 1st Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Baghpat, Uttar Pradesh - 250601"
               required
             />
 
@@ -163,7 +185,7 @@ export function ContactHeadquarterSection({
               label="Operating & Working Hours"
               value={workingHours}
               onChange={(e) => setWorkingHours(e.target.value)}
-              placeholder="Monday to Saturday from 9.00 am to 6.00pm except for Public Holidays."
+              placeholder="Monday to Saturday: 9:00 AM – 6:00 PM"
             />
 
             <div className="pt-4 border-t border-gray-100">

@@ -9,6 +9,8 @@ import { SaveButton } from "@/components/SaveButton";
 import { uploadFiles } from "@/lib/uploadHelpers";
 
 interface ContactHeroData {
+  title?: string;
+  subtitle?: string;
   image?: string;
   altText?: string;
 }
@@ -23,12 +25,16 @@ export function ContactHeroSection({
   onSave,
 }: ContactHeroSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
+  const [title, setTitle] = useState("Contact Us");
+  const [subtitle, setSubtitle] = useState("");
   const [images, setImages] = useState<(File | string | null)[]>([]);
   const [altText, setAltText] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
+      if (initialData.title !== undefined) setTitle(initialData.title);
+      if (initialData.subtitle !== undefined) setSubtitle(initialData.subtitle);
       setImages(initialData.image ? [initialData.image] : []);
       setAltText(initialData.altText || "");
     }
@@ -47,6 +53,8 @@ export function ContactHeroSection({
       }
 
       const payload: ContactHeroData = {
+        title: title.trim(),
+        subtitle: subtitle.trim(),
         image: finalImageUrl,
         altText: altText.trim(),
       };
@@ -81,8 +89,8 @@ export function ContactHeroSection({
   return (
     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex flex-col gap-4 transition-all">
       <SectionHeader
-        title="1. Contact Hero Banner"
-        description="Manage the full-width header banner graphic displayed on the Contact Us page."
+        title="1. Contact Hero Banner & Titles"
+        description="Manage page headings, subtitle, and the full-width header banner graphic displayed on the Contact Us page."
         badge={`${validCount} Banner`}
         isOpen={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
@@ -95,6 +103,21 @@ export function ContactHeroSection({
       >
         <div className="overflow-hidden">
           <form onSubmit={handleSubmit} className="flex flex-col gap-6 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <InputField
+                label="Page / Section Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Contact Us"
+              />
+              <InputField
+                label="Section Subtitle / Tagline"
+                value={subtitle}
+                onChange={(e) => setSubtitle(e.target.value)}
+                placeholder="Get in touch with Mahalaxmi Enterprises"
+              />
+            </div>
+
             <ImageUploadField
               label="Hero Banner Graphic"
               images={images}
@@ -107,7 +130,7 @@ export function ContactHeroSection({
               label="Banner Alt Text (SEO & Accessibility)"
               value={altText}
               onChange={(e) => setAltText(e.target.value)}
-              placeholder="e.g. Contact Us - MAHALAXMI ENTERPRISES"
+              placeholder="e.g. Contact Us - Mahalaxmi Enterprises"
             />
 
             <div className="pt-4 border-t border-gray-100">

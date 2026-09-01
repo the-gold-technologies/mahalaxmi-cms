@@ -1,3 +1,3 @@
 export * from "./ContactHeroSection";
 export * from "./ContactHeadquarterSection";
-export * from "./RegionalOfficesSection";
+export * from "./ContactFormConfigSection";
