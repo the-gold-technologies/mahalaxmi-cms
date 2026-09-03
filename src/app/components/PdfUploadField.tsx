@@ -5,7 +5,6 @@ import {
   FileText,
   Upload,
   X,
-  ExternalLink,
   Loader2,
   HelpCircle,
   Link as LinkIcon,
@@ -160,15 +159,6 @@ export function PdfUploadField({
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
-            <a
-              href={value}
-              target="_blank"
-              rel="noreferrer"
-              className="p-2 text-gray-500 hover:text-[#D8232A] rounded-xl hover:bg-white transition-colors"
-              title="Preview PDF"
-            >
-              <ExternalLink className="w-4 h-4" />
-            </a>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
