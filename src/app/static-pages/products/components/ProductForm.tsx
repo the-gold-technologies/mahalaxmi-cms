@@ -327,14 +327,6 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                           value: "industrial-greases",
                           label: "Industrial Greases",
                         },
-                        {
-                          value: "automotive-lubricants",
-                          label: "Automotive Lubricants",
-                        },
-                        {
-                          value: "agriculture-oils",
-                          label: "Agriculture & Tractor Oils",
-                        },
                       ]
                 }
               />

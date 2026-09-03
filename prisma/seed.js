@@ -936,24 +936,6 @@ async function main() {
     "coverImage": "https://www.hplubricants.in/sites/default/files/styles/product_category_thumb/public/Industrial-Greases.png",
     "isFeatured": true,
     "order": 1
-  },
-  {
-    "name": "Automotive Oils",
-    "slug": "automotive-oils",
-    "shortDesc": "High-quality automotive, agricultural, passenger car, and engine oils.",
-    "fullDesc": "Explore MAHALAXMI ENTERPRISES' range of automotive, agricultural, and commercial engine oils offering superior quality and performance for all your vehicles.",
-    "coverImage": "https://www.hplubricants.in/sites/default/files/styles/product_category_thumb/public/Automotive-Oils.png",
-    "isFeatured": true,
-    "order": 2
-  },
-  {
-    "name": "Bike Engine Oils",
-    "slug": "bike-oils",
-    "shortDesc": "4-stroke motorcycle engine lubricants with JASO MA2 wet clutch specification.",
-    "fullDesc": "HP RACER 4T motorcycle oils provide 3-in-1 protection for motorcycle engine, wet clutch, and transmission gearbox.",
-    "coverImage": "https://www.hplubricants.in/sites/default/files/styles/product_category_thumb/public/Automotive-Oils.png",
-    "isFeatured": true,
-    "order": 3
   }
 ];
 
@@ -2473,98 +2455,6 @@ async function main() {
     "msdsUrl": "/docs/AP3_MSDS.pdf",
     "isFeatured": false,
     "order": 45
-  },
-  {
-    "name": "HP KISAN SHAKTI",
-    "slug": "hp-kisan-shakti",
-    "subtitle": "AGRICULTURE OILS",
-    "categorySlug": "automotive-oils",
-    "categoryName": "Automotive Oils",
-    "subCategoryTitle": "AGRICULTURE OILS",
-    "containerImage": "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
-    "description": "Formulated specifically for tractors and pump sets used in heavy agricultural operations.",
-    "applicationAreas": "Formulated specifically for tractors and pump sets used in heavy agricultural operations.",
-    "performanceBenefits": [
-      "High engine protection against dust",
-      "Shear stability under continuous tilling"
-    ],
-    "specialFeatures": [],
-    "specsText": "API CF/SF, IS 13656 E-DL2",
-    "tableHeaders": [
-      "Property",
-      "Value"
-    ],
-    "propertiesTable": [
-      {
-        "property": "SAE Viscosity Grade",
-        "value": "20W-40"
-      }
-    ],
-    "pdfUrl": "/docs/HP_KISAN_SHAKTI_TDS.pdf",
-    "msdsUrl": "/docs/HP_KISAN_SHAKTI_MSDS.pdf",
-    "isFeatured": false,
-    "order": 46
-  },
-  {
-    "name": "HP SUPER DUTY BRAKE FLUID DOT 3",
-    "slug": "hp-super-duty-brake-fluid-dot-3",
-    "subtitle": "BRAKE FLUIDS",
-    "categorySlug": "automotive-oils",
-    "categoryName": "Automotive Oils",
-    "subCategoryTitle": "BRAKE FLUIDS",
-    "containerImage": "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
-    "description": "Hydraulic brake and clutch systems in passenger cars, trucks, and buses.",
-    "applicationAreas": "Hydraulic brake and clutch systems in passenger cars, trucks, and buses.",
-    "performanceBenefits": [
-      "High boiling point preventing vapor lock"
-    ],
-    "specialFeatures": [],
-    "specsText": "",
-    "tableHeaders": [
-      "Property",
-      "Value"
-    ],
-    "propertiesTable": [
-      {
-        "property": "ERBP, °C",
-        "value": "> 230"
-      }
-    ],
-    "pdfUrl": "/docs/DOT3_TDS.pdf",
-    "msdsUrl": "/docs/DOT3_MSDS.pdf",
-    "isFeatured": false,
-    "order": 47
-  },
-  {
-    "name": "HP RACER 4T 20W-40",
-    "slug": "hp-racer-4t-20w40",
-    "subtitle": "SCOOTER & BIKE OILS",
-    "categorySlug": "bike-oils",
-    "categoryName": "Bike Engine Oils",
-    "subCategoryTitle": "SCOOTER & BIKE OILS",
-    "containerImage": "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
-    "description": "4-stroke motorcycles from Hero, Honda, Bajaj, TVS, Yamaha, and Royal Enfield.",
-    "applicationAreas": "4-stroke motorcycles from Hero, Honda, Bajaj, TVS, Yamaha, and Royal Enfield.",
-    "performanceBenefits": [
-      "JASO MA2 wet clutch friction control",
-      "Smooth gear shifting"
-    ],
-    "specialFeatures": [],
-    "specsText": "",
-    "tableHeaders": [
-      "Property",
-      "Value"
-    ],
-    "propertiesTable": [
-      {
-        "property": "SAE Grade",
-        "value": "20W-40"
-      }
-    ],
-    "pdfUrl": "/docs/RACER_20W40_TDS.pdf",
-    "msdsUrl": "/docs/RACER_20W40_MSDS.pdf",
-    "isFeatured": false,
-    "order": 48
   }
 ];
 
