@@ -36,7 +36,10 @@ export function PdfUploadField({
   const handleFileUpload = async (file: File) => {
     if (!file) return;
 
-    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+    if (
+      file.type !== "application/pdf" &&
+      !file.name.toLowerCase().endsWith(".pdf")
+    ) {
       toast.error("Please upload a valid PDF document (.pdf)");
       return;
     }
