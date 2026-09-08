@@ -7,7 +7,6 @@ import { AboutSection } from "./components/AboutSection";
 import { ProductsServicesSection } from "./components/ProductsServicesSection";
 import { TrustedClientsSection } from "./components/TrustedClientsSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
-import { DistributorBannerSection } from "./components/DistributorBannerSection";
 import { LocateDistributorSection } from "./components/LocateDistributorSection";
 
 export default function HomePageEditor() {
@@ -42,7 +41,6 @@ export default function HomePageEditor() {
       />
       <TrustedClientsSection initialData={homeData?.TrustedClientsSection} />
       <TestimonialsSection initialData={homeData?.TestimonialsSection} />
-      <DistributorBannerSection initialData={homeData?.DistributorBanner} />
       <LocateDistributorSection
         initialData={homeData?.LocateDistributorSection}
       />

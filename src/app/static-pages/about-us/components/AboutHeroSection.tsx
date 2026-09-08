@@ -64,7 +64,6 @@ export function AboutHeroSection({ initialData }: { initialData?: any }) {
       const finalImageUrl = uploadedUrl || "/About-HPCL.jpg";
 
       const payload = {
-        image: finalImageUrl,
         bannerImage: finalImageUrl,
         altText: altText.trim(),
       };

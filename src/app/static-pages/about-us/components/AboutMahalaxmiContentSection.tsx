@@ -6,7 +6,9 @@ import { Plus, Trash2, Sparkles } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { InputField } from "@/components/InputField";
 import { TextAreaField } from "@/components/TextAreaField";
+import { ImageUploadField } from "@/components/ImageUploadField";
 import { SaveButton } from "@/components/SaveButton";
+import { uploadFiles } from "@/lib/uploadHelpers";
 
 export interface WhyChooseItem {
   icon: string;
@@ -15,9 +17,13 @@ export interface WhyChooseItem {
 }
 
 export interface AboutMahalaxmiContentData {
-  mainTitle?: string;
-  proprietorSubHeader?: string;
+  title?: string;
+  subtitle?: string;
+  proprietorRole?: string;
+  proprietorPhoto?: string;
+  proprietorPhotoAlt?: string;
   paragraphs?: string[];
+  hpclOverview?: any;
   whyChooseTitle?: string;
   whyChooseSubtitle?: string;
   whyChooseItems?: WhyChooseItem[];
@@ -62,7 +68,7 @@ export const DEFAULT_WHY_CHOOSE_ITEMS: WhyChooseItem[] = [
 export const DEFAULT_PARAGRAPHS = [
   "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lubricants Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
   "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
-  "Her focus on long-term relationships, product reliability, and consistent service has positioned Mahalaxmi Enterprises as a dependable partner for industries seeking efficient and cost-effective lubrication solutions. With a vision to continuously expand the company's reach and service capabilities, Neha Goyal remains dedicated to helping customers enhance equipment performance, improve operational efficiency, and reduce maintenance costs through the right lubrication practices.",
+  "Her focus on long-term relationships, product reliability, and consistent service has positioned Mahalaxmi Enterprises as a dependable partner for industries seeking efficient and cost-effective lubrication solutions. With a vision to continuously expand the company\x27s reach and service capabilities, Neha Goyal remains dedicated to helping customers enhance equipment performance, improve operational efficiency, and reduce maintenance costs through the right lubrication practices.",
 ];
 
 export function AboutMahalaxmiContentSection({
@@ -74,10 +80,13 @@ export function AboutMahalaxmiContentSection({
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const [mainTitle, setMainTitle] = useState("ABOUT MAHALAXMI ENTERPRISES");
-  const [proprietorSubHeader, setProprietorSubHeader] = useState(
-    "Neha Goyal – Proprietor, Mahalaxmi Enterprises"
+  const [title, setTitle] = useState("ABOUT MAHALAXMI ENTERPRISES");
+  const [subtitle, setSubtitle] = useState("Neha Goyal");
+  const [proprietorRole, setProprietorRole] = useState(
+    "Proprietor, Mahalaxmi Enterprises"
   );
+  const [proprietorPhotos, setProprietorPhotos] = useState<(File | string | null)[]>([]);
+  const [proprietorPhotoAlt, setProprietorPhotoAlt] = useState("");
   const [paragraphsText, setParagraphsText] = useState(
     DEFAULT_PARAGRAPHS.join("\n\n")
   );
@@ -93,9 +102,15 @@ export function AboutMahalaxmiContentSection({
 
   useEffect(() => {
     if (initialData) {
-      if (initialData.mainTitle) setMainTitle(initialData.mainTitle);
-      if (initialData.proprietorSubHeader)
-        setProprietorSubHeader(initialData.proprietorSubHeader);
+      if (initialData.title) setTitle(initialData.title);
+      if (initialData.subtitle) setSubtitle(initialData.subtitle);
+      if (initialData.proprietorRole) setProprietorRole(initialData.proprietorRole);
+      if (initialData.proprietorPhoto) {
+        setProprietorPhotos([initialData.proprietorPhoto]);
+      }
+      if (initialData.proprietorPhotoAlt) {
+        setProprietorPhotoAlt(initialData.proprietorPhotoAlt);
+      }
       if (Array.isArray(initialData.paragraphs)) {
         setParagraphsText(initialData.paragraphs.join("\n\n"));
       } else if (typeof initialData.paragraphs === "string") {
@@ -145,15 +160,31 @@ export function AboutMahalaxmiContentSection({
     setLoading(true);
     setSaved(false);
     try {
+      const validImages = proprietorPhotos.filter(
+        (img): img is File | string => !!img
+      );
+
+      let finalProprietorPhoto = "";
+      if (validImages.length > 0) {
+        const [uploadedUrl] = await uploadFiles(validImages);
+        finalProprietorPhoto =
+          uploadedUrl ||
+          (typeof validImages[0] === "string" ? validImages[0] : "");
+      }
+
       const parsedParagraphs = paragraphsText
         .split("\n\n")
         .map((p) => p.trim())
         .filter((p) => p.length > 0);
 
       const payload = {
-        mainTitle: mainTitle.trim(),
-        proprietorSubHeader: proprietorSubHeader.trim(),
+        title: title.trim(),
+        subtitle: subtitle.trim(),
+        proprietorRole: proprietorRole.trim(),
+        proprietorPhoto: finalProprietorPhoto,
+        proprietorPhotoAlt: proprietorPhotoAlt.trim(),
         paragraphs: parsedParagraphs,
+        hpclOverview: (initialData as any)?.hpclOverview || undefined,
         whyChooseTitle: whyChooseTitle.trim(),
         whyChooseSubtitle: whyChooseSubtitle.trim(),
         whyChooseItems: whyChooseItems,
@@ -171,6 +202,9 @@ export function AboutMahalaxmiContentSection({
       const json = await res.json();
       if (json.success) {
         setSaved(true);
+        if (finalProprietorPhoto) {
+          setProprietorPhotos([finalProprietorPhoto]);
+        }
         toast.success("About Mahalaxmi section saved successfully");
         setTimeout(() => setSaved(false), 3000);
       } else {
@@ -187,7 +221,7 @@ export function AboutMahalaxmiContentSection({
     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex flex-col gap-4 transition-all">
       <SectionHeader
         title="2. About Mahalaxmi Enterprises & Why Choose Us"
-        description="Manage proprietor introduction, corporate narrative paragraphs, and Why Choose Us feature cards."
+        description="Manage proprietor introduction, corporate narrative paragraphs, proprietor photo, and Why Choose Us feature cards."
         isOpen={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
       />
@@ -199,20 +233,48 @@ export function AboutMahalaxmiContentSection({
       >
         <div className="overflow-hidden">
           <div className="flex flex-col gap-6 pt-4">
-            {/* Titles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Titles & Roles */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <InputField
                 label="Main Section Title"
-                value={mainTitle}
-                onChange={(e) => setMainTitle(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. ABOUT MAHALAXMI ENTERPRISES"
               />
               <InputField
-                label="Sub-header / Proprietor Designation"
-                value={proprietorSubHeader}
-                onChange={(e) => setProprietorSubHeader(e.target.value)}
-                placeholder="e.g. Neha Goyal – Proprietor, Mahalaxmi Enterprises"
+                label="Proprietor Name"
+                value={subtitle}
+                onChange={(e) => setSubtitle(e.target.value)}
+                placeholder="e.g. Neha Goyal"
               />
+              <InputField
+                label="Proprietor Role / Designation"
+                value={proprietorRole}
+                onChange={(e) => setProprietorRole(e.target.value)}
+                placeholder="e.g. Proprietor, Mahalaxmi Enterprises"
+              />
+            </div>
+
+            {/* Proprietor Photo & Alt */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+              <ImageUploadField
+                label="Proprietor Photo"
+                images={proprietorPhotos}
+                onImagesChange={setProprietorPhotos}
+                maxImages={1}
+                tooltip="Upload proprietor photo (square or portrait aspect ratio recommended)."
+              />
+              <div className="flex flex-col gap-3">
+                <InputField
+                  label="Photo Alt Text (SEO & Accessibility)"
+                  value={proprietorPhotoAlt}
+                  onChange={(e) => setProprietorPhotoAlt(e.target.value)}
+                  placeholder="e.g. Neha Goyal — Proprietor, Mahalaxmi Enterprises"
+                />
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  This photo and designation are loaded directly into the About Us page alongside the proprietor&apos;s credentials.
+                </p>
+              </div>
             </div>
 
             {/* Narrative Paragraphs */}

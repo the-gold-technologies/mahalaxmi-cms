@@ -29,7 +29,7 @@ async function main() {
       siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
       siteDescription: "Authorized Industrial Lubricants Division (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
       phone: "+91 98765 43210",
-      email: "sales@mahalaxmienterprises.com",
+      email: "info@hplubricantscfa.com",
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
@@ -49,7 +49,7 @@ async function main() {
       siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
       siteDescription: "Authorized Industrial Lubricants Division (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
       phone: "+91 98765 43210",
-      email: "sales@mahalaxmienterprises.com",
+      email: "info@hplubricantscfa.com",
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
@@ -474,28 +474,15 @@ async function main() {
             ]
       }
 },
-    {
-      "type": "DistributorBanner",
-      "order": 5,
-      "content": {
-            "btnLabel": "BECOME AN INDUSTRIAL LUBE DISTRIBUTOR (ILD)/ BAZAAR LUBE DISTRIBUTOR (BLD)",
-            "buttonText": "BECOME AN INDUSTRIAL LUBE DISTRIBUTOR (ILD)/ BAZAAR LUBE DISTRIBUTOR (BLD)",
-            "enquirySubject": "Distributor Dealership Application"
-      }
-},
-    {
+{
       "type": "LocateDistributorSection",
       "order": 6,
       "content": {
-            "locateTitle": "LOCATE INDUSTRIAL DISTRIBUTOR",
-            "locateSubtitle": "HP Lubricants are marketed through an extensive network of Authorized Industrial Lube Distributors (ILD) and CFA stock points across India.",
-            "searchBtnText": "SEARCH DISTRIBUTOR",
             "contactTitle": "CONTACT DETAILS",
             "companyName": "Mahalaxmi Enterprises",
             "address": "Authorized Industrial Lubricants Division (ILD), Hindustan Petroleum Corp. Ltd.",
             "phone": "+91 98970 56000",
-            "workingHours": "Working Hours: Mon - Sat: 9:00 AM - 7:00 PM",
-            "email": "info@mahalaxmi.com",
+            "email": "info@hplubricantscfa.com",
             "contactBtnText": "CONTACT US"
       }
 }  ];
@@ -544,7 +531,6 @@ async function main() {
       order: 0,
       content: {
         bannerImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1787736239/mahalaxmi/about/About-HPCL.jpg",
-        image: "https://res.cloudinary.com/dpa93copz/image/upload/v1787736239/mahalaxmi/about/About-HPCL.jpg",
         altText: "About MAHALAXMI ENTERPRISES Banner",
         title: "About MAHALAXMI ENTERPRISES"
       }
@@ -554,7 +540,10 @@ async function main() {
       order: 1,
       content: {
       "title": "ABOUT MAHALAXMI ENTERPRISES",
-      "subtitle": "Neha Goyal – Proprietor, Mahalaxmi Enterprises",
+      "subtitle": "Neha Goyal",
+      "proprietorRole": "Proprietor, Mahalaxmi Enterprises",
+      "proprietorPhoto": "https://res.cloudinary.com/dpa93copz/image/upload/v1788858309/mahalaxmi/team/neha-goyal-proprietor.jpg",
+      "proprietorPhotoAlt": "Neha Goyal — Proprietor, Mahalaxmi Enterprises",
       "paragraphs": [
             "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lubricants Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
             "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
@@ -608,8 +597,8 @@ async function main() {
         proprietor: "Neha Goyal",
         servingRegion: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
         establishment: "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
-        phone: "+91 98765 43210",
-        email: "sales@mahalaxmienterprises.com"
+        phone: "88007 78032",
+        email: "info@hplubricantscfa.com"
       }
     }
   ];
@@ -663,15 +652,14 @@ async function main() {
       order: 1,
       content: {
         companyName: "Mahalaxmi Enterprises",
-        badge: "Authorized HP Lubricants Distributor",
-        description: "Connect with our team for bulk HP Lubricants supply, dealership opportunities, technical data sheets, and custom quotes.",
+        badge: "Authorized Industrial Lube Distributor",
+        description: "Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries.",
         proprietor: "Neha Goyal",
         address: "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601",
         phone: "88007 78032",
         whatsapp: "918800778032",
-        email: "sales@mahalaxmienterprises.com",
-        workingHours: "Monday to Saturday: 9:00 AM – 6:00 PM",
-      },
+        email: "info@hplubricantscfa.com",
+        },
     },
     {
       type: "ContactForm",
