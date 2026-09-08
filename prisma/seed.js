@@ -37,10 +37,7 @@ async function main() {
       "youtube": "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
       "instagram": "https://www.instagram.com/hplubricants_hpcl/",
       "linkedin": "https://www.linkedin.com/company/hpcl",
-      "twitter": "https://twitter.com/hpcl",
       "hpclBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
-      "indiaGovBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
-      "globalCompactBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
       "copyrightText": "© 2026 Mahalaxmi Enterprises. All rights reserved."
 },
     },
@@ -57,10 +54,7 @@ async function main() {
       "youtube": "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
       "instagram": "https://www.instagram.com/hplubricants_hpcl/",
       "linkedin": "https://www.linkedin.com/company/hpcl",
-      "twitter": "https://twitter.com/hpcl",
       "hpclBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
-      "indiaGovBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/adpiqziz0m5aenxzuerh.jpg",
-      "globalCompactBadge": "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
       "copyrightText": "© 2026 Mahalaxmi Enterprises. All rights reserved."
 },
     },
@@ -3035,7 +3029,7 @@ async function main() {
 <p>We utilize standard cookies, Google Tag Manager (GTM), and Google Analytics to understand website traffic patterns and improve responsiveness. You can adjust your browser settings to decline cookies if preferred.</p>
 
 <h2>5. Contact Us Regarding Your Privacy</h2>
-<p>If you have any questions, feedback, or requests regarding this Privacy Policy or data retention, please contact our compliance desk at <strong>sales@mahalaxmienterprises.com</strong>.</p>`,
+<p>If you have any questions, feedback, or requests regarding this Privacy Policy or data retention, please contact our compliance desk at <strong>info@hplubricantscfa.com</strong>.</p>`,
     isPublished: true,
   };
 

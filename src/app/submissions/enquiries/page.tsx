@@ -49,12 +49,14 @@ export default function EnquiriesCMSPage() {
 
   const filtered = enquiries.filter((e) => {
     const q = searchQuery.toLowerCase();
+    const comp = (e.company || e.message?.match(/Company:\s*([^\n\r]+)/i)?.[1] || "").toLowerCase();
     return (
       !q ||
       e.name.toLowerCase().includes(q) ||
       e.email.toLowerCase().includes(q) ||
+      comp.includes(q) ||
       (e.product && e.product.toLowerCase().includes(q)) ||
-      (e.company && e.company.toLowerCase().includes(q))
+      (e.interestedIn && e.interestedIn.toLowerCase().includes(q))
     );
   });
 
@@ -136,12 +138,22 @@ export default function EnquiriesCMSPage() {
                         <Tag className="w-3 h-3" />
                         {enquiry.product || enquiry.interestedIn || "General Quote"}
                       </div>
-                      {enquiry.company && (
-                        <p className="text-xs text-gray-500 font-semibold mt-1 flex items-center gap-1">
-                          <Building className="w-3 h-3 text-gray-400" />
-                          {enquiry.company}
-                        </p>
-                      )}
+                      {(() => {
+                        const comp =
+                          enquiry.company ||
+                          enquiry.message?.match(/Company:\s*([^\n\r]+)/i)?.[1]?.trim();
+                        return comp ? (
+                          <p className="text-xs text-gray-700 font-semibold mt-1 flex items-center gap-1">
+                            <Building className="w-3 h-3 text-gray-400" />
+                            {comp}
+                          </p>
+                        ) : (
+                          <p className="text-xs text-gray-400 italic mt-1 flex items-center gap-1">
+                            <Building className="w-3 h-3 text-gray-300" />
+                            Company: —
+                          </p>
+                        );
+                      })()}
                     </td>
                     <td className="px-6 py-5 text-[13px] text-gray-500 font-medium">
                       <div className="flex items-center gap-2">
@@ -195,16 +207,16 @@ export default function EnquiriesCMSPage() {
             </div>
 
             <div className="flex flex-col gap-3 text-sm">
-              {activeMessage.company && (
-                <div>
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">
-                    Company / Firm
-                  </span>
-                  <span className="font-semibold text-gray-800">
-                    {activeMessage.company}
-                  </span>
-                </div>
-              )}
+              <div>
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">
+                  Company / Firm
+                </span>
+                <span className="font-semibold text-gray-800">
+                  {activeMessage.company ||
+                    activeMessage.message?.match(/Company:\s*([^\n\r]+)/i)?.[1]?.trim() ||
+                    "—"}
+                </span>
+              </div>
               {activeMessage.product && (
                 <div>
                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">

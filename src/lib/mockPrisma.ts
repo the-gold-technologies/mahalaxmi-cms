@@ -23,7 +23,6 @@ let mockSettings: Record<string, string> = {
   contact_address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
   primary_color: "#D8232A",
   secondary_color: "#0B0F29",
-  working_hours: "Monday - Saturday: 9:00 AM - 6:00 PM (Closed on Public Holidays)",
   gstin: "09AABCU9603R1ZM",
   established_year: "2023",
 };
@@ -274,14 +273,13 @@ let mockPages: any[] = [
         order: 1,
         content: {
           companyName: "Mahalaxmi Enterprises",
-          badge: "Authorized HP Lubricants Distributor",
-          description: "Connect with our team for bulk HP Lubricants supply, dealership opportunities, technical data sheets, and custom quotes.",
+          badge: "Authorized Industrial Lube Distributor",
+          description: "Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries.",
           proprietor: "Neha Goyal",
           address: "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601",
           phone: "88007 78032",
           whatsapp: "918800778032",
           email: "sales@mahalaxmienterprises.com",
-          workingHours: "Monday to Saturday: 9:00 AM – 6:00 PM",
         }
       },
       {

@@ -16,7 +16,6 @@ interface HeadquarterData {
   phone?: string;
   email?: string;
   whatsapp?: string;
-  workingHours?: string;
 }
 
 interface ContactHeadquarterSectionProps {
@@ -30,20 +29,17 @@ export function ContactHeadquarterSection({
 }: ContactHeadquarterSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [companyName, setCompanyName] = useState("Mahalaxmi Enterprises");
-  const [badge, setBadge] = useState("Authorized HP Lubricants Distributor");
+  const [badge, setBadge] = useState("Authorized Industrial Lube Distributor");
   const [description, setDescription] = useState(
-    "Connect with our team for bulk HP Lubricants supply, dealership opportunities, technical data sheets, and custom quotes."
+    "Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries."
   );
   const [proprietor, setProprietor] = useState("Neha Goyal");
   const [address, setAddress] = useState(
     "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601"
   );
   const [phone, setPhone] = useState("+91 88007 78032");
-  const [email, setEmail] = useState("sales@mahalaxmienterprises.com");
+  const [email, setEmail] = useState("info@hplubricantscfa.com");
   const [whatsapp, setWhatsapp] = useState("+91 88007 78032");
-  const [workingHours, setWorkingHours] = useState(
-    "Monday to Saturday: 9:00 AM – 6:00 PM"
-  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -56,7 +52,6 @@ export function ContactHeadquarterSection({
       if (initialData.phone !== undefined) setPhone(initialData.phone);
       if (initialData.email !== undefined) setEmail(initialData.email);
       if (initialData.whatsapp !== undefined) setWhatsapp(initialData.whatsapp);
-      if (initialData.workingHours !== undefined) setWorkingHours(initialData.workingHours);
     }
   }, [initialData]);
 
@@ -74,7 +69,6 @@ export function ContactHeadquarterSection({
         phone: phone.trim(),
         email: email.trim(),
         whatsapp: whatsapp.trim(),
-        workingHours: workingHours.trim(),
       };
 
       if (onSave) {
@@ -106,7 +100,7 @@ export function ContactHeadquarterSection({
     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 flex flex-col gap-4 transition-all">
       <SectionHeader
         title="2. Headquarter & Contact Details"
-        description="Configure the primary enterprise identity, proprietor credentials, office address, and business hours."
+        description="Configure the primary enterprise identity, proprietor credentials, depot address, and business hours."
         badge="Official HQ"
         isOpen={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
@@ -131,7 +125,7 @@ export function ContactHeadquarterSection({
                 label="Distributor Designation / Badge"
                 value={badge}
                 onChange={(e) => setBadge(e.target.value)}
-                placeholder="Authorized HP Lubricants Distributor"
+                placeholder="Authorized Industrial Lube Distributor"
               />
             </div>
 
@@ -140,7 +134,7 @@ export function ContactHeadquarterSection({
               rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Connect with our team for bulk HP Lubricants supply, dealership opportunities, technical data sheets, and custom quotes."
+              placeholder="Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries."
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -167,13 +161,13 @@ export function ContactHeadquarterSection({
                 label="Official Email *"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="sales@mahalaxmienterprises.com"
+                placeholder="info@hplubricantscfa.com"
                 required
               />
             </div>
 
             <TextAreaField
-              label="Headquarter Physical Address *"
+              label="Depot Address *"
               rows={2}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -181,12 +175,6 @@ export function ContactHeadquarterSection({
               required
             />
 
-            <InputField
-              label="Operating & Working Hours"
-              value={workingHours}
-              onChange={(e) => setWorkingHours(e.target.value)}
-              placeholder="Monday to Saturday: 9:00 AM – 6:00 PM"
-            />
 
             <div className="pt-4 border-t border-gray-100">
               <SaveButton

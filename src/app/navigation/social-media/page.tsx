@@ -20,7 +20,6 @@ export default function FooterSocialMediaCMSPage() {
   const [linkedin, setLinkedin] = useState("");
   const [instagram, setInstagram] = useState("");
   const [youtube, setYoutube] = useState("");
-  const [twitter, setTwitter] = useState("");
 
   // Footer Partner Badges & Copyright
   const [hpclBadge, setHpclBadge] = useState("");
@@ -39,7 +38,6 @@ export default function FooterSocialMediaCMSPage() {
           if (s.linkedin) setLinkedin(s.linkedin);
           if (s.instagram) setInstagram(s.instagram);
           if (s.youtube) setYoutube(s.youtube);
-          if (s.twitter) setTwitter(s.twitter);
           if (s.hpclBadge) setHpclBadge(s.hpclBadge);
           if (s.indiaGovBadge) setIndiaGovBadge(s.indiaGovBadge);
           if (s.globalCompactBadge) setGlobalCompactBadge(s.globalCompactBadge);
@@ -64,7 +62,6 @@ export default function FooterSocialMediaCMSPage() {
         linkedin,
         instagram,
         youtube,
-        twitter,
         hpclBadge,
         indiaGovBadge,
         globalCompactBadge,
@@ -90,7 +87,6 @@ export default function FooterSocialMediaCMSPage() {
         linkedin,
         instagram,
         youtube,
-        twitter,
       });
       if (json.success) {
         setSavedSocial(true);
@@ -176,14 +172,6 @@ export default function FooterSocialMediaCMSPage() {
               onChange={(e) => setYoutube(e.target.value)}
               placeholder="https://youtube.com/@..."
             />
-            <div className="md:col-span-2">
-              <InputField
-                label="Twitter / X Profile URL"
-                value={twitter}
-                onChange={(e) => setTwitter(e.target.value)}
-                placeholder="https://twitter.com/..."
-              />
-            </div>
           </div>
 
           {/* Form 1 Full Width Save Button */}
