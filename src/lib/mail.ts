@@ -109,7 +109,7 @@ export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
           <tr>
             <td style="background: linear-gradient(135deg, #002B5C 0%, #001A38 100%); padding: 32px 30px; text-align: center; border-top: 4px solid #D8232A;">
               <p style="margin: 0 0 6px 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
-                HPCL Authorized Industrial Lubricants Division
+                HPCL Authorized Industrial Lube Distributor
               </p>
               <h1 style="margin: 0; color: #FFFFFF; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">
                 MAHALAXMI ENTERPRISES
@@ -310,7 +310,7 @@ export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
                 MAHALAXMI ENTERPRISES
               </h1>
               <p style="margin: 6px 0 0 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">
-                Authorized HPCL Industrial Lubricants Division
+                Authorized HPCL Industrial Lube Distributor
               </p>
             </td>
           </tr>
@@ -651,7 +651,7 @@ export async function sendDistributorLeadNotificationEmail(
                 Dear <strong>${data.name}</strong>,
               </p>
               <p style="margin: 0 0 20px 0; font-size: 14px; color: #475569;">
-                Thank you for applying to become an authorized Distribution Partner / Dealership with Mahalaxmi Enterprises (HPCL Industrial Lubricants Division).
+                Thank you for applying to become an authorized Distribution Partner / Dealership with Mahalaxmi Enterprises (HPCL Industrial Lube Distributor).
               </p>
               <p style="margin: 0 0 24px 0; font-size: 14px; color: #475569;">
                 Our network expansion team will review your business profile and contact you at <strong>${data.phone}</strong> regarding commercial onboarding terms, margin structures, and stockist agreements.

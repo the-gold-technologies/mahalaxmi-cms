@@ -20,6 +20,8 @@ export interface AboutMahalaxmiContentData {
   title?: string;
   subtitle?: string;
   proprietorRole?: string;
+  distributorBadge?: string;
+  distributorCompany?: string;
   proprietorPhoto?: string;
   proprietorPhotoAlt?: string;
   paragraphs?: string[];
@@ -65,8 +67,13 @@ export const DEFAULT_WHY_CHOOSE_ITEMS: WhyChooseItem[] = [
   },
 ];
 
+export const DEFAULT_PROPRIETOR_PHOTO =
+  "https://res.cloudinary.com/dpa93copz/image/upload/v1788858309/mahalaxmi/team/neha-goyal-proprietor.jpg";
+export const DEFAULT_PROPRIETOR_PHOTO_ALT =
+  "Neha Goyal — Proprietor, Mahalaxmi Enterprises";
+
 export const DEFAULT_PARAGRAPHS = [
-  "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lubricants Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
+  "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lube Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
   "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
   "Her focus on long-term relationships, product reliability, and consistent service has positioned Mahalaxmi Enterprises as a dependable partner for industries seeking efficient and cost-effective lubrication solutions. With a vision to continuously expand the company\x27s reach and service capabilities, Neha Goyal remains dedicated to helping customers enhance equipment performance, improve operational efficiency, and reduce maintenance costs through the right lubrication practices.",
 ];
@@ -85,8 +92,18 @@ export function AboutMahalaxmiContentSection({
   const [proprietorRole, setProprietorRole] = useState(
     "Proprietor, Mahalaxmi Enterprises"
   );
-  const [proprietorPhotos, setProprietorPhotos] = useState<(File | string | null)[]>([]);
-  const [proprietorPhotoAlt, setProprietorPhotoAlt] = useState("");
+  const [distributorBadge, setDistributorBadge] = useState(
+    "Authorized Industrial Lube Distributor (ILD)"
+  );
+  const [distributorCompany, setDistributorCompany] = useState(
+    "Hindustan Petroleum Corporation Limited (HPCL)"
+  );
+  const [proprietorPhotos, setProprietorPhotos] = useState<(File | string | null)[]>([
+    DEFAULT_PROPRIETOR_PHOTO,
+  ]);
+  const [proprietorPhotoAlt, setProprietorPhotoAlt] = useState(
+    DEFAULT_PROPRIETOR_PHOTO_ALT
+  );
   const [paragraphsText, setParagraphsText] = useState(
     DEFAULT_PARAGRAPHS.join("\n\n")
   );
@@ -105,11 +122,17 @@ export function AboutMahalaxmiContentSection({
       if (initialData.title) setTitle(initialData.title);
       if (initialData.subtitle) setSubtitle(initialData.subtitle);
       if (initialData.proprietorRole) setProprietorRole(initialData.proprietorRole);
+      if (initialData.distributorBadge !== undefined) setDistributorBadge(initialData.distributorBadge);
+      if (initialData.distributorCompany !== undefined) setDistributorCompany(initialData.distributorCompany);
       if (initialData.proprietorPhoto) {
         setProprietorPhotos([initialData.proprietorPhoto]);
+      } else if (initialData.proprietorPhoto === undefined) {
+        setProprietorPhotos([DEFAULT_PROPRIETOR_PHOTO]);
       }
       if (initialData.proprietorPhotoAlt) {
         setProprietorPhotoAlt(initialData.proprietorPhotoAlt);
+      } else if (initialData.proprietorPhotoAlt === undefined) {
+        setProprietorPhotoAlt(DEFAULT_PROPRIETOR_PHOTO_ALT);
       }
       if (Array.isArray(initialData.paragraphs)) {
         setParagraphsText(initialData.paragraphs.join("\n\n"));
@@ -181,6 +204,8 @@ export function AboutMahalaxmiContentSection({
         title: title.trim(),
         subtitle: subtitle.trim(),
         proprietorRole: proprietorRole.trim(),
+        distributorBadge: distributorBadge.trim(),
+        distributorCompany: distributorCompany.trim(),
         proprietorPhoto: finalProprietorPhoto,
         proprietorPhotoAlt: proprietorPhotoAlt.trim(),
         paragraphs: parsedParagraphs,
@@ -252,6 +277,24 @@ export function AboutMahalaxmiContentSection({
                 value={proprietorRole}
                 onChange={(e) => setProprietorRole(e.target.value)}
                 placeholder="e.g. Proprietor, Mahalaxmi Enterprises"
+              />
+            </div>
+
+            {/* Distributor Badge & Company Affiliation (ILD Card Footer) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <InputField
+                label="Distributor Status Badge (ILD)"
+                value={distributorBadge}
+                onChange={(e) => setDistributorBadge(e.target.value)}
+                placeholder="e.g. Authorized Industrial Lube Distributor (ILD)"
+                helperText="Displayed inside the executive profile card status bar"
+              />
+              <InputField
+                label="Affiliation / Parent Entity"
+                value={distributorCompany}
+                onChange={(e) => setDistributorCompany(e.target.value)}
+                placeholder="e.g. Hindustan Petroleum Corporation Limited (HPCL)"
+                helperText="Partner corporation name displayed alongside distributor status"
               />
             </div>
 

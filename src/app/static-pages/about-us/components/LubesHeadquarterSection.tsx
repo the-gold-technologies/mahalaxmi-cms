@@ -18,14 +18,14 @@ export interface LubesHeadquarterData {
 
 export const DEFAULT_HQ_DATA: LubesHeadquarterData = {
   title: "MAHALAXMI ENTERPRISES",
-  badge: "AUTHORIZED INDUSTRIAL LUBRICANTS DISTRIBUTOR (ILD)",
+  badge: "AUTHORIZED INDUSTRIAL LUBE DISTRIBUTOR (ILD)",
   proprietor: "Neha Goyal",
   servingRegion:
     "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
   establishment:
     "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
-  phone: "+91 98765 43210",
-  email: "sales@mahalaxmienterprises.com",
+  phone: "+91 88007 78032",
+  email: "info@hplubricantscfa.com",
 };
 
 export function LubesHeadquarterSection({
@@ -131,7 +131,7 @@ export function LubesHeadquarterSection({
                 label="ILD Badge / Designation"
                 value={badge}
                 onChange={(e) => setBadge(e.target.value)}
-                placeholder="e.g. AUTHORIZED INDUSTRIAL LUBRICANTS DISTRIBUTOR (ILD)"
+                placeholder="e.g. AUTHORIZED INDUSTRIAL LUBE DISTRIBUTOR (ILD)"
               />
             </div>
 
@@ -162,13 +162,13 @@ export function LubesHeadquarterSection({
                 label="Direct Contact Phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="e.g. +91 98765 43210"
+                placeholder="e.g. +91 88007 78032"
               />
               <InputField
                 label="Contact Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. sales@mahalaxmienterprises.com"
+                placeholder="e.g. info@hplubricantscfa.com"
               />
             </div>
 

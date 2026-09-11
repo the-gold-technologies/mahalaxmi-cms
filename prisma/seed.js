@@ -1,7 +1,12 @@
 const { PrismaClient } = require("@prisma/client");
+const { Pool } = require("pg");
+const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DATABASE_URL || "postgresql://postgres.oyqprxabpaqzmkmuhwxl:Mahalaxmi%40tgt@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres";
+const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("Starting full database seeding with 100% website data...");
@@ -29,8 +34,8 @@ async function main() {
     update: {
       siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
       siteDescription:
-        "Authorized Industrial Lubricants Division (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
-      phone: "+91 98765 43210",
+        "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
+      phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
       address:
         "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
@@ -42,6 +47,10 @@ async function main() {
         linkedin: "https://www.linkedin.com/company/hpcl",
         hpclBadge:
           "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+        indiaGovBadge:
+          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        globalCompactBadge:
+          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
         copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
       },
     },
@@ -49,8 +58,8 @@ async function main() {
       id: "global",
       siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
       siteDescription:
-        "Authorized Industrial Lubricants Division (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
-      phone: "+91 98765 43210",
+        "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
+      phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
       address:
         "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
@@ -62,6 +71,10 @@ async function main() {
         linkedin: "https://www.linkedin.com/company/hpcl",
         hpclBadge:
           "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+        indiaGovBadge:
+          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        globalCompactBadge:
+          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
         copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
       },
     },
@@ -114,10 +127,10 @@ async function main() {
       visibility: "published",
       isStatic: true,
       description:
-        "Authorized Industrial Lubricants Distributor for Hindustan Petroleum Corporation Limited (HPCL).",
+        "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
       metaTitle: "Mahalaxmi Enterprises | Authorized HP Lubricants Distributor",
       metaDescription:
-        "Official Industrial Lubricants Division supplying high performance hydraulic oils, turbine oils, gear lubricants, and greases.",
+        "Official Industrial Lube Distributor supplying high performance hydraulic oils, turbine oils, gear lubricants, and greases.",
     },
   });
 
@@ -198,7 +211,7 @@ async function main() {
         subtitle:
           "Hindustan Petroleum Corporation Limited (HPCL) is a Fortune 500 company and one of India’s largest lubricant marketers.",
         bodyText:
-          "Mahalaxmi Enterprises serves as an Authorized Industrial Lubricants Division (ILD), supplying genuine HPCL products directly to industrial plants, OEM contractors, transport fleets, and government departments.",
+          "Mahalaxmi Enterprises serves as an Authorized Industrial Lube Distributor (ILD), supplying genuine HPCL products directly to industrial plants, OEM contractors, transport fleets, and government departments.",
         buttonText: "READ MORE ABOUT US",
         buttonLink: "/about-us",
       },
@@ -594,7 +607,7 @@ async function main() {
         "Learn more about Mahalaxmi Enterprises and our authorized HPCL Lubricants partnership.",
       metaTitle: "About Us | Mahalaxmi Enterprises Authorized HP Lubricants",
       metaDescription:
-        "Discover our journey as an Authorized Industrial Lubricants Division (ILD) delivering cutting-edge HPCL lubricants across India.",
+        "Discover our journey as an Authorized Industrial Lube Distributor (ILD) delivering cutting-edge HPCL lubricants across India.",
     },
   });
 
@@ -616,11 +629,13 @@ async function main() {
         title: "ABOUT MAHALAXMI ENTERPRISES",
         subtitle: "Neha Goyal",
         proprietorRole: "Proprietor, Mahalaxmi Enterprises",
+        distributorBadge: "Authorized Industrial Lube Distributor (ILD)",
+        distributorCompany: "Hindustan Petroleum Corporation Limited (HPCL)",
         proprietorPhoto:
           "https://res.cloudinary.com/dpa93copz/image/upload/v1788858309/mahalaxmi/team/neha-goyal-proprietor.jpg",
         proprietorPhotoAlt: "Neha Goyal — Proprietor, Mahalaxmi Enterprises",
         paragraphs: [
-          "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lubricants Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
+          "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lube Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
           "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
           "Her focus on long-term relationships, product reliability, and consistent service has positioned Mahalaxmi Enterprises as a dependable partner for industries seeking efficient and cost-effective lubrication solutions. With a vision to continuously expand the company's reach and service capabilities, Neha Goyal remains dedicated to helping customers enhance equipment performance, improve operational efficiency, and reduce maintenance costs through the right lubrication practices.",
         ],
@@ -673,13 +688,13 @@ async function main() {
       order: 2,
       content: {
         title: "MAHALAXMI ENTERPRISES",
-        badge: "AUTHORIZED INDUSTRIAL LUBRICANTS DISTRIBUTOR (ILD)",
+        badge: "AUTHORIZED INDUSTRIAL LUBE DISTRIBUTOR (ILD)",
         proprietor: "Neha Goyal",
         servingRegion:
           "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
         establishment:
           "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
-        phone: "88007 78032",
+        phone: "+91 88007 78032",
         email: "info@hplubricantscfa.com",
       },
     },
@@ -748,7 +763,7 @@ async function main() {
         proprietor: "Neha Goyal",
         address:
           "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601",
-        phone: "88007 78032",
+        phone: "+91 88007 78032",
         whatsapp: "918800778032",
         email: "info@hplubricantscfa.com",
       },
@@ -2969,7 +2984,7 @@ async function main() {
       order: 50,
       metaTitle: "Privacy Policy | Mahalaxmi Enterprises",
       metaDescription:
-        "Read the Privacy Policy of Mahalaxmi Enterprises, authorized Industrial Lubricants Division (ILD) for HPCL lubricants and greases.",
+        "Read the Privacy Policy of Mahalaxmi Enterprises, authorized Industrial Lube Distributor (ILD) for HPCL lubricants and greases.",
       targetKeywords:
         "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
       canonicalUrl: "/privacy-policy",
@@ -2980,7 +2995,7 @@ async function main() {
   const privacyContent = {
     title: "Privacy Policy",
     lastUpdated: "August 2026",
-    content: `<p>Welcome to <strong>Mahalaxmi Enterprises</strong> ("we", "our", or "us"). We are an Authorized Industrial Lubricants Division (ILD) master distributor for <strong>Hindustan Petroleum Corporation Limited (HPCL)</strong>.</p>
+    content: `<p>Welcome to <strong>Mahalaxmi Enterprises</strong> ("we", "our", or "us"). We are an Authorized Industrial Lube Distributor (ILD) master distributor for <strong>Hindustan Petroleum Corporation Limited (HPCL)</strong>.</p>
 <p>We are committed to protecting and respecting your personal privacy. This Privacy Policy explains how we collect, use, store, and safeguard your personal information when you visit our website or interact with our enquiry, dealership, and quotation forms.</p>
 
 <h2>1. Information We Collect</h2>

@@ -17,7 +17,7 @@ export interface AboutSectionData {
 export const DEFAULT_ABOUT_DATA: AboutSectionData = {
   heading: "About Mahalaxmi Enterprises",
   description:
-    "Mahalaxmi Enterprises is an Authorized Industrial Lubricants Division (ILD), offering a comprehensive range of industrial lubricants, greases, metalworking fluids, and industrial maintenance solutions. Backed by trusted quality, we deliver high-performance products that enhance equipment reliability, reduce downtime, and improve operational efficiency across industries.",
+    "Mahalaxmi Enterprises is an Authorized Industrial Lube Distributor (ILD), offering a comprehensive range of industrial lubricants, greases, metalworking fluids, and industrial maintenance solutions. Backed by trusted quality, we deliver high-performance products that enhance equipment reliability, reduce downtime, and improve operational efficiency across industries.",
   btnLabel: "Read More",
   btnUrl: "#products",
 };
@@ -121,7 +121,7 @@ export function AboutSection({ initialData }: { initialData?: any }) {
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }
-                placeholder="Mahalaxmi Enterprises is an Authorized Industrial Lubricants Division (ILD)..."
+                placeholder="Mahalaxmi Enterprises is an Authorized Industrial Lube Distributor (ILD)..."
                 helperText="Main narrative overview describing company background and operations"
               />
 

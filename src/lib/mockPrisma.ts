@@ -16,10 +16,10 @@ let mockUsers: any[] = [
 
 let mockSettings: Record<string, string> = {
   site_name: "Mahalaxmi Enterprises",
-  company_tagline: "Authorized Industrial Lubricants Division (ILD) - HPCL",
+  company_tagline: "Authorized Industrial Lube Distributor (ILD) - HPCL",
   proprietor_name: "Mahalaxmi Enterprises",
-  contact_email: "sales@mahalaxmienterprises.com",
-  contact_phone: "+91 98765 43210",
+  contact_email: "info@hplubricantscfa.com",
+  contact_phone: "+91 88007 78032",
   contact_address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
   primary_color: "#D8232A",
   secondary_color: "#0B0F29",
@@ -46,9 +46,9 @@ let mockPages: any[] = [
     type: "static",
     visibility: "published",
     isStatic: true,
-    description: "Authorized Industrial Lubricants Distributor for Hindustan Petroleum Corporation Limited (HPCL).",
+    description: "Authorized Industrial Lube Distributor for Hindustan Petroleum Corporation Limited (HPCL).",
     metaTitle: "Mahalaxmi Enterprises | Authorized HP Lubricants Distributor",
-    metaDescription: "Official Industrial Lubricants Division supplying high performance hydraulic oils, turbine oils, gear lubricants, and greases.",
+    metaDescription: "Official Industrial Lube Distributor supplying high performance hydraulic oils, turbine oils, gear lubricants, and greases.",
     targetKeywords: "hpcl distributor, industrial lubricants baghpat, engine oils supplier",
     canonicalUrl: "https://mahalaxmilubricants.com",
     noIndex: false,
@@ -138,7 +138,7 @@ let mockPages: any[] = [
         content: {
           title: "ABOUT HP LUBRICANTS & MAHALAXMI ENTERPRISES",
           subtitle: "Hindustan Petroleum Corporation Limited (HPCL) is a Fortune 500 company and one of India’s largest lubricant marketers.",
-          bodyText: "Mahalaxmi Enterprises serves as an Authorized Industrial Lubricants Division (ILD), supplying genuine HPCL products directly to industrial plants, OEM contractors, transport fleets, and government departments.",
+          bodyText: "Mahalaxmi Enterprises serves as an Authorized Industrial Lube Distributor (ILD), supplying genuine HPCL products directly to industrial plants, OEM contractors, transport fleets, and government departments.",
           buttonText: "READ MORE ABOUT US",
           buttonLink: "/about-us"
         }
@@ -172,7 +172,7 @@ let mockPages: any[] = [
     isStatic: true,
     description: "Learn more about Mahalaxmi Enterprises and our authorized HPCL Lubricants partnership.",
     metaTitle: "About Us | Mahalaxmi Enterprises Authorized HP Lubricants",
-    metaDescription: "Discover our journey as an Authorized Industrial Lubricants Division (ILD) delivering cutting-edge HPCL lubricants across India.",
+    metaDescription: "Discover our journey as an Authorized Industrial Lube Distributor (ILD) delivering cutting-edge HPCL lubricants across India.",
     targetKeywords: "about mahalaxmi enterprises, hp lubricants distributor profile",
     canonicalUrl: "https://mahalaxmilubricants.com/about-us",
     noIndex: false,
@@ -190,8 +190,9 @@ let mockPages: any[] = [
         type: "AboutHero",
         order: 0,
         content: {
-          image: "/About-HPCL.jpg",
+          bannerImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1787736239/mahalaxmi/about/About-HPCL.jpg",
           altText: "About MAHALAXMI ENTERPRISES Banner",
+          title: "About MAHALAXMI ENTERPRISES",
         }
       },
       {
@@ -200,17 +201,54 @@ let mockPages: any[] = [
         type: "AboutMahalaxmiContent",
         order: 1,
         content: {
-          badge: "ABOUT MAHALAXMI ENTERPRISES",
-          title: "MAHALAXMI ENTERPRISES",
-          subtitle: "Authorized Industrial Lubricants Distributor - Hindustan Petroleum Corporation Limited (HPCL)",
-          p1: "Mahalaxmi Enterprises is an Authorized Industrial Lubricants Distributor for Hindustan Petroleum Corporation Limited (HPCL), one of India's leading energy and lubricant brands. We specialize in supplying high-performance industrial lubricants, greases, and specialty oils to diverse industries, commercial enterprises, and infrastructure projects across the region.",
-          p2: "Under the leadership of Neha Goyal, Mahalaxmi Enterprises has earned a reputation for reliability, product authenticity, and customer-first service. Our direct association with HPCL ensures that our clients receive 100% genuine lubricants manufactured to the highest global and Indian standards (IS / DIN / ISO / API).",
-          features: [
-            { icon: "Layers", title: "Full Product Range", description: "Complete lubrication and industrial maintenance solutions under one roof." },
-            { icon: "Wrench", title: "Technical Expertise", description: "Professional guidance for selecting the right products for every application." },
-            { icon: "Truck", title: "Reliable Supply", description: "Consistent product availability with timely delivery." },
-            { icon: "ShieldCheck", title: "Quality Assurance", description: "Only genuine, high-performance industrial products." },
-            { icon: "Headphones", title: "Customer-Centric Support", description: "Dedicated service to ensure long-term customer satisfaction." }
+          title: "ABOUT MAHALAXMI ENTERPRISES",
+          subtitle: "Neha Goyal",
+          proprietorRole: "Proprietor, Mahalaxmi Enterprises",
+          distributorBadge: "Authorized Industrial Lube Distributor (ILD)",
+          distributorCompany: "Hindustan Petroleum Corporation Limited (HPCL)",
+          proprietorPhoto: "https://res.cloudinary.com/dpa93copz/image/upload/v1788858309/mahalaxmi/team/neha-goyal-proprietor.jpg",
+          proprietorPhotoAlt: "Neha Goyal — Proprietor, Mahalaxmi Enterprises",
+          paragraphs: [
+            "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lube Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
+            "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
+            "Her focus on long-term relationships, product reliability, and consistent service has positioned Mahalaxmi Enterprises as a dependable partner for industries seeking efficient and cost-effective lubrication solutions. With a vision to continuously expand the company's reach and service capabilities, Neha Goyal remains dedicated to helping customers enhance equipment performance, improve operational efficiency, and reduce maintenance costs through the right lubrication practices."
+          ],
+          hpclOverview: {
+            title: "About Hindustan Petroleum Corporation Limited (HPCL)",
+            description: "HPCL is a Maharatna Central Public Sector Enterprise (CPSE) with a formidable market presence in refining and marketing petroleum products. HP Lubricants is India's largest lube marketer, offering 350+ grades of lubricants, specialties, and greases.",
+            bullets: [
+              "Over 350+ premium industrial & automotive lubricant grades",
+              "State-of-the-art R&D facilities with international OEM approvals",
+              "Extensive countrywide supply chain network & rapid delivery"
+            ]
+          },
+          whyChooseTitle: "WHY CHOOSE MAHALAXMI ENTERPRISES",
+          whyChooseSubtitle: "Delivering Quality. Building Trust.",
+          whyChooseItems: [
+            {
+              title: "Industrial Lube Distributor",
+              description: "Catering over 100 plus Industries."
+            },
+            {
+              title: "Wide Product Portfolio",
+              description: "Complete lubrication and industrial maintenance solutions under one roof."
+            },
+            {
+              title: "Technical Expertise",
+              description: "Professional guidance for selecting the right products for every application."
+            },
+            {
+              title: "Reliable Supply",
+              description: "Consistent product availability with timely delivery."
+            },
+            {
+              title: "Quality Assurance",
+              description: "Only genuine, high-performance industrial products."
+            },
+            {
+              title: "Customer-Centric Support",
+              description: "Dedicated service to ensure long-term customer satisfaction."
+            }
           ]
         }
       },
@@ -221,12 +259,12 @@ let mockPages: any[] = [
         order: 2,
         content: {
           title: "MAHALAXMI ENTERPRISES",
-          badge: "AUTHORIZED INDUSTRIAL LUBRICANTS DISTRIBUTOR (ILD)",
+          badge: "AUTHORIZED INDUSTRIAL LUBE DISTRIBUTOR (ILD)",
           proprietor: "Neha Goyal",
           servingRegion: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
           establishment: "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
-          phone: "+91 98765 43210",
-          email: "sales@mahalaxmienterprises.com"
+          phone: "+91 88007 78032",
+          email: "info@hplubricantscfa.com"
         }
       }
     ]
@@ -277,9 +315,9 @@ let mockPages: any[] = [
           description: "Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries.",
           proprietor: "Neha Goyal",
           address: "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601",
-          phone: "88007 78032",
+          phone: "+91 88007 78032",
           whatsapp: "918800778032",
-          email: "sales@mahalaxmienterprises.com",
+          email: "info@hplubricantscfa.com",
         }
       },
       {
@@ -2876,6 +2914,50 @@ let mockEnquiries: any[] = [
 ];
 
 export const mockPrisma: any = {
+  globalConfig: {
+    findFirst: async () => ({
+      id: "global",
+      siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
+      siteDescription: "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
+      logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
+      phone: "+91 88007 78032",
+      email: "info@hplubricantscfa.com",
+      address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
+      socialLinks: {
+        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
+        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
+        instagram: "https://www.instagram.com/hplubricants_hpcl/",
+        linkedin: "https://www.linkedin.com/company/hpcl",
+        hpclBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+        indiaGovBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        globalCompactBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
+      },
+    }),
+    findUnique: async () => ({
+      id: "global",
+      siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
+      siteDescription: "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
+      logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
+      phone: "+91 88007 78032",
+      email: "info@hplubricantscfa.com",
+      address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
+      socialLinks: {
+        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
+        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
+        instagram: "https://www.instagram.com/hplubricants_hpcl/",
+        linkedin: "https://www.linkedin.com/company/hpcl",
+        hpclBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+        indiaGovBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        globalCompactBadge: "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
+      },
+    }),
+    upsert: async ({ create, update }: any) => ({
+      id: "global",
+      ...(update || create || {}),
+    }),
+  },
   user: {
     findUnique: async ({ where }: any) => {
       if (where.email) return mockUsers.find((u) => u.email === where.email) || null;
