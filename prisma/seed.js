@@ -3,7 +3,9 @@ const { Pool } = require("pg");
 const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres.oyqprxabpaqzmkmuhwxl:Mahalaxmi%40tgt@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres";
+const connectionString =
+  process.env.DATABASE_URL ||
+  "postgresql://postgres.oyqprxabpaqzmkmuhwxl:Mahalaxmi%40tgt@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres";
 const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
@@ -47,10 +49,8 @@ async function main() {
         linkedin: "https://www.linkedin.com/company/hpcl",
         hpclBadge:
           "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
-        indiaGovBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
-        globalCompactBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+        indiaGovBadge: "",
+        globalCompactBadge: "",
         copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
       },
     },
