@@ -67,11 +67,6 @@ export const DEFAULT_WHY_CHOOSE_ITEMS: WhyChooseItem[] = [
   },
 ];
 
-export const DEFAULT_PROPRIETOR_PHOTO =
-  "https://res.cloudinary.com/dpa93copz/image/upload/v1788858309/mahalaxmi/team/neha-goyal-proprietor.jpg";
-export const DEFAULT_PROPRIETOR_PHOTO_ALT =
-  "Neha Goyal — Proprietor, Mahalaxmi Enterprises";
-
 export const DEFAULT_PARAGRAPHS = [
   "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lube Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
   "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
@@ -98,11 +93,11 @@ export function AboutMahalaxmiContentSection({
   const [distributorCompany, setDistributorCompany] = useState(
     "Hindustan Petroleum Corporation Limited (HPCL)"
   );
-  const [proprietorPhotos, setProprietorPhotos] = useState<(File | string | null)[]>([
-    DEFAULT_PROPRIETOR_PHOTO,
-  ]);
+  const [proprietorPhotos, setProprietorPhotos] = useState<(File | string | null)[]>(
+    initialData?.proprietorPhoto ? [initialData.proprietorPhoto] : []
+  );
   const [proprietorPhotoAlt, setProprietorPhotoAlt] = useState(
-    DEFAULT_PROPRIETOR_PHOTO_ALT
+    initialData?.proprietorPhotoAlt || ""
   );
   const [paragraphsText, setParagraphsText] = useState(
     DEFAULT_PARAGRAPHS.join("\n\n")
@@ -124,15 +119,11 @@ export function AboutMahalaxmiContentSection({
       if (initialData.proprietorRole) setProprietorRole(initialData.proprietorRole);
       if (initialData.distributorBadge !== undefined) setDistributorBadge(initialData.distributorBadge);
       if (initialData.distributorCompany !== undefined) setDistributorCompany(initialData.distributorCompany);
-      if (initialData.proprietorPhoto) {
-        setProprietorPhotos([initialData.proprietorPhoto]);
-      } else if (initialData.proprietorPhoto === undefined) {
-        setProprietorPhotos([DEFAULT_PROPRIETOR_PHOTO]);
+      if (initialData.proprietorPhoto !== undefined) {
+        setProprietorPhotos(initialData.proprietorPhoto ? [initialData.proprietorPhoto] : []);
       }
-      if (initialData.proprietorPhotoAlt) {
-        setProprietorPhotoAlt(initialData.proprietorPhotoAlt);
-      } else if (initialData.proprietorPhotoAlt === undefined) {
-        setProprietorPhotoAlt(DEFAULT_PROPRIETOR_PHOTO_ALT);
+      if (initialData.proprietorPhotoAlt !== undefined) {
+        setProprietorPhotoAlt(initialData.proprietorPhotoAlt || "");
       }
       if (Array.isArray(initialData.paragraphs)) {
         setParagraphsText(initialData.paragraphs.join("\n\n"));
