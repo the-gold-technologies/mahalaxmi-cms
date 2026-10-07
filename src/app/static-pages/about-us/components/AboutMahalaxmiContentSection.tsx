@@ -40,14 +40,12 @@ export const DEFAULT_WHY_CHOOSE_ITEMS: WhyChooseItem[] = [
   {
     icon: "Boxes",
     title: "Wide Product Portfolio",
-    description:
-      "Complete lubrication and industrial maintenance solutions under one roof.",
+    description: "Complete lubrication and industrial maintenance solutions under one roof.",
   },
   {
     icon: "Wrench",
     title: "Technical Expertise",
-    description:
-      "Professional guidance for selecting the right products for every application.",
+    description: "Professional guidance for selecting the right products for every application.",
   },
   {
     icon: "Truck",
@@ -62,8 +60,7 @@ export const DEFAULT_WHY_CHOOSE_ITEMS: WhyChooseItem[] = [
   {
     icon: "Headphones",
     title: "Customer-Centric Support",
-    description:
-      "Dedicated service to ensure long-term customer satisfaction.",
+    description: "Dedicated service to ensure long-term customer satisfaction.",
   },
 ];
 
@@ -84,41 +81,33 @@ export function AboutMahalaxmiContentSection({
 
   const [title, setTitle] = useState("ABOUT MAHALAXMI ENTERPRISES");
   const [subtitle, setSubtitle] = useState("Neha Goyal");
-  const [proprietorRole, setProprietorRole] = useState(
-    "Proprietor, Mahalaxmi Enterprises"
-  );
+  const [proprietorRole, setProprietorRole] = useState("Proprietor, Mahalaxmi Enterprises");
   const [distributorBadge, setDistributorBadge] = useState(
-    "Authorized Industrial Lube Distributor (ILD)"
+    "Authorized Industrial Lube Distributor (ILD)",
   );
   const [distributorCompany, setDistributorCompany] = useState(
-    "Hindustan Petroleum Corporation Limited (HPCL)"
+    "Hindustan Petroleum Corporation Limited (HPCL)",
   );
   const [proprietorPhotos, setProprietorPhotos] = useState<(File | string | null)[]>(
-    initialData?.proprietorPhoto ? [initialData.proprietorPhoto] : []
+    initialData?.proprietorPhoto ? [initialData.proprietorPhoto] : [],
   );
   const [proprietorPhotoAlt, setProprietorPhotoAlt] = useState(
-    initialData?.proprietorPhotoAlt || ""
+    initialData?.proprietorPhotoAlt || "",
   );
-  const [paragraphsText, setParagraphsText] = useState(
-    DEFAULT_PARAGRAPHS.join("\n\n")
-  );
-  const [whyChooseTitle, setWhyChooseTitle] = useState(
-    "WHY CHOOSE MAHALAXMI ENTERPRISES"
-  );
-  const [whyChooseSubtitle, setWhyChooseSubtitle] = useState(
-    "Delivering Quality. Building Trust."
-  );
-  const [whyChooseItems, setWhyChooseItems] = useState<WhyChooseItem[]>(
-    DEFAULT_WHY_CHOOSE_ITEMS
-  );
+  const [paragraphsText, setParagraphsText] = useState(DEFAULT_PARAGRAPHS.join("\n\n"));
+  const [whyChooseTitle, setWhyChooseTitle] = useState("WHY CHOOSE MAHALAXMI ENTERPRISES");
+  const [whyChooseSubtitle, setWhyChooseSubtitle] = useState("Delivering Quality. Building Trust.");
+  const [whyChooseItems, setWhyChooseItems] = useState<WhyChooseItem[]>(DEFAULT_WHY_CHOOSE_ITEMS);
 
   useEffect(() => {
     if (initialData) {
       if (initialData.title) setTitle(initialData.title);
       if (initialData.subtitle) setSubtitle(initialData.subtitle);
       if (initialData.proprietorRole) setProprietorRole(initialData.proprietorRole);
-      if (initialData.distributorBadge !== undefined) setDistributorBadge(initialData.distributorBadge);
-      if (initialData.distributorCompany !== undefined) setDistributorCompany(initialData.distributorCompany);
+      if (initialData.distributorBadge !== undefined)
+        setDistributorBadge(initialData.distributorBadge);
+      if (initialData.distributorCompany !== undefined)
+        setDistributorCompany(initialData.distributorCompany);
       if (initialData.proprietorPhoto !== undefined) {
         setProprietorPhotos(initialData.proprietorPhoto ? [initialData.proprietorPhoto] : []);
       }
@@ -130,24 +119,15 @@ export function AboutMahalaxmiContentSection({
       } else if (typeof initialData.paragraphs === "string") {
         setParagraphsText(initialData.paragraphs);
       }
-      if (initialData.whyChooseTitle)
-        setWhyChooseTitle(initialData.whyChooseTitle);
-      if (initialData.whyChooseSubtitle)
-        setWhyChooseSubtitle(initialData.whyChooseSubtitle);
-      if (
-        Array.isArray(initialData.whyChooseItems) &&
-        initialData.whyChooseItems.length > 0
-      ) {
+      if (initialData.whyChooseTitle) setWhyChooseTitle(initialData.whyChooseTitle);
+      if (initialData.whyChooseSubtitle) setWhyChooseSubtitle(initialData.whyChooseSubtitle);
+      if (Array.isArray(initialData.whyChooseItems) && initialData.whyChooseItems.length > 0) {
         setWhyChooseItems(initialData.whyChooseItems);
       }
     }
   }, [initialData]);
 
-  const handleWhyChooseChange = (
-    index: number,
-    field: keyof WhyChooseItem,
-    val: string
-  ) => {
+  const handleWhyChooseChange = (index: number, field: keyof WhyChooseItem, val: string) => {
     setWhyChooseItems((prev) => {
       const copy = [...prev];
       copy[index] = { ...copy[index], [field]: val };
@@ -174,16 +154,13 @@ export function AboutMahalaxmiContentSection({
     setLoading(true);
     setSaved(false);
     try {
-      const validImages = proprietorPhotos.filter(
-        (img): img is File | string => !!img
-      );
+      const validImages = proprietorPhotos.filter((img): img is File | string => !!img);
 
       let finalProprietorPhoto = "";
       if (validImages.length > 0) {
         const [uploadedUrl] = await uploadFiles(validImages);
         finalProprietorPhoto =
-          uploadedUrl ||
-          (typeof validImages[0] === "string" ? validImages[0] : "");
+          uploadedUrl || (typeof validImages[0] === "string" ? validImages[0] : "");
       }
 
       const parsedParagraphs = paragraphsText
@@ -306,7 +283,8 @@ export function AboutMahalaxmiContentSection({
                   placeholder="e.g. Neha Goyal — Proprietor, Mahalaxmi Enterprises"
                 />
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  This photo and designation are loaded directly into the About Us page alongside the proprietor&apos;s credentials.
+                  This photo and designation are loaded directly into the About Us page alongside
+                  the proprietor&apos;s credentials.
                 </p>
               </div>
             </div>
@@ -382,17 +360,13 @@ export function AboutMahalaxmiContentSection({
                       <InputField
                         label="Icon (Lucide Name)"
                         value={item.icon}
-                        onChange={(e) =>
-                          handleWhyChooseChange(index, "icon", e.target.value)
-                        }
+                        onChange={(e) => handleWhyChooseChange(index, "icon", e.target.value)}
                         placeholder="Building2, Boxes, Wrench, Truck..."
                       />
                       <InputField
                         label="Card Title"
                         value={item.title}
-                        onChange={(e) =>
-                          handleWhyChooseChange(index, "title", e.target.value)
-                        }
+                        onChange={(e) => handleWhyChooseChange(index, "title", e.target.value)}
                         placeholder="e.g. Industrial Lube Distributor"
                       />
                       <TextAreaField
@@ -400,11 +374,7 @@ export function AboutMahalaxmiContentSection({
                         rows={2}
                         value={item.description}
                         onChange={(e) =>
-                          handleWhyChooseChange(
-                            index,
-                            "description",
-                            e.target.value
-                          )
+                          handleWhyChooseChange(index, "description", e.target.value)
                         }
                         placeholder="Brief description..."
                       />

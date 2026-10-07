@@ -38,10 +38,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: sectionsMap, seo });
   } catch (error) {
     console.error("Error fetching home page content:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -54,7 +51,7 @@ export async function PUT(request: Request) {
     if (!sectionName || typeof sectionName !== "string") {
       return NextResponse.json(
         { success: false, error: "'section' or 'sectionType' (string) is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -101,9 +98,6 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error saving home section:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

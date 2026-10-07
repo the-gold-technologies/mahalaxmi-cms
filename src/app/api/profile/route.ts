@@ -36,10 +36,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: user });
   } catch (error: any) {
     console.error("Error fetching profile:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to load profile" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Failed to load profile" }, { status: 500 });
   }
 }
 
@@ -66,7 +63,7 @@ export async function PUT(request: Request) {
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Admin user record not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -85,7 +82,7 @@ export async function PUT(request: Request) {
       if (existing && existing.id !== user.id) {
         return NextResponse.json(
           { success: false, error: "This email address is already in use by another user" },
-          { status: 400 }
+          { status: 400 },
         );
       }
       updateData.email = trimmedEmail;
@@ -98,14 +95,14 @@ export async function PUT(request: Request) {
       if (trimmedNewPassword.length < 6) {
         return NextResponse.json(
           { success: false, error: "New password must be at least 6 characters long" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
       if (!currentPassword) {
         return NextResponse.json(
           { success: false, error: "Please enter your current password to authorize this change" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -115,7 +112,7 @@ export async function PUT(request: Request) {
         if (!isMatch && currentPassword !== "Admin@123") {
           return NextResponse.json(
             { success: false, error: "Current password is incorrect" },
-            { status: 400 }
+            { status: 400 },
           );
         }
       }
@@ -143,7 +140,7 @@ export async function PUT(request: Request) {
     console.error("Error updating profile:", error);
     return NextResponse.json(
       { success: false, error: error?.message || "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

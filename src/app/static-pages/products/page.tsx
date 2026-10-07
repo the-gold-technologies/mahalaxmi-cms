@@ -122,7 +122,7 @@ export default function ProductsCatalogCMSPage() {
         val
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "")
+          .replace(/^-+|-+$/g, ""),
       );
     }
   };
@@ -138,9 +138,7 @@ export default function ProductsCatalogCMSPage() {
 
     try {
       let finalCoverUrl = "";
-      const validImages = catImages.filter(
-        (img): img is File | string => !!img
-      );
+      const validImages = catImages.filter((img): img is File | string => !!img);
       if (validImages.length > 0) {
         const [uploaded] = await uploadFiles(validImages);
         finalCoverUrl = uploaded || "";
@@ -159,16 +157,12 @@ export default function ProductsCatalogCMSPage() {
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          editingCategory ? { ...payload, id: editingCategory.id } : payload
-        ),
+        body: JSON.stringify(editingCategory ? { ...payload, id: editingCategory.id } : payload),
       });
 
       const json = await res.json();
       if (json.success) {
-        toast.success(
-          editingCategory ? "Category updated successfully" : "Category created"
-        );
+        toast.success(editingCategory ? "Category updated successfully" : "Category created");
         setIsCategoryModalOpen(false);
         fetchCatalog();
       } else {
@@ -220,15 +214,12 @@ export default function ProductsCatalogCMSPage() {
   };
 
   const filteredProducts = products.filter((p) => {
-    const matchesCat =
-      selectedCategory === "all" || p.categorySlug === selectedCategory;
+    const matchesCat = selectedCategory === "all" || p.categorySlug === selectedCategory;
     const matchesSearch =
       !searchQuery ||
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.subtitle &&
-        p.subtitle.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (p.subCategoryTitle &&
-        p.subCategoryTitle.toLowerCase().includes(searchQuery.toLowerCase()));
+      (p.subtitle && p.subtitle.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (p.subCategoryTitle && p.subCategoryTitle.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCat && matchesSearch;
   });
 
@@ -265,9 +256,7 @@ export default function ProductsCatalogCMSPage() {
               All Categories ({products.length})
             </button>
             {categories.map((cat) => {
-              const count = products.filter(
-                (p) => p.categorySlug === cat.slug
-              ).length;
+              const count = products.filter((p) => p.categorySlug === cat.slug).length;
               const isSelected = selectedCategory === cat.slug;
               return (
                 <div key={cat.slug} className="flex items-center group/cat">
@@ -283,9 +272,7 @@ export default function ProductsCatalogCMSPage() {
                     <span>{cat.name}</span>
                     <span
                       className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                        isSelected
-                          ? "bg-white/20 text-white"
-                          : "bg-gray-200 text-gray-700"
+                        isSelected ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
                       }`}
                     >
                       {count}
@@ -528,9 +515,7 @@ export default function ProductsCatalogCMSPage() {
                 {editingCategory && (
                   <button
                     type="button"
-                    onClick={() =>
-                      handleDeleteCategory(editingCategory.id, editingCategory.name)
-                    }
+                    onClick={() => handleDeleteCategory(editingCategory.id, editingCategory.name)}
                     className="text-xs font-semibold text-red-600 hover:underline cursor-pointer"
                   >
                     Delete Category

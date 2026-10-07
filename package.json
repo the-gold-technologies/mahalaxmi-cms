@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "prisma": {
     "seed": "node prisma/seed.js"
@@ -48,6 +50,7 @@
     "eslint-config-next": "16.1.6",
     "prisma": "6.19.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "prettier": "^3.9.9"
   }
 }

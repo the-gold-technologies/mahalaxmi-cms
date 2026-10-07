@@ -31,8 +31,8 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   const [manualUrl, setManualUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const images = (controlledImages ?? internalImages).filter(
-    (img): img is string | File => Boolean(img)
+  const images = (controlledImages ?? internalImages).filter((img): img is string | File =>
+    Boolean(img),
   );
 
   const handleUpdate = (newImages: (File | string | null)[]) => {
@@ -55,7 +55,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
         f.name.endsWith(".png") ||
         f.name.endsWith(".jpg") ||
         f.name.endsWith(".jpeg") ||
-        f.name.endsWith(".webp")
+        f.name.endsWith(".webp"),
     );
 
     if (validFiles.length === 0) {
@@ -80,7 +80,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
       setUploadProgressText(
         filesToUpload.length > 1
           ? `Uploading ${i + 1}/${filesToUpload.length}: ${file.name}...`
-          : `Uploading ${file.name}...`
+          : `Uploading ${file.name}...`,
       );
 
       try {
@@ -112,15 +112,15 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
       if (maxImages === 1) {
         handleUpdate([uploadedUrls[0]]);
       } else {
-        const currentStringImages = images.map((img) =>
-          typeof img === "string" ? img : ""
-        ).filter(Boolean);
+        const currentStringImages = images
+          .map((img) => (typeof img === "string" ? img : ""))
+          .filter(Boolean);
         handleUpdate([...currentStringImages, ...uploadedUrls].slice(0, maxImages));
       }
       toast.success(
         uploadedUrls.length === 1
           ? "Image uploaded successfully!"
-          : `${uploadedUrls.length} images uploaded successfully!`
+          : `${uploadedUrls.length} images uploaded successfully!`,
       );
     }
   };
@@ -167,9 +167,9 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
     if (maxImages === 1) {
       handleUpdate([url]);
     } else {
-      const currentStringImages = images.map((img) =>
-        typeof img === "string" ? img : ""
-      ).filter(Boolean);
+      const currentStringImages = images
+        .map((img) => (typeof img === "string" ? img : ""))
+        .filter(Boolean);
       handleUpdate([...currentStringImages, url].slice(0, maxImages));
     }
     setManualUrl("");

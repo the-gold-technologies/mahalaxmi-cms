@@ -2,7 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "@/components/PageHeader";
-import { Search, Loader2, Mail, Calendar, User, Building, MapPin, MessageSquare, Phone, X, ShieldCheck } from "lucide-react";
+import {
+  Search,
+  Loader2,
+  Mail,
+  Calendar,
+  User,
+  Building,
+  MapPin,
+  MessageSquare,
+  Phone,
+  X,
+  ShieldCheck,
+} from "lucide-react";
 import { InputField } from "@/components/InputField";
 import toast from "react-hot-toast";
 
@@ -112,10 +124,7 @@ export default function DistributorLeadsCMSPage() {
                 </tr>
               ) : (
                 filtered.map((lead) => (
-                  <tr
-                    key={lead.id}
-                    className="hover:bg-gray-50/50 transition-colors group"
-                  >
+                  <tr key={lead.id} className="hover:bg-gray-50/50 transition-colors group">
                     <td className="px-6 py-5 pl-8">
                       <div className="flex flex-col">
                         <span className="font-bold text-gray-900 flex items-center gap-2">
@@ -179,9 +188,7 @@ export default function DistributorLeadsCMSPage() {
           <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-gray-100 p-8 flex flex-col gap-5">
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
-                <h3 className="font-bold text-lg text-[#0B0F29]">
-                  {activeLead.firmName}
-                </h3>
+                <h3 className="font-bold text-lg text-[#0B0F29]">{activeLead.firmName}</h3>
                 <p className="text-xs text-gray-400 mt-0.5">
                   Applicant: {activeLead.name} &bull; {activeLead.phone}
                 </p>

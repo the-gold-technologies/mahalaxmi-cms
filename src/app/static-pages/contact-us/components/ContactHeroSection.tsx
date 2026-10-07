@@ -20,10 +20,7 @@ interface ContactHeroSectionProps {
   onSave?: (data: ContactHeroData) => Promise<boolean | void>;
 }
 
-export function ContactHeroSection({
-  initialData,
-  onSave,
-}: ContactHeroSectionProps) {
+export function ContactHeroSection({ initialData, onSave }: ContactHeroSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [title, setTitle] = useState("Contact Us");
   const [subtitle, setSubtitle] = useState("");

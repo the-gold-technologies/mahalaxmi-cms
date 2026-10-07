@@ -27,9 +27,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       )}
       <div className="relative w-full">
         {icon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-            {icon}
-          </div>
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">{icon}</div>
         )}
         <select
           className={`w-full ${icon ? "pl-12" : "px-5"} pr-10 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-sm focus:ring-2 focus:ring-[#D8232A]/20 focus:border-[#D8232A] outline-none transition-all appearance-none cursor-pointer text-gray-800 ${className}`}

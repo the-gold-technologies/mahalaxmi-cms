@@ -2,11 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "@/components/PageHeader";
-import {
-  EventsHeroSection,
-  EventsContentSection,
-  EventsGallerySection,
-} from "./components";
+import { EventsHeroSection, EventsContentSection, EventsGallerySection } from "./components";
 import toast from "react-hot-toast";
 
 export default function EventsCMSPage() {

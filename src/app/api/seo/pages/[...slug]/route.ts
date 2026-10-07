@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ slug: string | string[] }> }
+  { params }: { params: Promise<{ slug: string | string[] }> },
 ) {
   try {
     const { slug: rawSlug } = await params;
@@ -65,25 +65,19 @@ export async function GET(
     }
 
     if (!page) {
-      return NextResponse.json(
-        { success: false, error: "Page not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: "Page not found" }, { status: 404 });
     }
 
     return NextResponse.json({ success: true, data: page });
   } catch (error) {
     console.error("Error fetching page SEO data:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ slug: string | string[] }> }
+  { params }: { params: Promise<{ slug: string | string[] }> },
 ) {
   try {
     const { slug: rawSlug } = await params;
@@ -93,10 +87,7 @@ export async function PUT(
     const { seo } = body;
 
     if (!seo) {
-      return NextResponse.json(
-        { success: false, error: "SEO data is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: "SEO data is required" }, { status: 400 });
     }
 
     const updatedPage = await prisma.page.upsert({
@@ -135,9 +126,6 @@ export async function PUT(
     return NextResponse.json({ success: true, data: updatedPage });
   } catch (error) {
     console.error("Error updating page SEO data:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -109,9 +109,7 @@ function LogoDropzone({
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
-      <label className="text-xs font-semibold text-slate-700 tracking-wide">
-        {label}
-      </label>
+      <label className="text-xs font-semibold text-slate-700 tracking-wide">{label}</label>
 
       <input
         type="file"
@@ -145,9 +143,7 @@ function LogoDropzone({
               <span className="text-xs font-bold text-gray-900 truncate">
                 {value.split("/").pop() || "Logo Image"}
               </span>
-              <span className="text-[11px] text-emerald-600 font-medium">
-                ✓ Logo loaded
-              </span>
+              <span className="text-[11px] text-emerald-600 font-medium">✓ Logo loaded</span>
             </div>
           </div>
 
@@ -224,9 +220,7 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [data, setData] = useState<TrustedClientsData>(
-    DEFAULT_TRUSTED_CLIENTS_DATA
-  );
+  const [data, setData] = useState<TrustedClientsData>(DEFAULT_TRUSTED_CLIENTS_DATA);
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({
     haldiram: true,
   });
@@ -237,13 +231,12 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
         Array.isArray(initialData.clients) && initialData.clients.length > 0
           ? initialData.clients
           : Array.isArray(initialData) && initialData.length > 0
-          ? initialData
-          : DEFAULT_TRUSTED_CLIENTS;
+            ? initialData
+            : DEFAULT_TRUSTED_CLIENTS;
 
       setData({
         title: initialData.title || DEFAULT_TRUSTED_CLIENTS_DATA.title,
-        description:
-          initialData.description || DEFAULT_TRUSTED_CLIENTS_DATA.description,
+        description: initialData.description || DEFAULT_TRUSTED_CLIENTS_DATA.description,
         clients: list,
       });
 
@@ -290,11 +283,7 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
     toast.success("Client removed");
   };
 
-  const handleClientChange = (
-    idx: number,
-    field: keyof ClientItem,
-    value: string
-  ) => {
+  const handleClientChange = (idx: number, field: keyof ClientItem, value: string) => {
     const updated = [...data.clients];
     updated[idx] = { ...updated[idx], [field]: value };
     setData((prev) => ({ ...prev, clients: updated }));
@@ -334,9 +323,7 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
         <SectionHeader
           title="Trusted Clients & Partners Marquee"
           description="Manage corporate client logos, government partners, and defense organizations displayed in the marquee."
-          badge={`${data.clients.length} Client${
-            data.clients.length === 1 ? "" : "s"
-          }`}
+          badge={`${data.clients.length} Client${data.clients.length === 1 ? "" : "s"}`}
           isOpen={isOpen}
           onToggle={() => setIsOpen(!isOpen)}
         />
@@ -353,9 +340,7 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
                 <InputField
                   label="Section Title"
                   value={data.title}
-                  onChange={(e) =>
-                    setData((prev) => ({ ...prev, title: e.target.value }))
-                  }
+                  onChange={(e) => setData((prev) => ({ ...prev, title: e.target.value }))}
                   placeholder="TRUSTED CLIENTS & PARTNERS"
                   helperText="Main heading for the marquee section"
                 />
@@ -476,21 +461,13 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
                             <InputField
                               label="Client / Enterprise Name"
                               value={client.name}
-                              onChange={(e) =>
-                                handleClientChange(idx, "name", e.target.value)
-                              }
+                              onChange={(e) => handleClientChange(idx, "name", e.target.value)}
                               placeholder="e.g. Haldiram's / THDC Khurja"
                             />
                             <InputField
                               label="Industry / Category"
                               value={client.category}
-                              onChange={(e) =>
-                                handleClientChange(
-                                  idx,
-                                  "category",
-                                  e.target.value
-                                )
-                              }
+                              onChange={(e) => handleClientChange(idx, "category", e.target.value)}
                               placeholder="e.g. Food Processing Giant / Armed Forces"
                             />
                           </div>
@@ -498,9 +475,7 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
                           <LogoDropzone
                             label="Client Brand Logo"
                             value={client.logo}
-                            onChange={(url) =>
-                              handleClientChange(idx, "logo", url)
-                            }
+                            onChange={(url) => handleClientChange(idx, "logo", url)}
                           />
                         </div>
                       </div>

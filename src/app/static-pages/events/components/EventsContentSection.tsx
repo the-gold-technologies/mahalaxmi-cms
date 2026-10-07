@@ -17,14 +17,11 @@ interface EventsContentSectionProps {
   onSave?: (data: EventsContentData) => Promise<boolean | void>;
 }
 
-export function EventsContentSection({
-  initialData,
-  onSave,
-}: EventsContentSectionProps) {
+export function EventsContentSection({ initialData, onSave }: EventsContentSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [title, setTitle] = useState("EVENTS");
   const [introText, setIntroText] = useState(
-    "Mahalaxmi Enterprises actively engages with their stakeholders by frequently hosting meetings and events with them. This includes meeting business partners, strategic partners, distributors, OEMs, agencies, mechanics, and industrial clients."
+    "Mahalaxmi Enterprises actively engages with their stakeholders by frequently hosting meetings and events with them. This includes meeting business partners, strategic partners, distributors, OEMs, agencies, mechanics, and industrial clients.",
   );
   const [loading, setLoading] = useState(false);
 

@@ -105,9 +105,7 @@ export default function ProfileSettingsPage() {
   if (isFetching) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
-        <div className="animate-pulse text-gray-400 font-medium">
-          Loading profile details...
-        </div>
+        <div className="animate-pulse text-gray-400 font-medium">Loading profile details...</div>
       </div>
     );
   }
@@ -131,9 +129,7 @@ export default function ProfileSettingsPage() {
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#0B0F29]">
-                1. Administrator Information
-              </h2>
+              <h2 className="text-lg font-bold text-[#0B0F29]">1. Administrator Information</h2>
               <p className="text-xs text-slate-400">
                 Primary contact details for this administrator account.
               </p>
@@ -178,9 +174,7 @@ export default function ProfileSettingsPage() {
               <Lock className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#0B0F29]">
-                2. Change Password
-              </h2>
+              <h2 className="text-lg font-bold text-[#0B0F29]">2. Change Password</h2>
               <p className="text-xs text-slate-400">
                 Update your login password. Leave blank if you do not want to change it.
               </p>
@@ -205,11 +199,7 @@ export default function ProfileSettingsPage() {
                 onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
               >
-                {showCurrentPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
+                {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
@@ -233,11 +223,7 @@ export default function ProfileSettingsPage() {
                   onClick={() => setShowNewPassword(!showNewPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
                 >
-                  {showNewPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>

@@ -55,7 +55,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
 
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
       HTMLTextAreaElement.prototype,
-      "value"
+      "value",
     )?.set;
     nativeInputValueSetter?.call(textarea, newValue);
 
@@ -102,12 +102,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         </button>
       </div>
 
-      <textarea
-        ref={textareaRef}
-        rows={rows}
-        className={textareaClass}
-        {...props}
-      />
+      <textarea ref={textareaRef} rows={rows} className={textareaClass} {...props} />
 
       {/* Styled Inline Link Dialog/Modal */}
       {showLinkModal && (

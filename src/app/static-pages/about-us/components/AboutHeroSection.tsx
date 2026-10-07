@@ -30,7 +30,7 @@ export function AboutHeroSection({ initialData }: { initialData?: any }) {
     DEFAULT_HERO_DATA.image || "/About-HPCL.jpg",
   ]);
   const [altText, setAltText] = useState(
-    DEFAULT_HERO_DATA.altText || "About MAHALAXMI ENTERPRISES Banner"
+    DEFAULT_HERO_DATA.altText || "About MAHALAXMI ENTERPRISES Banner",
   );
 
   useEffect(() => {
@@ -49,9 +49,7 @@ export function AboutHeroSection({ initialData }: { initialData?: any }) {
     setLoading(true);
     setSaved(false);
     try {
-      const validImages = images.filter(
-        (img): img is File | string => !!img
-      );
+      const validImages = images.filter((img): img is File | string => !!img);
 
       if (validImages.length === 0) {
         toast.error("Please upload a hero banner image.");

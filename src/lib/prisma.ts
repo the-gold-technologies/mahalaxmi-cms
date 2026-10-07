@@ -50,7 +50,10 @@ export const prisma = new Proxy(prismaClient, {
           try {
             return await method.apply(modelTarget, args);
           } catch (err: any) {
-            console.warn(`Prisma.${String(prop)}.${String(methodProp)} failed, using mockPrisma fallback:`, err?.message || err);
+            console.warn(
+              `Prisma.${String(prop)}.${String(methodProp)} failed, using mockPrisma fallback:`,
+              err?.message || err,
+            );
             const mockModel = (mockPrisma as any)[prop];
             if (mockModel && typeof mockModel[methodProp] === "function") {
               return await mockModel[methodProp](...args);
@@ -58,7 +61,7 @@ export const prisma = new Proxy(prismaClient, {
             throw err;
           }
         };
-      }
+      },
     });
-  }
+  },
 });

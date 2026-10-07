@@ -41,10 +41,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Error fetching contact-us:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -91,7 +88,13 @@ export async function PUT(request: Request) {
 
     // 2. Full object update
     for (const [sectionType, content] of Object.entries(body)) {
-      if (sectionType === "sections" || sectionType === "offices" || sectionType === "seo" || sectionType === "RegionalOffices") continue;
+      if (
+        sectionType === "sections" ||
+        sectionType === "offices" ||
+        sectionType === "seo" ||
+        sectionType === "RegionalOffices"
+      )
+        continue;
 
       const existing = await prisma.section.findFirst({
         where: { pageId: page.id, type: sectionType },
@@ -118,9 +121,6 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating contact-us sections:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -74,9 +74,7 @@ export function PropertiesTableEditor({
                     <input
                       type="text"
                       value={row.property}
-                      onChange={(e) =>
-                        handleUpdateCell(idx, "property", e.target.value)
-                      }
+                      onChange={(e) => handleUpdateCell(idx, "property", e.target.value)}
                       placeholder="e.g. Kinematic Viscosity @ 100°C, cSt"
                       className="w-full px-3 py-2 bg-gray-50/60 border border-gray-200 rounded-xl text-xs text-gray-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#D8232A]"
                     />
@@ -85,9 +83,7 @@ export function PropertiesTableEditor({
                     <input
                       type="text"
                       value={row.value}
-                      onChange={(e) =>
-                        handleUpdateCell(idx, "value", e.target.value)
-                      }
+                      onChange={(e) => handleUpdateCell(idx, "value", e.target.value)}
                       placeholder="e.g. 14.5 - 15.5"
                       className="w-full px-3 py-2 bg-gray-50/60 border border-gray-200 rounded-xl text-xs text-gray-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#D8232A]"
                     />

@@ -15,10 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: true, data: enquiries });
   } catch (error) {
     console.error("Error fetching enquiries:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -29,8 +26,11 @@ export async function POST(request: Request) {
 
     if (!name || (!email && !phone)) {
       return NextResponse.json(
-        { success: false, error: "Name and at least one contact method (email or phone) are required" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Name and at least one contact method (email or phone) are required",
+        },
+        { status: 400 },
       );
     }
 
@@ -56,10 +56,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: created });
   } catch (error) {
     console.error("Error submitting enquiry:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -71,7 +68,7 @@ export async function PUT(request: Request) {
     if (!id || !status) {
       return NextResponse.json(
         { success: false, error: "id and status are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -83,10 +80,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     console.error("Error updating enquiry:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -96,19 +90,13 @@ export async function DELETE(request: Request) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json(
-        { success: false, error: "id is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: "id is required" }, { status: 400 });
     }
 
     await prisma.enquiry.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting enquiry:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

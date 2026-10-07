@@ -1,9 +1,7 @@
 /**
  * Helper to upload images and files via /api/upload
  */
-export async function uploadFiles(
-  files: File[] | FileList | (File | string)[]
-): Promise<string[]> {
+export async function uploadFiles(files: File[] | FileList | (File | string)[]): Promise<string[]> {
   const urls: string[] = [];
 
   for (let i = 0; i < files.length; i++) {

@@ -14,10 +14,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: categories });
   } catch (error) {
     console.error("Error fetching categories:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -29,7 +26,7 @@ export async function POST(request: Request) {
     if (!name || !slug) {
       return NextResponse.json(
         { success: false, error: "Category name and slug are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -53,12 +50,12 @@ export async function POST(request: Request) {
     if (error.code === "P2002") {
       return NextResponse.json(
         { success: false, error: "A category with this slug already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
     return NextResponse.json(
       { success: false, error: error?.message || "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -71,7 +68,7 @@ export async function PUT(request: Request) {
     if (!id) {
       return NextResponse.json(
         { success: false, error: "Category ID is required for update" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -93,7 +90,7 @@ export async function PUT(request: Request) {
     console.error("Error updating category:", error);
     return NextResponse.json(
       { success: false, error: error?.message || "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -106,7 +103,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json(
         { success: false, error: "Category ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -119,7 +116,7 @@ export async function DELETE(request: Request) {
     console.error("Error deleting category:", error);
     return NextResponse.json(
       { success: false, error: error?.message || "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

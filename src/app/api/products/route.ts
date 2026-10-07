@@ -60,10 +60,7 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("Error fetching products:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -75,7 +72,7 @@ export async function POST(request: Request) {
     if (!name || !slug) {
       return NextResponse.json(
         { success: false, error: "Name and slug are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -96,10 +93,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: product });
   } catch (error) {
     console.error("Error creating product:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -111,7 +105,7 @@ export async function PUT(request: Request) {
     if (!id) {
       return NextResponse.json(
         { success: false, error: "Product ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -123,10 +117,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: product });
   } catch (error) {
     console.error("Error updating product:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -138,7 +129,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json(
         { success: false, error: "Product ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -149,9 +140,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting product:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

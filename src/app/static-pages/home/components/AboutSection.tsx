@@ -38,13 +38,8 @@ export function AboutSection({ initialData }: { initialData?: any }) {
             : DEFAULT_ABOUT_DATA.heading),
         description: initialData.description || DEFAULT_ABOUT_DATA.description,
         btnLabel:
-          initialData.btnLabel ||
-          initialData.primaryBtnLabel ||
-          DEFAULT_ABOUT_DATA.btnLabel,
-        btnUrl:
-          initialData.btnUrl ||
-          initialData.primaryBtnUrl ||
-          DEFAULT_ABOUT_DATA.btnUrl,
+          initialData.btnLabel || initialData.primaryBtnLabel || DEFAULT_ABOUT_DATA.btnLabel,
+        btnUrl: initialData.btnUrl || initialData.primaryBtnUrl || DEFAULT_ABOUT_DATA.btnUrl,
       });
     }
   }, [initialData]);
@@ -106,9 +101,7 @@ export function AboutSection({ initialData }: { initialData?: any }) {
               <InputField
                 label="Section Heading"
                 value={formData.heading}
-                onChange={(e) =>
-                  setFormData({ ...formData, heading: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, heading: e.target.value })}
                 placeholder="About Mahalaxmi Enterprises"
                 helperText="Main title for the about section"
               />
@@ -118,9 +111,7 @@ export function AboutSection({ initialData }: { initialData?: any }) {
                 label="About Description (Company Overview)"
                 rows={5}
                 value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Mahalaxmi Enterprises is an Authorized Industrial Lube Distributor (ILD)..."
                 helperText="Main narrative overview describing company background and operations"
               />
@@ -130,18 +121,14 @@ export function AboutSection({ initialData }: { initialData?: any }) {
                 <InputField
                   label="CTA Button Label"
                   value={formData.btnLabel}
-                  onChange={(e) =>
-                    setFormData({ ...formData, btnLabel: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, btnLabel: e.target.value })}
                   placeholder="Read More"
                 />
 
                 <InputField
                   label="CTA Button Target URL"
                   value={formData.btnUrl}
-                  onChange={(e) =>
-                    setFormData({ ...formData, btnUrl: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, btnUrl: e.target.value })}
                   placeholder="#products or /products"
                   helperText="Destination link for the button"
                 />

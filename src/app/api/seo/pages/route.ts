@@ -35,17 +35,12 @@ export async function GET() {
     for (const link of links) {
       const urlMatchesSlug = (url: string, slug: string) => {
         if (url === "/" && slug === "home") return true;
-        if (
-          (url === "/products/industrial-oils" || url === "/products") &&
-          slug === "products"
-        )
+        if ((url === "/products/industrial-oils" || url === "/products") && slug === "products")
           return true;
         return url === `/${slug}`;
       };
 
-      const matchedPage = pages.find((p: any) =>
-        urlMatchesSlug(link.url, p.slug),
-      );
+      const matchedPage = pages.find((p: any) => urlMatchesSlug(link.url, p.slug));
       const targetSlug = matchedPage
         ? matchedPage.slug
         : link.url === "/"
@@ -107,9 +102,7 @@ export async function GET() {
           pageId: page.id,
           title:
             page.title ||
-            page.slug
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, (l: string) => l.toUpperCase()),
+            page.slug.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()),
           slug: page.slug,
           metaTitle: page.metaTitle,
           metaDescription: page.metaDescription,
@@ -117,8 +110,7 @@ export async function GET() {
           visibility: page.visibility,
           parent: page.parent || "-",
           order: secondaryIndex++,
-          description:
-            page.description || `Configure SEO for ${page.title || page.slug}`,
+          description: page.description || `Configure SEO for ${page.title || page.slug}`,
           navTitle: page.title,
           isStatic: page.isStatic,
           headingOptions: page.headingOptions,
@@ -127,9 +119,7 @@ export async function GET() {
     }
 
     // 3. Automatically inject Dynamic Blog Posts from DB under Blogs parent
-    let blogParentIdx = mergedData.findIndex(
-      (m: any) => m.slug === "blogs" || m.slug === "blog",
-    );
+    let blogParentIdx = mergedData.findIndex((m: any) => m.slug === "blogs" || m.slug === "blog");
     let blogParentId = "blogs-seo-parent-id";
 
     if (blogParentIdx !== -1) {
@@ -172,9 +162,6 @@ export async function GET() {
     return NextResponse.json({ success: true, data: mergedData });
   } catch (error) {
     console.error("Error fetching pages for SEO:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

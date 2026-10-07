@@ -34,10 +34,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: sectionsMap, seo });
   } catch (error) {
     console.error("Error fetching about-us:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -67,7 +64,13 @@ export async function PUT(request: Request) {
     }
 
     for (const [sectionType, content] of Object.entries(sectionsToSave)) {
-      if (sectionType === "sections" || sectionType === "section" || sectionType === "content" || sectionType === "seo") continue;
+      if (
+        sectionType === "sections" ||
+        sectionType === "section" ||
+        sectionType === "content" ||
+        sectionType === "seo"
+      )
+        continue;
       const existing = await prisma.section.findFirst({
         where: { pageId: page.id, type: sectionType },
       });
@@ -93,9 +96,6 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error saving about-us sections:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

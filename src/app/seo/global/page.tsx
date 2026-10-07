@@ -47,8 +47,8 @@ export default function GlobalSEOPage() {
               typeof data.schema === "string"
                 ? data.schema
                 : data.schema
-                ? JSON.stringify(data.schema, null, 2)
-                : "",
+                  ? JSON.stringify(data.schema, null, 2)
+                  : "",
             headingOptions:
               typeof data.headingOptions === "object" && data.headingOptions !== null
                 ? data.headingOptions
@@ -95,9 +95,7 @@ export default function GlobalSEOPage() {
         toast.success("Global SEO settings saved successfully!", { id: tid });
       } else {
         const errMsg =
-          typeof json.error === "string"
-            ? json.error
-            : json.error?.message || "Save failed.";
+          typeof json.error === "string" ? json.error : json.error?.message || "Save failed.";
         console.error("Global SEO save error details:", json.error);
         toast.error(errMsg, { id: tid });
       }
@@ -134,9 +132,7 @@ export default function GlobalSEOPage() {
   if (isLoading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
-        <div className="animate-pulse text-gray-400 font-medium">
-          Loading SEO settings...
-        </div>
+        <div className="animate-pulse text-gray-400 font-medium">Loading SEO settings...</div>
       </div>
     );
   }
@@ -149,11 +145,7 @@ export default function GlobalSEOPage() {
           description="Manage website-wide meta tags, landing page heading hierarchy, tracking codes, and favicon."
         />
         <div className="mb-2 shrink-0">
-          <SaveButton
-            onClick={handleSave}
-            disabled={isSaving}
-            className="w-auto px-10"
-          />
+          <SaveButton onClick={handleSave} disabled={isSaving} className="w-auto px-10" />
         </div>
       </div>
 
@@ -164,26 +156,20 @@ export default function GlobalSEOPage() {
             <div className="p-2.5 bg-blue-50 text-[#002B5C] rounded-2xl">
               <Globe className="w-5 h-5" />
             </div>
-            <h2 className="text-xl font-bold text-[#0B0F29]">
-              General Identity
-            </h2>
+            <h2 className="text-xl font-bold text-[#0B0F29]">General Identity</h2>
           </div>
 
           <InputField
             label="Default Site Title"
             value={formData.siteTitle}
-            onChange={(e) =>
-              setFormData({ ...formData, siteTitle: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, siteTitle: e.target.value })}
             placeholder="e.g. Mahalaxmi Enterprises | HP Lubricants Distributor"
             tooltip="The main title of your website. Appears in browser tabs and search results."
           />
           <TextAreaField
             label="Default Site Description"
             value={formData.siteDescription}
-            onChange={(e) =>
-              setFormData({ ...formData, siteDescription: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, siteDescription: e.target.value })}
             placeholder="A short summary of what your site is about."
             rows={3}
             tooltip="A summary of your website (approx. 150-160 characters). Used by search engines for the result snippet."
@@ -195,11 +181,7 @@ export default function GlobalSEOPage() {
               Hero Headline Tag (SEO)
             </label>
             <select
-              value={
-                formData.headingOptions?.heroHeadingTag ||
-                formData.headingOptions?.h1 ||
-                "h1"
-              }
+              value={formData.headingOptions?.heroHeadingTag || formData.headingOptions?.h1 || "h1"}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
@@ -212,9 +194,7 @@ export default function GlobalSEOPage() {
               }
               className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#002B5C] transition shadow-xs cursor-pointer"
             >
-              <option value="h1">
-                H1 (Recommended standard title tag)
-              </option>
+              <option value="h1">H1 (Recommended standard title tag)</option>
               <option value="h2">H2 (Secondary section tag)</option>
               <option value="h3">H3 (Subsection tag)</option>
               <option value="h4">H4 (Minor subsection tag)</option>
@@ -248,27 +228,21 @@ export default function GlobalSEOPage() {
             <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-2xl">
               <Activity className="w-5 h-5" />
             </div>
-            <h2 className="text-xl font-bold text-[#0B0F29]">
-              Tracking & Analytics
-            </h2>
+            <h2 className="text-xl font-bold text-[#0B0F29]">Tracking & Analytics</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField
               label="Google Analytics ID"
               value={formData.googleAnalyticsId}
-              onChange={(e) =>
-                setFormData({ ...formData, googleAnalyticsId: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, googleAnalyticsId: e.target.value })}
               placeholder="e.g. G-XXXXXXX"
               tooltip="Your Google Analytics 4 Measurement ID (starts with G-)."
             />
             <InputField
               label="GTM Container ID"
               value={formData.gtmId}
-              onChange={(e) =>
-                setFormData({ ...formData, gtmId: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, gtmId: e.target.value })}
               placeholder="e.g. GTM-XXXXXXX"
               tooltip="Your Google Tag Manager Container ID."
             />
@@ -277,9 +251,7 @@ export default function GlobalSEOPage() {
           <InputField
             label="Search Console Verification ID"
             value={formData.searchConsoleId}
-            onChange={(e) =>
-              setFormData({ ...formData, searchConsoleId: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, searchConsoleId: e.target.value })}
             placeholder="Enter the google-site-verification code"
             tooltip="The verification token from Google Search Console (HTML tag method)."
           />
@@ -292,18 +264,14 @@ export default function GlobalSEOPage() {
           <div className="p-2.5 bg-amber-50 text-amber-600 rounded-2xl">
             <Shield className="w-5 h-5" />
           </div>
-          <h2 className="text-xl font-bold text-[#0B0F29]">
-            Custom Code Injection
-          </h2>
+          <h2 className="text-xl font-bold text-[#0B0F29]">Custom Code Injection</h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <TextAreaField
             label="Custom Header Scripts (<head>)"
             value={formData.customHeaderScripts}
-            onChange={(e) =>
-              setFormData({ ...formData, customHeaderScripts: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, customHeaderScripts: e.target.value })}
             placeholder="Paste your scripts to be injected into the head..."
             rows={5}
             tooltip="HTML or script tags to insert right before </head> on all pages (e.g. Meta Pixel, Heatmaps)."
@@ -311,9 +279,7 @@ export default function GlobalSEOPage() {
           <TextAreaField
             label="Custom Footer Scripts (Before </body>)"
             value={formData.customFooterScripts}
-            onChange={(e) =>
-              setFormData({ ...formData, customFooterScripts: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, customFooterScripts: e.target.value })}
             placeholder="Paste your scripts to be injected before the closing body tag..."
             rows={5}
             tooltip="HTML or script tags to insert right before </body> on all pages (e.g. Live chat widgets)."
@@ -329,9 +295,7 @@ export default function GlobalSEOPage() {
               <Globe className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-[#0B0F29]">
-                Structured Data (JSON-LD)
-              </h2>
+              <h2 className="text-xl font-bold text-[#0B0F29]">Structured Data (JSON-LD)</h2>
               <p className="text-xs text-slate-500 mt-0.5">
                 Site-wide organization schema or custom JSON-LD for rich snippets.
               </p>
@@ -359,9 +323,7 @@ export default function GlobalSEOPage() {
         <TextAreaField
           label="JSON-LD Schema Markup"
           value={formData.schema}
-          onChange={(e) =>
-            setFormData({ ...formData, schema: e.target.value })
-          }
+          onChange={(e) => setFormData({ ...formData, schema: e.target.value })}
           placeholder='{\n  "@context": "https://schema.org",\n  "@type": "LocalBusiness",\n  "name": "Mahalaxmi Enterprises"\n}'
           rows={6}
           tooltip="Raw JSON-LD markup to provide structured business data to Google."

@@ -71,7 +71,7 @@ export function BlogCategoryModal({
         val
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "")
+          .replace(/^-+|-+$/g, ""),
       );
     }
   };
@@ -113,9 +113,7 @@ export function BlogCategoryModal({
       const json = await res.json();
       if (json.success) {
         toast.success(
-          editingCat
-            ? "Category updated successfully!"
-            : "Category created successfully!"
+          editingCat ? "Category updated successfully!" : "Category created successfully!",
         );
         resetForm();
         fetchCategories();
@@ -131,8 +129,7 @@ export function BlogCategoryModal({
   };
 
   const handleDelete = async (id: string, catName: string) => {
-    if (!confirm(`Are you sure you want to delete category "${catName}"?`))
-      return;
+    if (!confirm(`Are you sure you want to delete category "${catName}"?`)) return;
 
     try {
       const res = await fetch(`/api/blogs/categories?id=${id}`, {
@@ -163,9 +160,7 @@ export function BlogCategoryModal({
               <Tags className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-gray-900">
-                Manage Blog Categories
-              </h3>
+              <h3 className="text-base font-bold text-gray-900">Manage Blog Categories</h3>
               <p className="text-xs text-gray-400 font-medium">
                 Create and organize categories for educational lubrication articles.
               </p>
@@ -262,9 +257,7 @@ export function BlogCategoryModal({
                   >
                     <div className="flex flex-col gap-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h4 className="text-xs font-bold text-gray-900 truncate">
-                          {cat.name}
-                        </h4>
+                        <h4 className="text-xs font-bold text-gray-900 truncate">{cat.name}</h4>
                         <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-[#D8232A] shrink-0">
                           {cat.count ?? 0} {cat.count === 1 ? "article" : "articles"}
                         </span>

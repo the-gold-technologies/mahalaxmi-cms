@@ -71,11 +71,7 @@ export function PageHeader({
               }}
               className="inline-flex items-center gap-2 w-fit px-6 bg-[#0B0F29] text-white font-semibold py-3 rounded-full hover:bg-black transition-all hover:border-[#D8232A] hover:shadow-[0_0_25px_rgba(216,35,42,0.4)] cursor-pointer text-sm"
             >
-              {action.icon ? (
-                action.icon
-              ) : (
-                <Plus className="-ml-0.5 h-4 w-4" strokeWidth={3} />
-              )}
+              {action.icon ? action.icon : <Plus className="-ml-0.5 h-4 w-4" strokeWidth={3} />}
               {action.label}
             </button>
           </div>

@@ -39,8 +39,7 @@ async function main() {
         "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
       phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
-      address:
-        "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
+      address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
         facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
@@ -61,8 +60,7 @@ async function main() {
         "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
       phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
-      address:
-        "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
+      address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
       logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
       socialLinks: {
         facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
@@ -258,8 +256,7 @@ async function main() {
             role: "MECHANIC",
             image:
               "https://res.cloudinary.com/dpa93copz/image/upload/v1787726866/mahalaxmi/testimonials/fzlpp5qdzzikoc9wcmqt.png",
-            quote:
-              "We are using Milcy happy with different skims running by the firm.",
+            quote: "We are using Milcy happy with different skims running by the firm.",
             location: "Valsad-Vapi Market - Gujarat",
           },
           {
@@ -279,8 +276,7 @@ async function main() {
             role: "Retailer",
             image:
               "https://res.cloudinary.com/dpa93copz/image/upload/v1787726872/mahalaxmi/testimonials/nkhvdnzz9zqz2ehy1nxj.png",
-            quote:
-              "Good in performance and reasonable price for our customers.",
+            quote: "Good in performance and reasonable price for our customers.",
             location: "Siliguri - West Bengal",
           },
           {
@@ -312,8 +308,7 @@ async function main() {
             role: "Senior Mechanic",
             image:
               "https://res.cloudinary.com/dpa93copz/image/upload/v1787726875/mahalaxmi/testimonials/pimg6tb3w8hbuxlyxssk.png",
-            quote:
-              "We recommend only HP Racer and Milcy to our regular commercial customers.",
+            quote: "We recommend only HP Racer and Milcy to our regular commercial customers.",
             location: "Lucknow - Uttar Pradesh",
           },
           {
@@ -668,8 +663,7 @@ async function main() {
           },
           {
             title: "Reliable Supply",
-            description:
-              "Consistent product availability with timely delivery.",
+            description: "Consistent product availability with timely delivery.",
           },
           {
             title: "Quality Assurance",
@@ -677,8 +671,7 @@ async function main() {
           },
           {
             title: "Customer-Centric Support",
-            description:
-              "Dedicated service to ensure long-term customer satisfaction.",
+            description: "Dedicated service to ensure long-term customer satisfaction.",
           },
         ],
       },
@@ -690,10 +683,8 @@ async function main() {
         title: "MAHALAXMI ENTERPRISES",
         badge: "AUTHORIZED INDUSTRIAL LUBE DISTRIBUTOR (ILD)",
         proprietor: "Neha Goyal",
-        servingRegion:
-          "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
-        establishment:
-          "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
+        servingRegion: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
+        establishment: "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
         phone: "+91 88007 78032",
         email: "info@hplubricantscfa.com",
       },
@@ -853,10 +844,8 @@ async function main() {
           {
             id: 1,
             title: "HP Racer & HP Neosynth CNBC TV18 Overdrive Awards",
-            image:
-              "https://www.hplubricants.in/sites/default/files/hplube-at-overdrive-awards.jpg",
-            altText:
-              "HP Racer and HP Neosynth partners with CNBC TV18 to sponsor Overdrive Awards",
+            image: "https://www.hplubricants.in/sites/default/files/hplube-at-overdrive-awards.jpg",
+            altText: "HP Racer and HP Neosynth partners with CNBC TV18 to sponsor Overdrive Awards",
           },
           {
             id: 2,
@@ -975,43 +964,33 @@ async function main() {
           },
           {
             id: 21,
-            title:
-              "Inauguration of POL Testing laboratory for Indian Army Showcase",
+            title: "Inauguration of POL Testing laboratory for Indian Army Showcase",
             image: "https://www.hplubricants.in/sites/default/files/5.jpg",
-            altText:
-              "Inauguration of POL Testing laboratory for Indian Army Showcase",
+            altText: "Inauguration of POL Testing laboratory for Indian Army Showcase",
           },
           {
             id: 22,
-            title:
-              "Inauguration of POL Testing laboratory for Indian Army Ribbon Cut",
+            title: "Inauguration of POL Testing laboratory for Indian Army Ribbon Cut",
             image: "https://www.hplubricants.in/sites/default/files/4.jpg",
-            altText:
-              "Inauguration of POL Testing laboratory for Indian Army Ribbon Cut",
+            altText: "Inauguration of POL Testing laboratory for Indian Army Ribbon Cut",
           },
           {
             id: 23,
-            title:
-              "Inauguration of POL Testing laboratory for Indian Army Walk",
+            title: "Inauguration of POL Testing laboratory for Indian Army Walk",
             image: "https://www.hplubricants.in/sites/default/files/3.jpg",
-            altText:
-              "Inauguration of POL Testing laboratory for Indian Army Walk",
+            altText: "Inauguration of POL Testing laboratory for Indian Army Walk",
           },
           {
             id: 24,
-            title:
-              "Inauguration of POL Testing laboratory for Indian Army Chat",
+            title: "Inauguration of POL Testing laboratory for Indian Army Chat",
             image: "https://www.hplubricants.in/sites/default/files/2.jpg",
-            altText:
-              "Inauguration of POL Testing laboratory for Indian Army Chat",
+            altText: "Inauguration of POL Testing laboratory for Indian Army Chat",
           },
           {
             id: 25,
-            title:
-              "Inauguration of POL Testing laboratory for Indian Army Red Carpet",
+            title: "Inauguration of POL Testing laboratory for Indian Army Red Carpet",
             image: "https://www.hplubricants.in/sites/default/files/1.jpg",
-            altText:
-              "Inauguration of POL Testing laboratory for Indian Army Red Carpet",
+            altText: "Inauguration of POL Testing laboratory for Indian Army Red Carpet",
           },
         ],
       },
@@ -1086,8 +1065,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Specially developed for railway compressors.",
       applicationAreas: "Specially developed for railway compressors.",
       performanceBenefits: [
@@ -1157,8 +1135,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Reciprocating air compressor lubrication.",
       applicationAreas: "Reciprocating air compressor lubrication.",
       performanceBenefits: ["High thermal stability", "Low carbon residue"],
@@ -1183,8 +1160,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Long service life screw compressor oil.",
       applicationAreas: "Long service life screw compressor oil.",
       performanceBenefits: ["Anti-wear", "Oxidation resistance"],
@@ -1209,8 +1185,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Rotary screw air compressors.",
       applicationAreas: "Rotary screw air compressors.",
       performanceBenefits: ["Extended drain interval"],
@@ -1235,8 +1210,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Polyglycol synthetic compressor lubricant.",
       applicationAreas: "Polyglycol synthetic compressor lubricant.",
       performanceBenefits: ["Gas compressor compatibility"],
@@ -1261,16 +1235,12 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "CYLINDER OIL",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description:
         "Steam engine cylinders and worm gear drives operating under heavy wet steam conditions.",
       applicationAreas:
         "Steam engine cylinders and worm gear drives operating under heavy wet steam conditions.",
-      performanceBenefits: [
-        "Compounded with fatty oils",
-        "Resists water washing",
-      ],
+      performanceBenefits: ["Compounded with fatty oils", "Resists water washing"],
       specialFeatures: [],
       specsText: "",
       tableHeaders: ["Property", "Value"],
@@ -1292,8 +1262,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "FILM OIL",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description:
         "HP FILM OIL grades are recommended for use in anti-friction bearings, plain bearings, drive gears and pinion of steel mills, where operating conditions are moderate. They are also suitable for use in circulation systems, where oils with high demulsibility characteristics are required.",
       applicationAreas:
@@ -1306,8 +1275,7 @@ async function main() {
       specialFeatures: [
         "HP FILM OILS are highly refined mineral oils suitable for oil film bearings used in steel plants. The product is blended from solvent extracted high viscosity index base stocks having excellent demulsibility characteristics. They also possess good oxidation and thermal stability.",
       ],
-      specsText:
-        "HP FILM OIL grades meet IPSS 1-09-001-95 GRADE 1 TO 6 & IS : 6552-1987",
+      specsText: "HP FILM OIL grades meet IPSS 1-09-001-95 GRADE 1 TO 6 & IS : 6552-1987",
       tableHeaders: ["46", "68", "100", "150", "220"],
       propertiesTable: [
         {
@@ -1344,8 +1312,7 @@ async function main() {
           value: "Pass",
         },
         {
-          property:
-            "Emulsion Characteristics, In 20 Minutes,ml, At 54°C At 82°C",
+          property: "Emulsion Characteristics, In 20 Minutes,ml, At 54°C At 82°C",
           value: "",
           values: ["40-37-3", "40-37-3", "-", "-", "-"],
         },
@@ -1362,8 +1329,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "FILM OIL",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Heavy duty steel mill roll neck bearings.",
       applicationAreas: "Heavy duty steel mill roll neck bearings.",
       performanceBenefits: ["Water separation"],
@@ -1388,8 +1354,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "FILM OIL",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Steel wire rod mill high speed bearings.",
       applicationAreas: "Steel wire rod mill high speed bearings.",
       performanceBenefits: ["Extreme pressure EP protection"],
@@ -1414,8 +1379,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "FILM OIL",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Rolling mill Morgoil lubrication systems.",
       applicationAreas: "Rolling mill Morgoil lubrication systems.",
       performanceBenefits: ["Oxidation resistance"],
@@ -1440,8 +1404,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "GENERAL PURPOSE MACHINERY OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Flushing out old oil, sludge, and contaminants.",
       applicationAreas: "Flushing out old oil, sludge, and contaminants.",
       performanceBenefits: ["High solvency", "Viscosity light"],
@@ -1466,8 +1429,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "GENERAL PURPOSE MACHINERY OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Textile looms and plain bearings.",
       applicationAreas: "Textile looms and plain bearings.",
       performanceBenefits: ["Non-drip tacky property"],
@@ -1492,8 +1454,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "HYDRAULIC OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Precision CNC machine tools.",
       applicationAreas: "Precision CNC machine tools.",
       performanceBenefits: ["Anti-wear protection"],
@@ -1518,8 +1479,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "HYDRAULIC OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Industrial hydraulic presses.",
       applicationAreas: "Industrial hydraulic presses.",
       performanceBenefits: ["Demulsibility"],
@@ -1544,8 +1504,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "HYDRAULIC OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Mobile earthmoving machinery.",
       applicationAreas: "Mobile earthmoving machinery.",
       performanceBenefits: ["Anti-foam"],
@@ -1570,8 +1529,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "HYDRAULIC OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Heavy duty hydraulic systems.",
       applicationAreas: "Heavy duty hydraulic systems.",
       performanceBenefits: ["Shear stability"],
@@ -1596,8 +1554,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "HYDRAULIC OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "High-pressure hydraulic pumps.",
       applicationAreas: "High-pressure hydraulic pumps.",
       performanceBenefits: ["Pump anti-wear"],
@@ -1622,8 +1579,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "MACHINERY OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Machine tool slideways and guides.",
       applicationAreas: "Machine tool slideways and guides.",
       performanceBenefits: ["Prevents stick-slip chatter"],
@@ -1648,8 +1604,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "OPEN GEAR COMPOUNDS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Heavy open gears.",
       applicationAreas: "Heavy open gears.",
       performanceBenefits: ["Bitumen free compound"],
@@ -1674,8 +1629,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "OPEN GEAR COMPOUNDS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Cement kilns open gear lubricant.",
       applicationAreas: "Cement kilns open gear lubricant.",
       performanceBenefits: ["Non-toxic"],
@@ -1700,8 +1654,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "OPEN GEAR COMPOUNDS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Ultra-heavy load open gear drives.",
       applicationAreas: "Ultra-heavy load open gear drives.",
       performanceBenefits: ["Synthetic film"],
@@ -1726,8 +1679,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "PNEUMATIC TOOL OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Air hammers and rock drills.",
       applicationAreas: "Air hammers and rock drills.",
       performanceBenefits: ["Emulsifies with moisture"],
@@ -1752,8 +1704,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "REFRIGERATION COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Ammonia refrigeration compressors.",
       applicationAreas: "Ammonia refrigeration compressors.",
       performanceBenefits: ["Low pour point"],
@@ -1778,8 +1729,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "REFRIGERATION COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Cold storage refrigeration.",
       applicationAreas: "Cold storage refrigeration.",
       performanceBenefits: ["Ultra low floc point"],
@@ -1804,8 +1754,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "REFRIGERATION COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Freon refrigerant systems.",
       applicationAreas: "Freon refrigerant systems.",
       performanceBenefits: ["Refrigerant compatibility"],
@@ -1830,8 +1779,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "REFRIGERATION COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Synthetic refrigeration compressor oil.",
       applicationAreas: "Synthetic refrigeration compressor oil.",
       performanceBenefits: ["High thermal resistance"],
@@ -1856,8 +1804,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "REFRIGERATION COMPRESSOR OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Polyolester POE synthetic oil.",
       applicationAreas: "Polyolester POE synthetic oil.",
       performanceBenefits: ["HFC compatible"],
@@ -1882,8 +1829,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SPINDLE OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Textile spinning spindles.",
       applicationAreas: "Textile spinning spindles.",
       performanceBenefits: ["Ultra low viscosity"],
@@ -1908,8 +1854,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SPINDLE OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Ultra-high speed textile spindles.",
       applicationAreas: "Ultra-high speed textile spindles.",
       performanceBenefits: ["Low power consumption"],
@@ -1934,8 +1879,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SPINDLE OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Energy efficient textile spindle lubricant.",
       applicationAreas: "Energy efficient textile spindle lubricant.",
       performanceBenefits: ["Friction modifier technology"],
@@ -1960,8 +1904,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SPINDLE OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Synthetic textile spindle fluid.",
       applicationAreas: "Synthetic textile spindle fluid.",
       performanceBenefits: ["Zero deposit formation"],
@@ -1986,8 +1929,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "STENTER OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Textile stenter machine conveyor chains up to 240°C.",
       applicationAreas: "Textile stenter machine conveyor chains up to 240°C.",
       performanceBenefits: ["Non-carbonizing high temperature synthetic oil"],
@@ -2012,8 +1954,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SUGAR MILL BEARING OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Sugar mill crushing roller journal bearings.",
       applicationAreas: "Sugar mill crushing roller journal bearings.",
       performanceBenefits: ["Bitumen-free compounded oil"],
@@ -2038,8 +1979,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SUGAR MILL BEARING OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Heavy duty sugar mill roll bearings.",
       applicationAreas: "Heavy duty sugar mill roll bearings.",
       performanceBenefits: ["High film strength"],
@@ -2064,8 +2004,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SUGAR MILL BEARING OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Sugar cane crusher bearings under high shock load.",
       applicationAreas: "Sugar cane crusher bearings under high shock load.",
       performanceBenefits: ["Anti-wear EP"],
@@ -2090,8 +2029,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SUGAR MILL BEARING OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "High capacity sugar mill rollers.",
       applicationAreas: "High capacity sugar mill rollers.",
       performanceBenefits: ["Water resistance"],
@@ -2116,8 +2054,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "SUGAR MILL BEARING OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "All grades of sugar mill crusher bearings.",
       applicationAreas: "All grades of sugar mill crusher bearings.",
       performanceBenefits: ["High viscosity compounded oil"],
@@ -2142,8 +2079,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "TRANSFORMER OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Electrical insulation in power transformers.",
       applicationAreas: "Electrical insulation in power transformers.",
       performanceBenefits: ["High breakdown voltage >70 kV"],
@@ -2168,8 +2104,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "TRANSFORMER OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Distribution transformers and switchgear.",
       applicationAreas: "Distribution transformers and switchgear.",
       performanceBenefits: ["Low Tan Delta"],
@@ -2194,8 +2129,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "TURBINE OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Steam, gas, and hydro turbines.",
       applicationAreas: "Steam, gas, and hydro turbines.",
       performanceBenefits: ["TOST life > 3500 hours", "Water demulsibility"],
@@ -2220,8 +2154,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "TURBINE OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Long life turbine oil.",
       applicationAreas: "Long life turbine oil.",
       performanceBenefits: ["High thermal stability"],
@@ -2246,8 +2179,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "TURBINE OILS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Extreme temperature gas turbine bearings.",
       applicationAreas: "Extreme temperature gas turbine bearings.",
       performanceBenefits: ["Synthetic turbine oil"],
@@ -2272,8 +2204,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "WIRE ROPE LUBRICANTS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Steel wire ropes in cranes, hoists, and elevators.",
       applicationAreas: "Steel wire ropes in cranes, hoists, and elevators.",
       performanceBenefits: ["Deep strand penetration"],
@@ -2298,8 +2229,7 @@ async function main() {
       categorySlug: "industrial-oils",
       categoryName: "Industrial Oils",
       subCategoryTitle: "WIRE ROPE LUBRICANTS",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description: "Heavy duty crane wire ropes.",
       applicationAreas: "Heavy duty crane wire ropes.",
       performanceBenefits: ["Tacky coating"],
@@ -2324,8 +2254,7 @@ async function main() {
       categorySlug: "industrial-greases",
       categoryName: "Industrial Greases",
       subCategoryTitle: "INDUSTRIAL GREASES",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       description:
         "Lithium complex extreme pressure grease for steel rolling mills and heavy bearings.",
       applicationAreas:
@@ -2352,12 +2281,9 @@ async function main() {
       categorySlug: "industrial-greases",
       categoryName: "Industrial Greases",
       subCategoryTitle: "INDUSTRIAL GREASES",
-      containerImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
-      description:
-        "All-purpose grease for anti-friction bearings, chassis, and water pumps.",
-      applicationAreas:
-        "All-purpose grease for anti-friction bearings, chassis, and water pumps.",
+      containerImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      description: "All-purpose grease for anti-friction bearings, chassis, and water pumps.",
+      applicationAreas: "All-purpose grease for anti-friction bearings, chassis, and water pumps.",
       performanceBenefits: ["High structural shear stability"],
       specialFeatures: [],
       specsText: "",
@@ -2427,22 +2353,19 @@ async function main() {
           id: "cat-ind",
           name: "Industrial",
           slug: "industrial",
-          description:
-            "Hydraulic oils, turbine oils, and heavy machinery lubrication guides.",
+          description: "Hydraulic oils, turbine oils, and heavy machinery lubrication guides.",
         },
         {
           id: "cat-bike",
           name: "Bike Oils",
           slug: "bike-oils",
-          description:
-            "2-wheeler and 4-stroke motorcycle engine maintenance insights.",
+          description: "2-wheeler and 4-stroke motorcycle engine maintenance insights.",
         },
         {
           id: "cat-spec",
           name: "Specialties",
           slug: "specialties",
-          description:
-            "Transformer oils, cutting fluids, and specialty industrial applications.",
+          description: "Transformer oils, cutting fluids, and specialty industrial applications.",
         },
       ],
     },
@@ -2472,8 +2395,7 @@ async function main() {
   // 10.1 Blog Posts
   const sampleBlogs = [
     {
-      title:
-        "How Often Should You Change Your Automotive Engine Oil? A Simple Guide",
+      title: "How Often Should You Change Your Automotive Engine Oil? A Simple Guide",
       slug: "how-often-should-you-change-your-automotive-engine-oil",
       category: "Automotive",
       publishDate: "October 14, 2025",
@@ -2552,9 +2474,7 @@ async function main() {
           },
           {
             heading: "7. Factor in the Age of the Machine",
-            paragraphs: [
-              "Engine age changes internal clearances and blow-by gas generation:",
-            ],
+            paragraphs: ["Engine age changes internal clearances and blow-by gas generation:"],
             bulletPoints: [
               "Older Engines: Higher wear clearances cause faster oil contamination and consumption, benefiting from shorter change cycles and high-viscosity protection.",
               "Newer Machines: Modern precision-machined engines with active emissions control systems support extended intervals when paired with premium synthetic oils.",
@@ -2646,9 +2566,7 @@ async function main() {
           },
           {
             heading: "6. Assess Your Driving Habits & Duty Cycle",
-            paragraphs: [
-              "Severe operating conditions demand higher specification lubricants:",
-            ],
+            paragraphs: ["Severe operating conditions demand higher specification lubricants:"],
             bulletPoints: [
               "Heavy Hauling & Towing: Operating fully loaded trucks or agricultural equipment generates massive internal heat, requiring shear-stable synthetic or heavy-duty multigrade lubricants.",
               "City Stop-and-Go Driving: Urban delivery fleets encounter frequent idling and start-stop cycles, requiring high anti-wear (ZDDP) protection.",
@@ -2691,8 +2609,7 @@ async function main() {
       author: "HPCL Lubricants Technical Expert",
       excerpt:
         "15W-40 is a widely used multi-grade engine oil known for its versatility and performance in commercial transport, agricultural tractors, and industrial generators.",
-      coverImage:
-        "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
+      coverImage: "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg",
       content: {
         intro:
           "15W-40 oil is a widely used multi-grade engine oil, known for its versatility and performance in various temperatures and operating conditions. This guide provides an in-depth look at 15W-40 oil, exploring its types, properties, uses, and maintenance tips to help you make informed decisions for your vehicle or machinery.",
@@ -2716,9 +2633,7 @@ async function main() {
           },
           {
             heading: "3. Key Properties of 15W-40 Oil",
-            paragraphs: [
-              "Four essential physical properties define 15W-40 performance:",
-            ],
+            paragraphs: ["Four essential physical properties define 15W-40 performance:"],
             bulletPoints: [
               "Viscosity Stability: Maintains protective oil film across severe cold and intense heat.",
               "Thermal Breakdown Resistance: Resists sludge and varnish formation at high engine operating temperatures.",
@@ -2728,9 +2643,7 @@ async function main() {
           },
           {
             heading: "4. Applications Across Industries",
-            paragraphs: [
-              "15W-40 is specified across multiple heavy-duty sectors:",
-            ],
+            paragraphs: ["15W-40 is specified across multiple heavy-duty sectors:"],
             bulletPoints: [
               "Commercial Fleet Trucks: Long-haul logistics trucks, tippers, and buses.",
               "Agricultural Tractors & Harvesters: Heavy field machinery operating under high torque.",
@@ -2757,8 +2670,7 @@ async function main() {
       author: "HP Industrial Lubricants Team",
       excerpt:
         "Discover the electrical insulation, active cooling properties, dielectric breakdown voltage standards, and maintenance requirements for electrical transformer fluids.",
-      coverImage:
-        "https://www.hplubricants.in/sites/default/files/Transformer-oil-final.jpg",
+      coverImage: "https://www.hplubricants.in/sites/default/files/Transformer-oil-final.jpg",
       content: {
         intro:
           "Transformer oil (dielectric insulating fluid) is a vital component in high-voltage electrical transformers. It serves two essential functions: providing electrical insulation between active conductors and dissipating intense heat generated within core windings. This comprehensive guide covers transformer oil formulations, testing, and maintenance practices.",
@@ -2788,9 +2700,7 @@ async function main() {
           },
           {
             heading: "3. Maintenance & Quality Monitoring",
-            paragraphs: [
-              "Regular oil condition monitoring ensures grid reliability:",
-            ],
+            paragraphs: ["Regular oil condition monitoring ensures grid reliability:"],
             bulletPoints: [
               "Dissolved Gas Analysis (DGA): Tests for thermal fault gases (hydrogen, methane, acetylene) to detect internal insulation breakdown.",
               "Vacuum Filtration & Dehydration: Removes dissolved moisture and particulate debris to restore dielectric strength.",
@@ -2821,9 +2731,7 @@ async function main() {
         sections: [
           {
             heading: "1. Essential Functions of Two-Wheeler Engine Oil",
-            paragraphs: [
-              "Motorcycle lubricants perform four crucial duties simultaneously:",
-            ],
+            paragraphs: ["Motorcycle lubricants perform four crucial duties simultaneously:"],
             bulletPoints: [
               "Lubrication: Reduces metal-on-metal friction between piston rings, camshafts, and transmission gears.",
               "Heat Dissipation: Carries heat away from combustion chambers and clutch plates during continuous high-RPM operation.",
@@ -2838,8 +2746,7 @@ async function main() {
             ],
           },
           {
-            heading:
-              "3. Advanced Lubrication Technology by MAHALAXMI ENTERPRISES",
+            heading: "3. Advanced Lubrication Technology by MAHALAXMI ENTERPRISES",
             paragraphs: [
               "HP RACER 4T oils are blended with premium Group II base stocks and synthetic additives. They deliver exceptional thermal stability, preventing oil breakdown when idling in dense Indian city traffic.",
             ],
@@ -2864,17 +2771,14 @@ async function main() {
       author: "HPCL Lubricants Research Lab",
       excerpt:
         "Explore full synthetic and semi-synthetic basestocks, extreme temperature viscosity stability, wear protection additives, and fuel economy benefits.",
-      coverImage:
-        "https://www.hplubricants.in/sites/default/files/Synthetic-Oil-Final-Graphic.jpg",
+      coverImage: "https://www.hplubricants.in/sites/default/files/Synthetic-Oil-Final-Graphic.jpg",
       content: {
         intro:
           "Synthetic engine oils are chemically engineered from pure base stocks to deliver uniform molecular structure, extreme temperature tolerance, and minimal volatility loss. This guide details synthetic oil categories, superior properties, and key applications.",
         sections: [
           {
             heading: "1. Types of Synthetic Engine Oils",
-            paragraphs: [
-              "Synthetic lubricants are tailored for specific performance demands:",
-            ],
+            paragraphs: ["Synthetic lubricants are tailored for specific performance demands:"],
             bulletPoints: [
               "Full Synthetic Oil: Formulated entirely from Group III/IV synthetic basestocks; delivers ultimate cold-start fluidity, oxidation control, and extended drain intervals.",
               "Synthetic Blend Oil: Combines synthetic and conventional basestocks, providing superior protection over mineral oil at an accessible price point.",
@@ -2882,9 +2786,7 @@ async function main() {
           },
           {
             heading: "2. Key Superior Properties",
-            paragraphs: [
-              "Synthetic oils outperform conventional oils across critical metrics:",
-            ],
+            paragraphs: ["Synthetic oils outperform conventional oils across critical metrics:"],
             bulletPoints: [
               "Viscosity Index Stability: Resists thinning in summer heat and flow resistance during winter starts.",
               "High-Temperature Resistance: Prevents turbocharger coking and thermal breakdown under heavy load.",
@@ -2900,11 +2802,7 @@ async function main() {
         ],
         conclusion:
           "Upgrade your vehicle to HP FUTUR-X full synthetic engine oils for maximum horsepower, engine cleanliness, and optimized fuel economy.",
-        recommendedProducts: [
-          "HP FUTUR-X 5W-40",
-          "HP FUTUR-X 5W-30",
-          "HP FUTUR-X 0W-20",
-        ],
+        recommendedProducts: ["HP FUTUR-X 5W-40", "HP FUTUR-X 5W-30", "HP FUTUR-X 0W-20"],
       },
       isPublished: true,
     },
@@ -2985,8 +2883,7 @@ async function main() {
       metaTitle: "Privacy Policy | Mahalaxmi Enterprises",
       metaDescription:
         "Read the Privacy Policy of Mahalaxmi Enterprises, authorized Industrial Lube Distributor (ILD) for HPCL lubricants and greases.",
-      targetKeywords:
-        "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
+      targetKeywords: "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
       canonicalUrl: "/privacy-policy",
       noIndex: false,
     },

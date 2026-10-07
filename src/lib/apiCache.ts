@@ -7,7 +7,7 @@ const DEFAULT_TTL = 60 * 1000; // 1 minute
 export async function fetchWithCache<T = any>(
   url: string,
   options?: RequestInit,
-  ttl: number = DEFAULT_TTL
+  ttl: number = DEFAULT_TTL,
 ): Promise<T> {
   const method = options?.method || "GET";
 

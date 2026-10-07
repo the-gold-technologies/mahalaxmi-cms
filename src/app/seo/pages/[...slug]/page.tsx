@@ -57,8 +57,7 @@ export default function PageSpecificSEODetail() {
                   ? JSON.stringify(page.schema, null, 2)
                   : "",
             headingOptions:
-              typeof page.headingOptions === "object" &&
-              page.headingOptions !== null
+              typeof page.headingOptions === "object" && page.headingOptions !== null
                 ? {
                     heroHeadingTag: "h1",
                     ...page.headingOptions,
@@ -190,17 +189,13 @@ export default function PageSpecificSEODetail() {
             <div className="p-2.5 bg-blue-50 text-[#002B5C] rounded-2xl">
               <Search className="w-5 h-5" />
             </div>
-            <h2 className="text-xl font-bold text-[#0B1528]">
-              Search Engine Meta
-            </h2>
+            <h2 className="text-xl font-bold text-[#0B1528]">Search Engine Meta</h2>
           </div>
 
           <InputField
             label="Meta Title (Browser Tab)"
             value={formData.metaTitle}
-            onChange={(e) =>
-              setFormData({ ...formData, metaTitle: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
             placeholder="e.g. Products & Industrial Oils | Mahalaxmi Enterprises"
             tooltip="Page-specific title. Overrides the default site title to improve search relevance for this page."
           />
@@ -208,9 +203,7 @@ export default function PageSpecificSEODetail() {
           <TextAreaField
             label="Meta Description"
             value={formData.metaDescription}
-            onChange={(e) =>
-              setFormData({ ...formData, metaDescription: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
             placeholder="A compelling summary for search result snippets (keep under 160 chars)."
             rows={4}
             tooltip="A brief summary of this specific page's content. Search engines use this for the result snippet."
@@ -220,18 +213,14 @@ export default function PageSpecificSEODetail() {
             <InputField
               label="Target Keywords"
               value={formData.targetKeywords}
-              onChange={(e) =>
-                setFormData({ ...formData, targetKeywords: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, targetKeywords: e.target.value })}
               placeholder="e.g. industrial lubricants, hp oil distributor, greases"
               tooltip="Comma-separated keywords or phrases you want this specific page to rank for."
             />
             <InputField
               label="Canonical URL"
               value={formData.canonicalUrl}
-              onChange={(e) =>
-                setFormData({ ...formData, canonicalUrl: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, canonicalUrl: e.target.value })}
               placeholder="https://mahalaxmilubricants.com/products"
               tooltip="The preferred URL for this page. Helps prevent duplicate content issues."
             />
@@ -245,9 +234,8 @@ export default function PageSpecificSEODetail() {
                 <div className="group relative flex items-center">
                   <HelpCircle className="w-3.5 h-3.5 cursor-help text-gray-300 hover:text-[#D8232A] transition-colors" />
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-max max-w-[280px] px-4 py-3 bg-white text-gray-900 text-[11px] font-medium rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 normal-case tracking-normal text-center leading-relaxed backdrop-blur-sm">
-                    JSON-LD structured data schema markup for this specific
-                    page. Do not include &lt;script&gt; tags, just the raw JSON
-                    object.
+                    JSON-LD structured data schema markup for this specific page. Do not include
+                    &lt;script&gt; tags, just the raw JSON object.
                     <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-white"></div>
                   </div>
                 </div>
@@ -272,9 +260,7 @@ export default function PageSpecificSEODetail() {
             </div>
             <textarea
               value={formData.schema}
-              onChange={(e) =>
-                setFormData({ ...formData, schema: e.target.value })
-              }
+              onChange={(e) => setFormData({ ...formData, schema: e.target.value })}
               placeholder='e.g. { "@context": "https://schema.org", "@type": "Product", ... }'
               rows={8}
               className="w-full font-mono text-xs px-6 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:outline-none focus:border-[#002B5C] focus:ring-1 focus:ring-[#002B5C] outline-none transition-all text-gray-800"
@@ -323,9 +309,7 @@ export default function PageSpecificSEODetail() {
                 type="checkbox"
                 className="sr-only peer"
                 checked={!formData.noIndex}
-                onChange={(e) =>
-                  setFormData({ ...formData, noIndex: !e.target.checked })
-                }
+                onChange={(e) => setFormData({ ...formData, noIndex: !e.target.checked })}
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
               <span className="ml-3 text-sm font-bold text-gray-700">

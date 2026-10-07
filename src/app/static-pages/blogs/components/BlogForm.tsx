@@ -57,7 +57,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
       month: "long",
       day: "numeric",
       year: "numeric",
-    })
+    }),
   );
   const [readTime, setReadTime] = useState("6 min read");
   const [author, setAuthor] = useState("HPCL Lubricants Technical Team");
@@ -108,9 +108,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
           });
         }
         if (Array.isArray(sec.bulletPoints) && sec.bulletPoints.length > 0) {
-          html += `<ul>${sec.bulletPoints
-            .map((b: string) => `<li>${b}</li>`)
-            .join("")}</ul>`;
+          html += `<ul>${sec.bulletPoints.map((b: string) => `<li>${b}</li>`).join("")}</ul>`;
         }
       });
     }
@@ -166,7 +164,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
         val
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "")
+          .replace(/^-+|-+$/g, ""),
       );
     }
   };
@@ -182,9 +180,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
 
     try {
       let finalCoverUrl = "";
-      const validImages = coverImages.filter(
-        (img): img is File | string => !!img
-      );
+      const validImages = coverImages.filter((img): img is File | string => !!img);
       if (validImages.length > 0) {
         const [uploaded] = await uploadFiles(validImages);
         finalCoverUrl = uploaded || "";
@@ -211,18 +207,12 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          isNew ? payload : { ...payload, id: blogId }
-        ),
+        body: JSON.stringify(isNew ? payload : { ...payload, id: blogId }),
       });
 
       const json = await res.json();
       if (json.success) {
-        toast.success(
-          isNew
-            ? "Article created successfully!"
-            : "Article updated successfully!"
-        );
+        toast.success(isNew ? "Article created successfully!" : "Article updated successfully!");
         router.push("/static-pages/blogs");
       } else {
         toast.error(json.error || "Failed to save article");
@@ -270,11 +260,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
           >
             Cancel
           </Link>
-          <SaveButton
-            loading={loading}
-            label="Save Changes"
-            className="w-auto px-8"
-          />
+          <SaveButton loading={loading} label="Save Changes" className="w-auto px-8" />
         </div>
       </div>
 
@@ -308,9 +294,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-gray-700">
-                    Category *
-                  </label>
+                  <label className="text-xs font-bold text-gray-700">Category *</label>
                   <button
                     type="button"
                     onClick={() => setIsCategoryModalOpen(true)}
@@ -357,9 +341,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
                 <PenTool className="w-4 h-4 text-[#D8232A]" />
                 2. Article Body (Rich Text Editor)
               </h3>
-              <span className="text-[11px] text-gray-400 font-medium">
-                WYSIWYG Mode
-              </span>
+              <span className="text-[11px] text-gray-400 font-medium">WYSIWYG Mode</span>
             </div>
 
             <RichTextEditor
@@ -413,9 +395,7 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
                 className="mt-0.5 rounded text-[#D8232A] focus:ring-[#D8232A] cursor-pointer"
               />
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-gray-800">
-                  Publish Live
-                </span>
+                <span className="text-xs font-bold text-gray-800">Publish Live</span>
                 <span className="text-[11px] text-gray-500 leading-snug">
                   Article will be visible on the public website.
                 </span>

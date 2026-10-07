@@ -2,7 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/PageHeader";
-import { Search, Loader2, ChevronLeft, ChevronRight, Mail, Calendar, User, Tag, MessageSquare, Phone, Building, X } from "lucide-react";
+import {
+  Search,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
+  Mail,
+  Calendar,
+  User,
+  Tag,
+  MessageSquare,
+  Phone,
+  Building,
+  X,
+} from "lucide-react";
 import { InputField } from "@/components/InputField";
 import toast from "react-hot-toast";
 
@@ -111,10 +124,7 @@ export default function EnquiriesCMSPage() {
                 </tr>
               ) : (
                 filtered.map((enquiry) => (
-                  <tr
-                    key={enquiry.id}
-                    className="hover:bg-gray-50/50 transition-colors group"
-                  >
+                  <tr key={enquiry.id} className="hover:bg-gray-50/50 transition-colors group">
                     <td className="px-6 py-5 pl-8">
                       <div className="flex flex-col">
                         <span className="font-bold text-gray-900 flex items-center gap-2">
@@ -190,9 +200,7 @@ export default function EnquiriesCMSPage() {
           <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-gray-100 p-8 flex flex-col gap-5">
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
-                <h3 className="font-bold text-lg text-[#0B0F29]">
-                  {activeMessage.name}
-                </h3>
+                <h3 className="font-bold text-lg text-[#0B0F29]">{activeMessage.name}</h3>
                 <p className="text-xs text-gray-400 mt-0.5">
                   {activeMessage.email} &bull; {activeMessage.phone || "No phone"}
                 </p>
@@ -222,9 +230,7 @@ export default function EnquiriesCMSPage() {
                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">
                     Product / Grade
                   </span>
-                  <span className="font-semibold text-gray-800">
-                    {activeMessage.product}
-                  </span>
+                  <span className="font-semibold text-gray-800">{activeMessage.product}</span>
                 </div>
               )}
               <div>

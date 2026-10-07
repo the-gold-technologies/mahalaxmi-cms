@@ -19,10 +19,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: true, data: config });
   } catch (error) {
     console.error("Error fetching SEO config:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -35,10 +32,7 @@ export async function PUT(request: Request) {
     if (type === "pages") {
       const { slug, ...seoData } = body;
       if (!slug) {
-        return NextResponse.json(
-          { success: false, error: "slug is required" },
-          { status: 400 },
-        );
+        return NextResponse.json({ success: false, error: "slug is required" }, { status: 400 });
       }
       const updated = await prisma.page.upsert({
         where: { slug },
@@ -46,9 +40,7 @@ export async function PUT(request: Request) {
           slug,
           title:
             seoData.title ||
-            slug
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, (l: string) => l.toUpperCase()),
+            slug.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()),
           ...seoData,
         },
         update: seoData,
@@ -90,9 +82,6 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: updatedConfig });
   } catch (error) {
     console.error("Error saving SEO config:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

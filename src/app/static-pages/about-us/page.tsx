@@ -34,12 +34,8 @@ export default function AboutUsPageEditor() {
       />
 
       <AboutHeroSection initialData={aboutData?.AboutHero} />
-      <AboutMahalaxmiContentSection
-        initialData={aboutData?.AboutMahalaxmiContent}
-      />
-      <LubesHeadquarterSection
-        initialData={aboutData?.LubesHeadquarterSection}
-      />
+      <AboutMahalaxmiContentSection initialData={aboutData?.AboutMahalaxmiContent} />
+      <LubesHeadquarterSection initialData={aboutData?.LubesHeadquarterSection} />
     </section>
   );
 }

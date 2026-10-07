@@ -20,34 +20,22 @@ export const DEFAULT_HQ_DATA: LubesHeadquarterData = {
   title: "MAHALAXMI ENTERPRISES",
   badge: "AUTHORIZED INDUSTRIAL LUBE DISTRIBUTOR (ILD)",
   proprietor: "Neha Goyal",
-  servingRegion:
-    "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
-  establishment:
-    "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
+  servingRegion: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh",
+  establishment: "Est. 2023 | 100+ Industrial Clients & Government Department Supplier",
   phone: "+91 88007 78032",
   email: "info@hplubricantscfa.com",
 };
 
-export function LubesHeadquarterSection({
-  initialData,
-}: {
-  initialData?: LubesHeadquarterData;
-}) {
+export function LubesHeadquarterSection({ initialData }: { initialData?: LubesHeadquarterData }) {
   const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const [title, setTitle] = useState(DEFAULT_HQ_DATA.title || "");
   const [badge, setBadge] = useState(DEFAULT_HQ_DATA.badge || "");
-  const [proprietor, setProprietor] = useState(
-    DEFAULT_HQ_DATA.proprietor || ""
-  );
-  const [servingRegion, setServingRegion] = useState(
-    DEFAULT_HQ_DATA.servingRegion || ""
-  );
-  const [establishment, setEstablishment] = useState(
-    DEFAULT_HQ_DATA.establishment || ""
-  );
+  const [proprietor, setProprietor] = useState(DEFAULT_HQ_DATA.proprietor || "");
+  const [servingRegion, setServingRegion] = useState(DEFAULT_HQ_DATA.servingRegion || "");
+  const [establishment, setEstablishment] = useState(DEFAULT_HQ_DATA.establishment || "");
   const [phone, setPhone] = useState(DEFAULT_HQ_DATA.phone || "");
   const [email, setEmail] = useState(DEFAULT_HQ_DATA.email || "");
 
@@ -55,12 +43,9 @@ export function LubesHeadquarterSection({
     if (initialData) {
       if (initialData.title !== undefined) setTitle(initialData.title);
       if (initialData.badge !== undefined) setBadge(initialData.badge);
-      if (initialData.proprietor !== undefined)
-        setProprietor(initialData.proprietor);
-      if (initialData.servingRegion !== undefined)
-        setServingRegion(initialData.servingRegion);
-      if (initialData.establishment !== undefined)
-        setEstablishment(initialData.establishment);
+      if (initialData.proprietor !== undefined) setProprietor(initialData.proprietor);
+      if (initialData.servingRegion !== undefined) setServingRegion(initialData.servingRegion);
+      if (initialData.establishment !== undefined) setEstablishment(initialData.establishment);
       if (initialData.phone !== undefined) setPhone(initialData.phone);
       if (initialData.email !== undefined) setEmail(initialData.email);
     }

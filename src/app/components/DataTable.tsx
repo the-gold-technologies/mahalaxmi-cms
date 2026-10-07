@@ -41,10 +41,7 @@ export function DataTable<T extends Record<string, any>>({
   });
 
   const totalPages = Math.ceil(filteredData.length / pageSize) || 1;
-  const paginatedData = filteredData.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  const paginatedData = filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -67,9 +64,7 @@ export function DataTable<T extends Record<string, any>>({
         ) : (
           <div />
         )}
-        {filterComponent && (
-          <div className="flex items-center gap-2">{filterComponent}</div>
-        )}
+        {filterComponent && <div className="flex items-center gap-2">{filterComponent}</div>}
       </div>
 
       {/* Table Card */}
@@ -88,29 +83,20 @@ export function DataTable<T extends Record<string, any>>({
             <tbody className="divide-y divide-slate-100">
               {paginatedData.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={columns.length}
-                    className="p-8 text-center text-slate-400 text-sm"
-                  >
+                  <td colSpan={columns.length} className="p-8 text-center text-slate-400 text-sm">
                     {emptyMessage}
                   </td>
                 </tr>
               ) : (
                 paginatedData.map((item, rowIdx) => (
-                  <tr
-                    key={item.id || rowIdx}
-                    className="hover:bg-slate-50/60 transition-colors"
-                  >
+                  <tr key={item.id || rowIdx} className="hover:bg-slate-50/60 transition-colors">
                     {columns.map((col, colIdx) => (
-                      <td
-                        key={colIdx}
-                        className={cn("p-3.5 px-4 text-slate-700", col.className)}
-                      >
+                      <td key={colIdx} className={cn("p-3.5 px-4 text-slate-700", col.className)}>
                         {col.cell
                           ? col.cell(item)
                           : col.accessorKey
-                          ? String(item[col.accessorKey] ?? "-")
-                          : null}
+                            ? String(item[col.accessorKey] ?? "-")
+                            : null}
                       </td>
                     ))}
                   </tr>
@@ -124,9 +110,9 @@ export function DataTable<T extends Record<string, any>>({
         {totalPages > 1 && (
           <div className="flex items-center justify-between p-3.5 px-4 bg-slate-50/70 border-t border-slate-200 text-xs text-slate-500">
             <span>
-              Showing {Math.min((currentPage - 1) * pageSize + 1, filteredData.length)}{" "}
-              to {Math.min(currentPage * pageSize, filteredData.length)} of{" "}
-              {filteredData.length} entries
+              Showing {Math.min((currentPage - 1) * pageSize + 1, filteredData.length)} to{" "}
+              {Math.min(currentPage * pageSize, filteredData.length)} of {filteredData.length}{" "}
+              entries
             </span>
             <div className="flex items-center gap-1.5">
               <button

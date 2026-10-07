@@ -36,14 +36,10 @@ export default function HomePageEditor() {
 
       <HeroSliderSection initialData={homeData?.HeroSlider} />
       <AboutSection initialData={homeData?.AboutSection} />
-      <ProductsServicesSection
-        initialData={homeData?.ProductsServicesSection}
-      />
+      <ProductsServicesSection initialData={homeData?.ProductsServicesSection} />
       <TrustedClientsSection initialData={homeData?.TrustedClientsSection} />
       <TestimonialsSection initialData={homeData?.TestimonialsSection} />
-      <LocateDistributorSection
-        initialData={homeData?.LocateDistributorSection}
-      />
+      <LocateDistributorSection initialData={homeData?.LocateDistributorSection} />
     </section>
   );
 }

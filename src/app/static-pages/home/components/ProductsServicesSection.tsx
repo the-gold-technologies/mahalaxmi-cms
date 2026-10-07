@@ -120,9 +120,7 @@ function CircularImageDropzone({
   return (
     <div className="flex flex-col gap-1.5 w-full">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-semibold text-slate-700 tracking-wide">
-          {label}
-        </label>
+        <label className="text-xs font-semibold text-slate-700 tracking-wide">{label}</label>
         <span className="text-[11px] text-gray-400 font-medium">{sublabel}</span>
       </div>
 
@@ -158,9 +156,7 @@ function CircularImageDropzone({
               <span className="text-xs font-bold text-gray-900 truncate">
                 {value.split("/").pop() || "Image"}
               </span>
-              <span className="text-[11px] text-emerald-600 font-medium">
-                ✓ Image loaded
-              </span>
+              <span className="text-[11px] text-emerald-600 font-medium">✓ Image loaded</span>
             </div>
           </div>
 
@@ -225,9 +221,7 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [data, setData] = useState<ProductsServicesData>(
-    DEFAULT_PRODUCTS_SERVICES
-  );
+  const [data, setData] = useState<ProductsServicesData>(DEFAULT_PRODUCTS_SERVICES);
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({
     industrial: true,
     greases: true,
@@ -242,8 +236,7 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
 
       setData({
         title: initialData.title || DEFAULT_PRODUCTS_SERVICES.title,
-        description:
-          initialData.description || DEFAULT_PRODUCTS_SERVICES.description,
+        description: initialData.description || DEFAULT_PRODUCTS_SERVICES.description,
         items,
       });
 
@@ -291,11 +284,7 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
     toast.success("Category item removed");
   };
 
-  const handleItemChange = (
-    idx: number,
-    field: keyof ProductServiceItem,
-    value: string
-  ) => {
+  const handleItemChange = (idx: number, field: keyof ProductServiceItem, value: string) => {
     const updated = [...data.items];
     updated[idx] = { ...updated[idx], [field]: value };
     setData((prev) => ({ ...prev, items: updated }));
@@ -352,9 +341,7 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
                 <InputField
                   label="Section Title"
                   value={data.title}
-                  onChange={(e) =>
-                    setData((prev) => ({ ...prev, title: e.target.value }))
-                  }
+                  onChange={(e) => setData((prev) => ({ ...prev, title: e.target.value }))}
                   placeholder="OUR PRODUCTS AND SERVICES"
                   helperText="Main uppercase heading"
                 />
@@ -473,17 +460,13 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
                             <InputField
                               label="Category Name"
                               value={item.name}
-                              onChange={(e) =>
-                                handleItemChange(idx, "name", e.target.value)
-                              }
+                              onChange={(e) => handleItemChange(idx, "name", e.target.value)}
                               placeholder="e.g. Industrial Oils"
                             />
                             <InputField
                               label="Destination Link"
                               value={item.link}
-                              onChange={(e) =>
-                                handleItemChange(idx, "link", e.target.value)
-                              }
+                              onChange={(e) => handleItemChange(idx, "link", e.target.value)}
                               placeholder="e.g. /products/industrial-oils"
                             />
                           </div>
@@ -501,9 +484,7 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
                               label="Hover Image (Active State)"
                               sublabel="e.g. /industrial-1.png"
                               value={item.hoverImg}
-                              onChange={(url) =>
-                                handleItemChange(idx, "hoverImg", url)
-                              }
+                              onChange={(url) => handleItemChange(idx, "hoverImg", url)}
                             />
                           </div>
                         </div>

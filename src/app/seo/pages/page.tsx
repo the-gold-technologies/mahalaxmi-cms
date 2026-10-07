@@ -25,9 +25,7 @@ export default function PageSEODashboard() {
   const [pages, setPages] = useState<PageSEOSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [expandedParents, setExpandedParents] = useState<
-    Record<string, boolean>
-  >({});
+  const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     async function fetchPages() {
@@ -65,7 +63,7 @@ export default function PageSEODashboard() {
     (page) =>
       page.slug !== "home" &&
       (page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        page.slug.toLowerCase().includes(searchQuery.toLowerCase()))
+        page.slug.toLowerCase().includes(searchQuery.toLowerCase())),
   );
 
   const rootLinks = filteredPages
@@ -140,7 +138,9 @@ export default function PageSEODashboard() {
                   const isExpanded = !!expandedParents[root.id];
 
                   const hasTitle = Boolean(root.metaTitle && root.metaTitle.trim().length > 0);
-                  const hasDesc = Boolean(root.metaDescription && root.metaDescription.trim().length > 0);
+                  const hasDesc = Boolean(
+                    root.metaDescription && root.metaDescription.trim().length > 0,
+                  );
 
                   return (
                     <React.Fragment key={root.id}>
@@ -206,8 +206,8 @@ export default function PageSEODashboard() {
                               root.type === "Main Link"
                                 ? "bg-blue-50 text-[#002B5C]"
                                 : root.type === "Dropdown"
-                                ? "bg-purple-50 text-purple-600"
-                                : "bg-gray-100 text-gray-600"
+                                  ? "bg-purple-50 text-purple-600"
+                                  : "bg-gray-100 text-gray-600"
                             }`}
                           >
                             {root.type}

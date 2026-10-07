@@ -18,10 +18,7 @@ interface EventsHeroSectionProps {
   onSave?: (data: EventsHeroData) => Promise<boolean | void>;
 }
 
-export function EventsHeroSection({
-  initialData,
-  onSave,
-}: EventsHeroSectionProps) {
+export function EventsHeroSection({ initialData, onSave }: EventsHeroSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [images, setImages] = useState<(File | string | null)[]>([]);
   const [altText, setAltText] = useState("");

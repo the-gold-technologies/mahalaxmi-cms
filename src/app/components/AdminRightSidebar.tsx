@@ -105,9 +105,7 @@ export function AdminRightSidebar({ stats, loading }: AdminRightSidebarProps) {
                     }`}
                   ></div>
                   <div className="flex flex-col flex-1 leading-snug">
-                    <span className="font-bold text-[#0B0F29]">
-                      {activity.text}
-                    </span>
+                    <span className="font-bold text-[#0B0F29]">{activity.text}</span>
                     <span className="text-[11px] text-gray-400 font-semibold mt-0.5">
                       {relativeTime}
                     </span>

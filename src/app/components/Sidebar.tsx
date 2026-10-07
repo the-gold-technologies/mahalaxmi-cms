@@ -81,17 +81,13 @@ export function AdminSidebar() {
 
   const [openGroups, setOpenGroups] = useState<string[]>(() => {
     return sidebarLinks
-      .filter((item) =>
-        item.sublinks?.some((sublink) => pathname.startsWith(sublink.href))
-      )
+      .filter((item) => item.sublinks?.some((sublink) => pathname.startsWith(sublink.href)))
       .map((item) => item.title);
   });
 
   useEffect(() => {
     const activeGroups = sidebarLinks
-      .filter((item) =>
-        item.sublinks?.some((sublink) => pathname.startsWith(sublink.href))
-      )
+      .filter((item) => item.sublinks?.some((sublink) => pathname.startsWith(sublink.href)))
       .map((item) => item.title);
 
     setOpenGroups((prev) => {
@@ -107,7 +103,7 @@ export function AdminSidebar() {
 
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) =>
-      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     );
   };
 
@@ -115,10 +111,7 @@ export function AdminSidebar() {
     <div className="flex h-full w-[280px] flex-col bg-[#0a192f] text-white overflow-hidden rounded-l-[2.5rem] border-l border-white/5 shrink-0">
       {/* Logo Area */}
       <div className="flex h-24 items-center px-8">
-        <Link
-          href="/"
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-        >
+        <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center text-[#0a192f] font-black italic shadow-sm text-lg">
             M
           </div>
@@ -149,7 +142,7 @@ export function AdminSidebar() {
                     <ChevronDown
                       className={cn(
                         "w-3.5 h-3.5 text-gray-500 transition-transform group-hover:text-gray-300",
-                        isOpen ? "rotate-180" : ""
+                        isOpen ? "rotate-180" : "",
                       )}
                     />
                   </div>
@@ -165,7 +158,7 @@ export function AdminSidebar() {
                               "block px-4 py-2.5 rounded-2xl text-[13px] font-medium transition-all duration-200",
                               isSubActive
                                 ? "bg-[#D8232A] text-white shadow-sm shadow-[#D8232A]/20 transform scale-[1.02]"
-                                : "text-gray-400 hover:bg-white/5 hover:text-white"
+                                : "text-gray-400 hover:bg-white/5 hover:text-white",
                             )}
                           >
                             {sublink.title}
@@ -186,15 +179,12 @@ export function AdminSidebar() {
                   "flex items-center justify-between px-4 py-3 rounded-2xl text-[14px] font-medium transition-all duration-200 mt-2",
                   isActive
                     ? "bg-[#D8232A] text-white shadow-sm shadow-[#D8232A]/20 transform scale-[1.02]"
-                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    : "text-gray-400 hover:bg-white/5 hover:text-white",
                 )}
               >
                 <div className="flex items-center gap-4">
                   <item.icon
-                    className={cn(
-                      "w-5 h-5",
-                      isActive ? "text-white" : "text-gray-400"
-                    )}
+                    className={cn("w-5 h-5", isActive ? "text-white" : "text-gray-400")}
                     strokeWidth={isActive ? 2.5 : 2}
                   />
                   {item.title}

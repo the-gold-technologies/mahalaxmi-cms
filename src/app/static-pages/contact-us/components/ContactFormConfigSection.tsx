@@ -19,15 +19,12 @@ interface ContactFormConfigSectionProps {
   onSave?: (data: ContactFormData) => Promise<boolean | void>;
 }
 
-export function ContactFormConfigSection({
-  initialData,
-  onSave,
-}: ContactFormConfigSectionProps) {
+export function ContactFormConfigSection({ initialData, onSave }: ContactFormConfigSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [badge, setBadge] = useState("Online Request");
   const [title, setTitle] = useState("Send an Enquiry");
   const [subtitle, setSubtitle] = useState(
-    "Please fill in your details and our team will get back to you with pricing & availability."
+    "Please fill in your details and our team will get back to you with pricing & availability.",
   );
   const [buttonText, setButtonText] = useState("Submit Enquiry");
   const [loading, setLoading] = useState(false);

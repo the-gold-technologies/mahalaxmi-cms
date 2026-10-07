@@ -97,8 +97,7 @@ export default function BlogsCMSPage() {
 
   const filteredBlogs = blogs.filter((b) => {
     const matchesCat =
-      selectedCategory === "ALL" ||
-      b.category?.toLowerCase() === selectedCategory.toLowerCase();
+      selectedCategory === "ALL" || b.category?.toLowerCase() === selectedCategory.toLowerCase();
     const matchesSearch =
       !searchQuery ||
       b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -154,13 +153,10 @@ export default function BlogsCMSPage() {
 
             {/* Dynamic Categories */}
             {categories.map((cat) => {
-              const isSelected =
-                selectedCategory.toLowerCase() === cat.name.toLowerCase();
+              const isSelected = selectedCategory.toLowerCase() === cat.name.toLowerCase();
               const count =
                 cat.count ??
-                blogs.filter(
-                  (b) => b.category?.toLowerCase() === cat.name.toLowerCase()
-                ).length;
+                blogs.filter((b) => b.category?.toLowerCase() === cat.name.toLowerCase()).length;
 
               return (
                 <button
@@ -176,9 +172,7 @@ export default function BlogsCMSPage() {
                   <span>{cat.name}</span>
                   <span
                     className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                      isSelected
-                        ? "bg-white/20 text-white"
-                        : "bg-gray-200 text-gray-700"
+                      isSelected ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
                     }`}
                   >
                     {count}

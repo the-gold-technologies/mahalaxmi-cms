@@ -71,14 +71,13 @@ function getFromAddress(): string {
 export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
   try {
     const transporter = getMailTransporter();
-    const adminEmail =
-      process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
     const fromAddress = getFromAddress();
 
     if (!transporter) {
       console.log(
         "📧 [SMTP Notice] SMTP is not configured or using placeholders. Skipping email dispatch for Enquiry:",
-        data.name
+        data.name,
       );
       return { sent: false, reason: "SMTP not configured" };
     }
@@ -368,9 +367,7 @@ export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
           subject: `Thank you for contacting Mahalaxmi Enterprises (HPCL Distributor)`,
           html: customerAckHtml,
         })
-        .catch((e) =>
-          console.error("Error sending customer acknowledgement email:", e)
-        );
+        .catch((e) => console.error("Error sending customer acknowledgement email:", e));
     }
 
     return { sent: true };
@@ -383,19 +380,16 @@ export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
 /**
  * Send an email notification when a new Distribution Leaders / Dealership application is received.
  */
-export async function sendDistributorLeadNotificationEmail(
-  data: DistributorLeadEmailData
-) {
+export async function sendDistributorLeadNotificationEmail(data: DistributorLeadEmailData) {
   try {
     const transporter = getMailTransporter();
-    const adminEmail =
-      process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
     const fromAddress = getFromAddress();
 
     if (!transporter) {
       console.log(
         "📧 [SMTP Notice] SMTP is not configured or using placeholders. Skipping email dispatch for Distributor Lead:",
-        data.firmName
+        data.firmName,
       );
       return { sent: false, reason: "SMTP not configured" };
     }
@@ -686,9 +680,7 @@ export async function sendDistributorLeadNotificationEmail(
           subject: `Dealership Application Received: ${data.firmName} (Mahalaxmi Enterprises)`,
           html: applicantAckHtml,
         })
-        .catch((e) =>
-          console.error("Error sending applicant acknowledgement email:", e)
-        );
+        .catch((e) => console.error("Error sending applicant acknowledgement email:", e));
     }
 
     return { sent: true };

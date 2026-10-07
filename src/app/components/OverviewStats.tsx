@@ -63,9 +63,7 @@ export function OverviewStats({ stats: propStats, loading: propLoading }: Overvi
               <BookOpen className="w-6 h-6" strokeWidth={2.5} />
             </div>
             <div>
-              <h3 className="font-bold text-[#0B0F29] text-[15px]">
-                Active Pages
-              </h3>
+              <h3 className="font-bold text-[#0B0F29] text-[15px]">Active Pages</h3>
               <p className="text-[13px] font-medium text-gray-400 mt-0.5">
                 {loading ? "..." : `${stats.pages} Published`}
               </p>
@@ -94,9 +92,7 @@ export function OverviewStats({ stats: propStats, loading: propLoading }: Overvi
               <MessageSquare className="w-6 h-6" strokeWidth={2.5} />
             </div>
             <div>
-              <h3 className="font-bold text-[#0B0F29] text-[15px]">
-                Enquiries
-              </h3>
+              <h3 className="font-bold text-[#0B0F29] text-[15px]">Enquiries</h3>
               <p className="text-[13px] font-medium text-gray-400 mt-0.5">
                 {loading ? "..." : `${stats.enquiries} Submissions`}
               </p>
@@ -109,9 +105,7 @@ export function OverviewStats({ stats: propStats, loading: propLoading }: Overvi
               </p>
               <div className="flex items-center gap-1">
                 <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                <span className="text-[13px] font-bold text-[#0B0F29]">
-                  In Scope
-                </span>
+                <span className="text-[13px] font-bold text-[#0B0F29]">In Scope</span>
               </div>
             </div>
             <div>

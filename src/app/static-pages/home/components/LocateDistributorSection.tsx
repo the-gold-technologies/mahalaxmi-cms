@@ -26,38 +26,24 @@ export const DEFAULT_LOCATE_DISTRIBUTOR_DATA: LocateDistributorData = {
   contactButtonText: "CONTACT US",
 };
 
-export function LocateDistributorSection({
-  initialData,
-}: {
-  initialData?: any;
-}) {
+export function LocateDistributorSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [formData, setFormData] = useState<LocateDistributorData>(
-    DEFAULT_LOCATE_DISTRIBUTOR_DATA
-  );
+  const [formData, setFormData] = useState<LocateDistributorData>(DEFAULT_LOCATE_DISTRIBUTOR_DATA);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        contactTitle:
-          initialData.contactTitle ||
-          DEFAULT_LOCATE_DISTRIBUTOR_DATA.contactTitle,
+        contactTitle: initialData.contactTitle || DEFAULT_LOCATE_DISTRIBUTOR_DATA.contactTitle,
         logo: initialData.logo || DEFAULT_LOCATE_DISTRIBUTOR_DATA.logo,
-        companyName:
-          initialData.companyName ||
-          DEFAULT_LOCATE_DISTRIBUTOR_DATA.companyName,
-        address:
-          initialData.address || DEFAULT_LOCATE_DISTRIBUTOR_DATA.address,
+        companyName: initialData.companyName || DEFAULT_LOCATE_DISTRIBUTOR_DATA.companyName,
+        address: initialData.address || DEFAULT_LOCATE_DISTRIBUTOR_DATA.address,
         phone:
-          initialData.phone ||
-          initialData.directPhone ||
-          DEFAULT_LOCATE_DISTRIBUTOR_DATA.phone,
+          initialData.phone || initialData.directPhone || DEFAULT_LOCATE_DISTRIBUTOR_DATA.phone,
         email: initialData.email || DEFAULT_LOCATE_DISTRIBUTOR_DATA.email,
         contactButtonText:
-          initialData.contactButtonText ||
-          DEFAULT_LOCATE_DISTRIBUTOR_DATA.contactButtonText,
+          initialData.contactButtonText || DEFAULT_LOCATE_DISTRIBUTOR_DATA.contactButtonText,
       });
     }
   }, [initialData]);
@@ -113,7 +99,6 @@ export function LocateDistributorSection({
         >
           <div className="overflow-hidden">
             <div className="flex flex-col gap-5 pt-4">
-
               {/* Contact Title & Company Name */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <InputField

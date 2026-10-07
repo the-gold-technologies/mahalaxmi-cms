@@ -21,7 +21,7 @@ const ReactQuill = dynamic(
         Loading Rich Text Editor with Image Upload...
       </div>
     ),
-  }
+  },
 );
 
 interface RichTextEditorProps {
@@ -79,9 +79,7 @@ export function RichTextEditor({
             editor.setSelection(range.index + 1);
           } else {
             // Fallback appending HTML
-            onChange(
-              `${value}<p><img src="${imageUrl}" alt="${file.name}" /></p>`
-            );
+            onChange(`${value}<p><img src="${imageUrl}" alt="${file.name}" /></p>`);
           }
 
           toast.success("Image inserted into article!", { id: toastId });
@@ -113,7 +111,7 @@ export function RichTextEditor({
         },
       },
     }),
-    [handleImageUpload]
+    [handleImageUpload],
   );
 
   const formats = [
@@ -138,11 +136,7 @@ export function RichTextEditor({
       {label && (
         <div className="flex items-center justify-between">
           <label className="text-xs font-bold text-gray-700">{label}</label>
-          {tooltip && (
-            <span className="text-[11px] text-gray-400 font-medium">
-              {tooltip}
-            </span>
-          )}
+          {tooltip && <span className="text-[11px] text-gray-400 font-medium">{tooltip}</span>}
         </div>
       )}
 
@@ -254,7 +248,9 @@ export function RichTextEditor({
           border-radius: 1rem;
           margin: 1.25rem 0;
           border: 1px solid #e2e8f0;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+          box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.05),
+            0 2px 4px -2px rgba(0, 0, 0, 0.05);
         }
       `}</style>
     </div>

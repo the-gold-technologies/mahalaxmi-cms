@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Upload,
-  Trash2,
-  Image as ImageIcon,
-  CloudUpload,
-  FileCheck,
-} from "lucide-react";
+import { Upload, Trash2, Image as ImageIcon, CloudUpload, FileCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import { SectionHeader } from "@/components/SectionHeader";
 import { SaveButton } from "@/components/SaveButton";
@@ -25,10 +19,7 @@ interface EventsGallerySectionProps {
   onSave?: (data: { galleryItems: any[] }) => Promise<boolean | void>;
 }
 
-export function EventsGallerySection({
-  initialData,
-  onSave,
-}: EventsGallerySectionProps) {
+export function EventsGallerySection({ initialData, onSave }: EventsGallerySectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -43,9 +34,7 @@ export function EventsGallerySection({
 
   const handleFilesSelected = (files: FileList | File[]) => {
     const fileArray = Array.from(files).filter(
-      (file) =>
-        file.type.startsWith("image/") ||
-        file.name.match(/\.(jpg|jpeg|png|webp|avif)$/i)
+      (file) => file.type.startsWith("image/") || file.name.match(/\.(jpg|jpeg|png|webp|avif)$/i),
     );
 
     if (fileArray.length === 0) {
@@ -55,9 +44,7 @@ export function EventsGallerySection({
 
     const newItems: GalleryItem[] = fileArray.map((file) => {
       // Clean filename for default title
-      const cleanTitle = file.name
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[-_]+/g, " ");
+      const cleanTitle = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]+/g, " ");
 
       return {
         id: `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -79,11 +66,7 @@ export function EventsGallerySection({
     }
   };
 
-  const handleUpdateItem = (
-    index: number,
-    field: "title" | "altText",
-    val: string
-  ) => {
+  const handleUpdateItem = (index: number, field: "title" | "altText", val: string) => {
     setGallery((prev) => {
       const copy = [...prev];
       copy[index] = { ...copy[index], [field]: val };
@@ -215,7 +198,8 @@ export function EventsGallerySection({
                   Click to choose photos or drag & drop images here
                 </p>
                 <p className="text-xs text-gray-400 font-medium">
-                  Supports multiple photos upload (PNG, JPG, WebP) • Photos will appear directly below
+                  Supports multiple photos upload (PNG, JPG, WebP) • Photos will appear directly
+                  below
                 </p>
               </div>
             </div>
@@ -268,9 +252,7 @@ export function EventsGallerySection({
                         <input
                           type="text"
                           value={item.title}
-                          onChange={(e) =>
-                            handleUpdateItem(idx, "title", e.target.value)
-                          }
+                          onChange={(e) => handleUpdateItem(idx, "title", e.target.value)}
                           placeholder="Event Title / Caption"
                           className="w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded-xl focus:border-[#D8232A] focus:outline-none text-gray-800 font-medium"
                         />

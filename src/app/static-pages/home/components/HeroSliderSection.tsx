@@ -24,29 +24,21 @@ export function HeroSliderSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [images, setImages] =
-    useState<(File | string | null)[]>(DEFAULT_HERO_IMAGES);
+  const [images, setImages] = useState<(File | string | null)[]>(DEFAULT_HERO_IMAGES);
 
   useEffect(() => {
     if (initialData) {
       if (Array.isArray(initialData) && initialData.length > 0) {
         setImages(
           initialData.map((item: any) =>
-            typeof item === "string"
-              ? item
-              : item.img || item.image || item.bgImage || ""
-          )
+            typeof item === "string" ? item : item.img || item.image || item.bgImage || "",
+          ),
         );
-      } else if (
-        Array.isArray(initialData.slides) &&
-        initialData.slides.length > 0
-      ) {
+      } else if (Array.isArray(initialData.slides) && initialData.slides.length > 0) {
         setImages(
           initialData.slides.map((item: any) =>
-            typeof item === "string"
-              ? item
-              : item.img || item.image || item.bgImage || ""
-          )
+            typeof item === "string" ? item : item.img || item.image || item.bgImage || "",
+          ),
         );
       }
     }
@@ -56,9 +48,7 @@ export function HeroSliderSection({ initialData }: { initialData?: any }) {
     setLoading(true);
     setSaved(false);
     try {
-      const validImages = images.filter(
-        (img): img is File | string => !!img
-      );
+      const validImages = images.filter((img): img is File | string => !!img);
 
       if (validImages.length === 0) {
         toast.error("Please upload at least 1 hero banner image.");

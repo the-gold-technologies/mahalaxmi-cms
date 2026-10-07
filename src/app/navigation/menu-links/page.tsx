@@ -122,13 +122,9 @@ export default function MenuLinksPage() {
               </thead>
               <tbody className="divide-y divide-slate-50/80">
                 {links.map((link, idx) => {
-                  const isDropdown =
-                    link.type?.toLowerCase().includes("dropdown") || false;
+                  const isDropdown = link.type?.toLowerCase().includes("dropdown") || false;
                   return (
-                    <tr
-                      key={link.id || idx}
-                      className="hover:bg-slate-50/60 transition-colors"
-                    >
+                    <tr key={link.id || idx} className="hover:bg-slate-50/60 transition-colors">
                       {/* Order Column */}
                       <td className="py-5 px-6 text-sm font-semibold text-slate-600 whitespace-nowrap">
                         {idx + 1}

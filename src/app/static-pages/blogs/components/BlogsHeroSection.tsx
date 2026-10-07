@@ -18,10 +18,7 @@ interface BlogsHeroSectionProps {
   onSave?: (data: BlogsHeroData) => Promise<boolean | void>;
 }
 
-export function BlogsHeroSection({
-  initialData,
-  onSave,
-}: BlogsHeroSectionProps) {
+export function BlogsHeroSection({ initialData, onSave }: BlogsHeroSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [images, setImages] = useState<(File | string | null)[]>([]);
   const [altText, setAltText] = useState("");

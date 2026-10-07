@@ -41,8 +41,7 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     role: "MECHANIC",
     org: "National Automobiles",
     location: "Valsad-Vapi Market - Gujarat",
-    quote:
-      "We are using Milcy happy with different skims running by the firm.",
+    quote: "We are using Milcy happy with different skims running by the firm.",
     image: "/testimonial-1.png",
   },
   {
@@ -230,8 +229,7 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     role: "Retailer",
     org: "Mihir Traders",
     location: "Bhuj - Gujarat",
-    quote:
-      "Mahalaxmi Enterprises is excellent with best price and Milcy is best success product.",
+    quote: "Mahalaxmi Enterprises is excellent with best price and Milcy is best success product.",
     image: "/hp-testimonial-9.jpg",
   },
   {
@@ -270,8 +268,7 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     role: "Retailer",
     org: "Pooja Earth Movers",
     location: "Chandrapur - Maharashtra",
-    quote:
-      "HP lubes are the high quality lubes with affordable price for all types of consumers.",
+    quote: "HP lubes are the high quality lubes with affordable price for all types of consumers.",
     image: "/hp-testimonial-13.png",
   },
 ];
@@ -328,9 +325,7 @@ function AvatarImageDropzone({
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
-      <label className="text-xs font-semibold text-slate-700 tracking-wide">
-        {label}
-      </label>
+      <label className="text-xs font-semibold text-slate-700 tracking-wide">{label}</label>
 
       <input
         type="file"
@@ -364,9 +359,7 @@ function AvatarImageDropzone({
               <span className="text-xs font-bold text-gray-900 truncate">
                 {value.split("/").pop() || "Avatar Image"}
               </span>
-              <span className="text-[11px] text-emerald-600 font-medium">
-                ✓ Photo uploaded
-              </span>
+              <span className="text-[11px] text-emerald-600 font-medium">✓ Photo uploaded</span>
             </div>
           </div>
 
@@ -451,17 +444,15 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
   useEffect(() => {
     if (initialData) {
       const list =
-        Array.isArray(initialData.testimonials) &&
-        initialData.testimonials.length > 0
+        Array.isArray(initialData.testimonials) && initialData.testimonials.length > 0
           ? initialData.testimonials
           : Array.isArray(initialData) && initialData.length > 0
-          ? initialData
-          : DEFAULT_TESTIMONIALS;
+            ? initialData
+            : DEFAULT_TESTIMONIALS;
 
       setData({
         title: initialData.title || DEFAULT_TESTIMONIALS_DATA.title,
-        description:
-          initialData.description || DEFAULT_TESTIMONIALS_DATA.description,
+        description: initialData.description || DEFAULT_TESTIMONIALS_DATA.description,
         testimonials: list,
       });
 
@@ -489,8 +480,7 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
       role: "Manager",
       org: "Enterprise Ltd",
       location: "New Delhi",
-      quote:
-        "Mahalaxmi Enterprises delivers unmatched quality and swift support.",
+      quote: "Mahalaxmi Enterprises delivers unmatched quality and swift support.",
       image: "/hp-testimonial-3.png",
     };
     setData((prev) => ({
@@ -512,11 +502,7 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
     toast.success("Testimonial removed");
   };
 
-  const handleItemChange = (
-    idx: number,
-    field: keyof TestimonialItem,
-    value: string | number
-  ) => {
+  const handleItemChange = (idx: number, field: keyof TestimonialItem, value: string | number) => {
     const updated = [...data.testimonials];
     updated[idx] = { ...updated[idx], [field]: value };
     setData((prev) => ({ ...prev, testimonials: updated }));
@@ -556,9 +542,7 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
         <SectionHeader
           title="Customer Testimonials Carousel"
           description="Manage prominent client reviews, ratings, corporate quotes, and client avatars on the homepage."
-          badge={`${data.testimonials.length} Review${
-            data.testimonials.length === 1 ? "" : "s"
-          }`}
+          badge={`${data.testimonials.length} Review${data.testimonials.length === 1 ? "" : "s"}`}
           isOpen={isOpen}
           onToggle={() => setIsOpen(!isOpen)}
         />
@@ -575,9 +559,7 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
                 <InputField
                   label="Section Title"
                   value={data.title}
-                  onChange={(e) =>
-                    setData((prev) => ({ ...prev, title: e.target.value }))
-                  }
+                  onChange={(e) => setData((prev) => ({ ...prev, title: e.target.value }))}
                   placeholder="Our Prominent Customers"
                   helperText="Main heading for the testimonials section"
                 />
@@ -662,7 +644,8 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
                               {t.name || `Client #${idx + 1}`}
                             </span>
                             <span className="text-[11px] text-gray-500 truncate">
-                              {t.role} • <span className="text-[#D8232A] font-semibold">{t.org}</span>
+                              {t.role} •{" "}
+                              <span className="text-[#D8232A] font-semibold">{t.org}</span>
                             </span>
                           </div>
                         </div>
@@ -703,17 +686,13 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
                             <InputField
                               label="Client Name"
                               value={t.name}
-                              onChange={(e) =>
-                                handleItemChange(idx, "name", e.target.value)
-                              }
+                              onChange={(e) => handleItemChange(idx, "name", e.target.value)}
                               placeholder="e.g. Sanjay Aggarwal"
                             />
                             <InputField
                               label="Designation / Role"
                               value={t.role}
-                              onChange={(e) =>
-                                handleItemChange(idx, "role", e.target.value)
-                              }
+                              onChange={(e) => handleItemChange(idx, "role", e.target.value)}
                               placeholder="e.g. Retailer / MECHANIC"
                             />
                           </div>
@@ -723,21 +702,13 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
                             <InputField
                               label="Company / Firm / Organization"
                               value={t.org}
-                              onChange={(e) =>
-                                handleItemChange(idx, "org", e.target.value)
-                              }
+                              onChange={(e) => handleItemChange(idx, "org", e.target.value)}
                               placeholder="e.g. Aggarwal Auto Enterprises"
                             />
                             <InputField
                               label="City / Market Location"
                               value={t.location}
-                              onChange={(e) =>
-                                handleItemChange(
-                                  idx,
-                                  "location",
-                                  e.target.value
-                                )
-                              }
+                              onChange={(e) => handleItemChange(idx, "location", e.target.value)}
                               placeholder="e.g. Chandrapur - Maharashtra"
                             />
                           </div>
@@ -746,9 +717,7 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
                           <AvatarImageDropzone
                             label="Client Avatar / Photo"
                             value={t.image}
-                            onChange={(url) =>
-                              handleItemChange(idx, "image", url)
-                            }
+                            onChange={(url) => handleItemChange(idx, "image", url)}
                           />
 
                           {/* Quote */}
@@ -756,9 +725,7 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
                             label="Customer Quote / Review"
                             rows={3}
                             value={t.quote}
-                            onChange={(e) =>
-                              handleItemChange(idx, "quote", e.target.value)
-                            }
+                            onChange={(e) => handleItemChange(idx, "quote", e.target.value)}
                             placeholder="Milcy has given great performance with longer durability..."
                             helperText="Quote displayed inside testimonial speech card"
                           />

@@ -41,9 +41,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] font-sans">
       <div className="w-full max-w-md p-8 bg-white rounded-3xl shadow-xl border border-gray-100">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#0B0F29] mb-2">
-            Welcome Back
-          </h1>
+          <h1 className="text-3xl font-bold text-[#0B0F29] mb-2">Welcome Back</h1>
           <p className="text-gray-500 text-sm">Sign in to manage your CMS</p>
         </div>
 

@@ -98,9 +98,7 @@ export function PageStructure({ stats, loading }: PageStructureProps) {
                     <td className="py-3.5">
                       <span
                         className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          isPublic
-                            ? "bg-green-50 text-green-600"
-                            : "bg-amber-50 text-amber-600"
+                          isPublic ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600"
                         }`}
                       >
                         {isPublic ? (

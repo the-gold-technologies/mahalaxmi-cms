@@ -69,7 +69,11 @@ export function RecentEnquiries() {
             >
               <div className="flex items-start gap-4">
                 <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold text-sm shrink-0">
-                  {enquiry.name ? enquiry.name.charAt(0).toUpperCase() : <User className="w-4 h-4" />}
+                  {enquiry.name ? (
+                    enquiry.name.charAt(0).toUpperCase()
+                  ) : (
+                    <User className="w-4 h-4" />
+                  )}
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[#0B0F29] group-hover:text-[#D8232A] transition-colors">

@@ -3,10 +3,30 @@ import { prisma } from "@/lib/prisma";
 
 const BLOGS_SLUG = "blogs";
 const DEFAULT_CATEGORIES = [
-  { id: "cat-auto", name: "Automotive", slug: "automotive", description: "Engine oils, gear lubricants, coolants for commercial and passenger vehicles." },
-  { id: "cat-ind", name: "Industrial", slug: "industrial", description: "Hydraulic oils, turbine oils, and heavy machinery lubrication guides." },
-  { id: "cat-bike", name: "Bike Oils", slug: "bike-oils", description: "2-wheeler and 4-stroke motorcycle engine maintenance insights." },
-  { id: "cat-spec", name: "Specialties", slug: "specialties", description: "Transformer oils, cutting fluids, and specialty industrial applications." },
+  {
+    id: "cat-auto",
+    name: "Automotive",
+    slug: "automotive",
+    description: "Engine oils, gear lubricants, coolants for commercial and passenger vehicles.",
+  },
+  {
+    id: "cat-ind",
+    name: "Industrial",
+    slug: "industrial",
+    description: "Hydraulic oils, turbine oils, and heavy machinery lubrication guides.",
+  },
+  {
+    id: "cat-bike",
+    name: "Bike Oils",
+    slug: "bike-oils",
+    description: "2-wheeler and 4-stroke motorcycle engine maintenance insights.",
+  },
+  {
+    id: "cat-spec",
+    name: "Specialties",
+    slug: "specialties",
+    description: "Transformer oils, cutting fluids, and specialty industrial applications.",
+  },
 ];
 
 async function getStoredCategories() {
@@ -15,9 +35,7 @@ async function getStoredCategories() {
     include: { sections: true },
   });
 
-  const categorySection = page?.sections?.find(
-    (s: any) => s.type === "BlogCategories"
-  );
+  const categorySection = page?.sections?.find((s: any) => s.type === "BlogCategories");
 
   if (categorySection && Array.isArray(categorySection.content)) {
     return categorySection.content as Array<{
@@ -76,7 +94,7 @@ export async function GET() {
       const count = blogs.filter(
         (b: any) =>
           b.category?.toLowerCase() === cat.name.toLowerCase() ||
-          b.category?.toLowerCase() === cat.slug.toLowerCase()
+          b.category?.toLowerCase() === cat.slug.toLowerCase(),
       ).length;
       return { ...cat, count };
     });
@@ -84,10 +102,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: categoriesWithCount });
   } catch (error) {
     console.error("Error fetching blog categories:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -99,7 +114,7 @@ export async function POST(request: Request) {
     if (!name || !slug) {
       return NextResponse.json(
         { success: false, error: "Category name and slug are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -109,7 +124,7 @@ export async function POST(request: Request) {
     if (categories.some((c) => c.slug === cleanSlug)) {
       return NextResponse.json(
         { success: false, error: "A category with this slug already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -126,10 +141,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: newCategory });
   } catch (error) {
     console.error("Error creating blog category:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -141,7 +153,7 @@ export async function PUT(request: Request) {
     if (!id || !name) {
       return NextResponse.json(
         { success: false, error: "Category ID and name are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -149,10 +161,7 @@ export async function PUT(request: Request) {
     const index = categories.findIndex((c) => c.id === id);
 
     if (index === -1) {
-      return NextResponse.json(
-        { success: false, error: "Category not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: "Category not found" }, { status: 404 });
     }
 
     const updatedCategory = {
@@ -168,10 +177,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: updatedCategory });
   } catch (error) {
     console.error("Error updating blog category:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -183,7 +189,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json(
         { success: false, error: "Category ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -195,9 +201,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting blog category:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

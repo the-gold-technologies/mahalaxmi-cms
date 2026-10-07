@@ -23,19 +23,16 @@ interface ContactHeadquarterSectionProps {
   onSave?: (data: HeadquarterData) => Promise<boolean | void>;
 }
 
-export function ContactHeadquarterSection({
-  initialData,
-  onSave,
-}: ContactHeadquarterSectionProps) {
+export function ContactHeadquarterSection({ initialData, onSave }: ContactHeadquarterSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [companyName, setCompanyName] = useState("Mahalaxmi Enterprises");
   const [badge, setBadge] = useState("Authorized Industrial Lube Distributor");
   const [description, setDescription] = useState(
-    "Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries."
+    "Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries.",
   );
   const [proprietor, setProprietor] = useState("Neha Goyal");
   const [address, setAddress] = useState(
-    "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601"
+    "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601",
   );
   const [phone, setPhone] = useState("+91 88007 78032");
   const [email, setEmail] = useState("info@hplubricantscfa.com");
@@ -174,7 +171,6 @@ export function ContactHeadquarterSection({
               placeholder="HPCL Petrol Pump, Ground & 1st Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Baghpat, Uttar Pradesh - 250601"
               required
             />
-
 
             <div className="pt-4 border-t border-gray-100">
               <SaveButton

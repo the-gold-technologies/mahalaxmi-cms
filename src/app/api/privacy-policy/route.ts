@@ -56,8 +56,7 @@ export async function GET() {
           metaTitle: "Privacy Policy | Mahalaxmi Enterprises",
           metaDescription:
             "Read the Privacy Policy of Mahalaxmi Enterprises, authorized Industrial Lubricants Division (ILD) for HPCL lubricants and greases.",
-          targetKeywords:
-            "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
+          targetKeywords: "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
           canonicalUrl: "/privacy-policy",
           noIndex: false,
           headingOptions: { heroHeadingTag: "h1" },
@@ -71,9 +70,7 @@ export async function GET() {
     }
 
     const policyContent =
-      sectionsMap["PrivacyPolicyContent"] ||
-      sectionsMap["content"] ||
-      DEFAULT_PRIVACY_DATA;
+      sectionsMap["PrivacyPolicyContent"] || sectionsMap["content"] || DEFAULT_PRIVACY_DATA;
 
     const seo = {
       title: page.metaTitle || page.title,
@@ -93,10 +90,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Error fetching privacy-policy:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -148,9 +142,6 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: contentData });
   } catch (error) {
     console.error("Error saving privacy-policy:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

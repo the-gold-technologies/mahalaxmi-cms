@@ -16,16 +16,51 @@ const STATIC_SEARCH_ITEMS: SearchItem[] = [
   { title: "Home Page Editor", category: "Pages", url: "/static-pages/home", icon: FileText },
   { title: "About Us Editor", category: "Pages", url: "/static-pages/about-us", icon: FileText },
   { title: "Products Catalog", category: "Pages", url: "/static-pages/products", icon: Package },
-  { title: "Events & Expos Editor", category: "Pages", url: "/static-pages/events", icon: FileText },
-  { title: "Technical Blogs Editor", category: "Pages", url: "/static-pages/blogs", icon: FileText },
-  { title: "Contact & Regional Depots", category: "Pages", url: "/static-pages/contact-us", icon: FileText },
-  { title: "Menu Links Navigation", category: "Navigation", url: "/navigation/menu-links", icon: Compass },
-  { title: "Social Media Navigation", category: "Navigation", url: "/navigation/social-media", icon: Compass },
+  {
+    title: "Events & Expos Editor",
+    category: "Pages",
+    url: "/static-pages/events",
+    icon: FileText,
+  },
+  {
+    title: "Technical Blogs Editor",
+    category: "Pages",
+    url: "/static-pages/blogs",
+    icon: FileText,
+  },
+  {
+    title: "Contact & Regional Depots",
+    category: "Pages",
+    url: "/static-pages/contact-us",
+    icon: FileText,
+  },
+  {
+    title: "Menu Links Navigation",
+    category: "Navigation",
+    url: "/navigation/menu-links",
+    icon: Compass,
+  },
+  {
+    title: "Social Media Navigation",
+    category: "Navigation",
+    url: "/navigation/social-media",
+    icon: Compass,
+  },
   { title: "Global SEO Settings", category: "SEO", url: "/seo/global", icon: Shield },
   { title: "Page SEO Settings", category: "SEO", url: "/seo/pages", icon: Shield },
   { title: "Sitemap & Robots.txt", category: "SEO", url: "/seo/sitemap-robots", icon: Shield },
-  { title: "Enquiries Submissions", category: "Submissions", url: "/submissions/enquiries", icon: Inbox },
-  { title: "Distributor Applications", category: "Submissions", url: "/submissions/distributor-leads", icon: Inbox },
+  {
+    title: "Enquiries Submissions",
+    category: "Submissions",
+    url: "/submissions/enquiries",
+    icon: Inbox,
+  },
+  {
+    title: "Distributor Applications",
+    category: "Submissions",
+    url: "/submissions/distributor-leads",
+    icon: Inbox,
+  },
   { title: "Profile Settings", category: "Settings", url: "/settings/profile", icon: Settings },
 ];
 
@@ -48,8 +83,7 @@ export function AdminHeader() {
     const query = searchQuery.toLowerCase();
     const filtered = STATIC_SEARCH_ITEMS.filter(
       (item) =>
-        item.title.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query)
+        item.title.toLowerCase().includes(query) || item.category.toLowerCase().includes(query),
     );
     setResults(filtered);
   }, [searchQuery]);
@@ -69,9 +103,7 @@ export function AdminHeader() {
       <header className="flex justify-between items-center w-full">
         <h1 className="text-[28px] font-bold tracking-tight text-[#0B0F29] flex items-center gap-2">
           Welcome back <span className="text-[#D8232A]">{userName}</span>
-          <span className="text-2xl animate-bounce origin-bottom-right delay-700">
-            👋
-          </span>
+          <span className="text-2xl animate-bounce origin-bottom-right delay-700">👋</span>
         </h1>
 
         <div className="h-10 w-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-gray-100 flex items-center justify-center">
@@ -132,9 +164,7 @@ export function AdminHeader() {
                         <item.icon className="w-4 h-4" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[13px] font-bold text-gray-800">
-                          {item.title}
-                        </span>
+                        <span className="text-[13px] font-bold text-gray-800">{item.title}</span>
                         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                           {item.category}
                         </span>

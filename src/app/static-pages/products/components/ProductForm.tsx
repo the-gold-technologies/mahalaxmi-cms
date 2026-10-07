@@ -19,10 +19,7 @@ import { InputField } from "@/components/InputField";
 import { TextAreaField } from "@/components/TextAreaField";
 import { SelectField } from "@/components/SelectField";
 import { ImageUploadField } from "@/components/ImageUploadField";
-import {
-  PropertiesTableEditor,
-  PropertyRow,
-} from "@/components/PropertiesTableEditor";
+import { PropertiesTableEditor, PropertyRow } from "@/components/PropertiesTableEditor";
 import { StringListEditor } from "@/components/StringListEditor";
 import { PdfUploadField } from "@/components/PdfUploadField";
 import { SaveButton } from "@/components/SaveButton";
@@ -71,19 +68,13 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
   const [categorySlug, setCategorySlug] = useState("industrial-oils");
   const [categoryName, setCategoryName] = useState("Industrial Oils");
   const [subCategoryTitle, setSubCategoryTitle] = useState("");
-  const [containerImages, setContainerImages] = useState<
-    (File | string | null)[]
-  >([]);
+  const [containerImages, setContainerImages] = useState<(File | string | null)[]>([]);
   const [description, setDescription] = useState("");
   const [applicationAreas, setApplicationAreas] = useState("");
-  const [performanceBenefits, setPerformanceBenefits] =
-    useState<string[]>(DEFAULT_BENEFITS);
-  const [specialFeatures, setSpecialFeatures] = useState<string[]>(
-    DEFAULT_SPECIAL_FEATURES
-  );
+  const [performanceBenefits, setPerformanceBenefits] = useState<string[]>(DEFAULT_BENEFITS);
+  const [specialFeatures, setSpecialFeatures] = useState<string[]>(DEFAULT_SPECIAL_FEATURES);
   const [specsText, setSpecsText] = useState("");
-  const [propertiesTable, setPropertiesTable] =
-    useState<PropertyRow[]>(DEFAULT_SPECS_TABLE);
+  const [propertiesTable, setPropertiesTable] = useState<PropertyRow[]>(DEFAULT_SPECS_TABLE);
   const [pdfUrl, setPdfUrl] = useState("");
   const [msdsUrl, setMsdsUrl] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -120,14 +111,10 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
             setDescription(p.description || "");
             setApplicationAreas(p.applicationAreas || "");
             setPerformanceBenefits(
-              Array.isArray(p.performanceBenefits)
-                ? p.performanceBenefits
-                : DEFAULT_BENEFITS
+              Array.isArray(p.performanceBenefits) ? p.performanceBenefits : DEFAULT_BENEFITS,
             );
             setSpecialFeatures(
-              Array.isArray(p.specialFeatures)
-                ? p.specialFeatures
-                : DEFAULT_SPECIAL_FEATURES
+              Array.isArray(p.specialFeatures) ? p.specialFeatures : DEFAULT_SPECIAL_FEATURES,
             );
             setSpecsText(p.specsText || "");
             setPropertiesTable(p.propertiesTable || DEFAULT_SPECS_TABLE);
@@ -156,7 +143,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
         val
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "")
+          .replace(/^-+|-+$/g, ""),
       );
     }
   };
@@ -172,9 +159,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
 
     try {
       let finalContainerImageUrl = "";
-      const validImages = containerImages.filter(
-        (img): img is File | string => !!img
-      );
+      const validImages = containerImages.filter((img): img is File | string => !!img);
       if (validImages.length > 0) {
         const [uploaded] = await uploadFiles(validImages);
         finalContainerImageUrl = uploaded || "";
@@ -185,15 +170,12 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
         slug: slug.trim().toLowerCase(),
         subtitle: subtitle.trim(),
         categorySlug,
-        categoryName:
-          categories.find((c) => c.slug === categorySlug)?.name || categoryName,
+        categoryName: categories.find((c) => c.slug === categorySlug)?.name || categoryName,
         subCategoryTitle: subCategoryTitle.trim(),
         containerImage: finalContainerImageUrl,
         description: description.trim(),
         applicationAreas: applicationAreas.trim(),
-        performanceBenefits: performanceBenefits
-          .map((s) => s.trim())
-          .filter(Boolean),
+        performanceBenefits: performanceBenefits.map((s) => s.trim()).filter(Boolean),
         specialFeatures: specialFeatures.map((s) => s.trim()).filter(Boolean),
         specsText: specsText.trim(),
         propertiesTable,
@@ -207,18 +189,12 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          isNew ? payload : { ...payload, id: productId }
-        ),
+        body: JSON.stringify(isNew ? payload : { ...payload, id: productId }),
       });
 
       const json = await res.json();
       if (json.success) {
-        toast.success(
-          isNew
-            ? "Product created successfully!"
-            : "Product updated successfully!"
-        );
+        toast.success(isNew ? "Product created successfully!" : "Product updated successfully!");
         router.push("/static-pages/products");
       } else {
         toast.error(json.error || "Failed to save product");
@@ -255,8 +231,8 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
             {isNew ? "Add New Product" : `Edit Product: ${name || "Untitled"}`}
           </h1>
           <p className="text-xs text-gray-400 font-medium">
-            Configure product classification, container graphics, formulation
-            specifications, and technical datasheets.
+            Configure product classification, container graphics, formulation specifications, and
+            technical datasheets.
           </p>
         </div>
 
@@ -267,11 +243,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
           >
             Cancel
           </Link>
-          <SaveButton
-            loading={loading}
-            label="Save Changes"
-            className="w-auto px-8"
-          />
+          <SaveButton loading={loading} label="Save Changes" className="w-auto px-8" />
         </div>
       </div>
 
@@ -408,10 +380,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
               4. Physico-Chemical Test Specifications
             </h3>
 
-            <PropertiesTableEditor
-              properties={propertiesTable}
-              onChange={setPropertiesTable}
-            />
+            <PropertiesTableEditor properties={propertiesTable} onChange={setPropertiesTable} />
           </div>
         </div>
 
@@ -470,9 +439,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                 className="mt-0.5 rounded text-[#D8232A] focus:ring-[#D8232A] cursor-pointer"
               />
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-gray-800">
-                  Feature on Homepage
-                </span>
+                <span className="text-xs font-bold text-gray-800">Feature on Homepage</span>
                 <span className="text-[11px] text-gray-500 leading-snug">
                   Displays this lubricant grade in the featured catalog spotlight.
                 </span>

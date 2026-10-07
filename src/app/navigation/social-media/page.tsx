@@ -143,7 +143,9 @@ export default function FooterSocialMediaCMSPage() {
             </div>
             <div>
               <h3 className="font-bold text-slate-900 text-lg">1. Social Media Profiles</h3>
-              <p className="text-xs text-slate-500">Corporate channel URLs appearing in the website footer and navigation</p>
+              <p className="text-xs text-slate-500">
+                Corporate channel URLs appearing in the website footer and navigation
+              </p>
             </div>
           </div>
 
@@ -193,8 +195,12 @@ export default function FooterSocialMediaCMSPage() {
               <Award size={20} />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-lg">2. Footer Partner Badges &amp; Copyright</h3>
-              <p className="text-xs text-slate-500">Upload official accreditation badges and configure the footer copyright notice</p>
+              <h3 className="font-bold text-slate-900 text-lg">
+                2. Footer Partner Badges &amp; Copyright
+              </h3>
+              <p className="text-xs text-slate-500">
+                Upload official accreditation badges and configure the footer copyright notice
+              </p>
             </div>
           </div>
 

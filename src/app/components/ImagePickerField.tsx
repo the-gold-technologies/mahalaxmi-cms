@@ -69,9 +69,7 @@ export function ImagePickerField({
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-bold text-slate-800 tracking-wide">
-          {label}
-        </label>
+        <label className="text-xs font-bold text-slate-800 tracking-wide">{label}</label>
         <button
           type="button"
           onClick={() => setShowUrlInput(!showUrlInput)}
@@ -182,9 +180,7 @@ export function ImagePickerField({
                 <p className="text-xs font-bold text-slate-800">
                   Click to upload image from computer
                 </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
-                  PNG, JPG, WEBP, SVG up to 10MB
-                </p>
+                <p className="text-[11px] text-slate-400 mt-0.5">PNG, JPG, WEBP, SVG up to 10MB</p>
               </div>
             </>
           )}
