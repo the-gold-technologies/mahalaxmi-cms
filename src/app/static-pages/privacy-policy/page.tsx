@@ -9,8 +9,8 @@ import { ShieldCheck, FileText, Calendar, Eye, Sparkles } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function PrivacyPolicyAdminPage() {
-  const [title, setTitle] = useState("Privacy Policy");
-  const [lastUpdated, setLastUpdated] = useState("August 2026");
+  const [title, setTitle] = useState("");
+  const [lastUpdated, setLastUpdated] = useState("");
   const [content, setContent] = useState("");
   const [isPublished, setIsPublished] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,8 +23,8 @@ export default function PrivacyPolicyAdminPage() {
         const json = await res.json();
         if (json.success && json.data) {
           const data = json.data;
-          setTitle(data.title || "Privacy Policy");
-          setLastUpdated(data.lastUpdated || "August 2026");
+          setTitle(data.title || "");
+          setLastUpdated(data.lastUpdated || "");
           setContent(data.content || "");
           setIsPublished(data.isPublished ?? true);
         }

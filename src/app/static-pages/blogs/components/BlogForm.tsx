@@ -59,8 +59,8 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
       year: "numeric",
     }),
   );
-  const [readTime, setReadTime] = useState("6 min read");
-  const [author, setAuthor] = useState("HPCL Lubricants Technical Team");
+  const [readTime, setReadTime] = useState("");
+  const [author, setAuthor] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [coverImages, setCoverImages] = useState<(File | string | null)[]>([]);
 
@@ -135,8 +135,8 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
           setSlug(b.slug || "");
           setCategory(b.category || "Automotive");
           setPublishDate(b.publishDate || "");
-          setReadTime(b.readTime || "6 min read");
-          setAuthor(b.author || "HPCL Lubricants Technical Team");
+          setReadTime(b.readTime || "");
+          setAuthor(b.author || "");
           setExcerpt(b.excerpt || "");
           setCoverImages(b.coverImage ? [b.coverImage] : []);
 

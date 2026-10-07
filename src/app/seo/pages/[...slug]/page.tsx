@@ -29,9 +29,7 @@ export default function PageSpecificSEODetail() {
     canonicalUrl: "",
     noIndex: false,
     schema: "",
-    headingOptions: {
-      heroHeadingTag: "h1",
-    } as any,
+    headingOptions: "h1" as any,
   });
 
   useEffect(() => {
@@ -57,12 +55,13 @@ export default function PageSpecificSEODetail() {
                   ? JSON.stringify(page.schema, null, 2)
                   : "",
             headingOptions:
-              typeof page.headingOptions === "object" && page.headingOptions !== null
-                ? {
-                    heroHeadingTag: "h1",
-                    ...page.headingOptions,
-                  }
-                : { heroHeadingTag: "h1" },
+              typeof page.headingOptions === "string"
+                ? page.headingOptions
+                : typeof page.headingOptions === "object" && page.headingOptions !== null
+                  ? (page.headingOptions as any).heroHeadingTag ||
+                    (page.headingOptions as any).h1 ||
+                    "h1"
+                  : "h1",
           });
         } else {
           // If not in DB yet, populate default
@@ -273,14 +272,11 @@ export default function PageSpecificSEODetail() {
               Hero Headline Tag (SEO)
             </span>
             <select
-              value={formData.headingOptions?.heroHeadingTag || "h1"}
+              value={typeof formData.headingOptions === "string" ? formData.headingOptions : "h1"}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  headingOptions: {
-                    ...formData.headingOptions,
-                    heroHeadingTag: e.target.value,
-                  },
+                  headingOptions: e.target.value,
                 })
               }
               className="w-full px-6 py-4 bg-white border border-gray-200 rounded-2xl text-sm focus:ring-2 focus:outline-none focus:border-[#002B5C] focus:ring-1 focus:ring-[#002B5C] text-gray-800 cursor-pointer h-[54px]"

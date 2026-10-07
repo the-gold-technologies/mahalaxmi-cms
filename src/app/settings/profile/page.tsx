@@ -29,16 +29,16 @@ export default function ProfileSettingsPage() {
         const res = await fetch("/api/profile");
         const json = await res.json();
         if (json.success && json.data) {
-          setName(json.data.name || session?.user?.name || "Mahalaxmi Admin");
-          setEmail(json.data.email || session?.user?.email || "admin@mahalaxmi.com");
+          setName(json.data.name || session?.user?.name || "");
+          setEmail(json.data.email || session?.user?.email || "");
         } else if (session?.user) {
-          setName(session.user.name || "Mahalaxmi Admin");
-          setEmail(session.user.email || "admin@mahalaxmi.com");
+          setName(session.user.name || "");
+          setEmail(session.user.email || "");
         }
       } catch (err) {
         if (session?.user) {
-          setName(session.user.name || "Mahalaxmi Admin");
-          setEmail(session.user.email || "admin@mahalaxmi.com");
+          setName(session.user.name || "");
+          setEmail(session.user.email || "");
         }
       } finally {
         setIsFetching(false);

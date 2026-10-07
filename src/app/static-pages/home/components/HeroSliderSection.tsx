@@ -7,38 +7,21 @@ import { ImageUploadField } from "@/components/ImageUploadField";
 import { SaveButton } from "@/components/SaveButton";
 import { uploadFiles } from "@/lib/uploadHelpers";
 
-export const DEFAULT_HERO_IMAGES: string[] = [
-  "/Banner No 1.png",
-  "/FuturX-1.jpg",
-  "/FuturX-2.jpg",
-  "/HP_Lube_Banner_new.png",
-  "/HP-Racer-new-1929-x715 copy (1) (1).jpg",
-  "/HPL-Sectorial-Web-Banner-1920x715-pix[9].jpg",
-  "/Lubricants.jpg",
-  "/New 1.jpg",
-  "/New 2.jpg",
-  "/Racer-Gen6.jpg",
-];
-
 export function HeroSliderSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [images, setImages] = useState<(File | string | null)[]>(DEFAULT_HERO_IMAGES);
+  const [images, setImages] = useState<(File | string | null)[]>([]);
 
   useEffect(() => {
     if (initialData) {
-      if (Array.isArray(initialData) && initialData.length > 0) {
+      if (Array.isArray(initialData.slides)) {
         setImages(
-          initialData.map((item: any) =>
-            typeof item === "string" ? item : item.img || item.image || item.bgImage || "",
-          ),
+          initialData.slides.map((item: any) => (typeof item === "string" ? item : item.img || "")),
         );
-      } else if (Array.isArray(initialData.slides) && initialData.slides.length > 0) {
+      } else if (Array.isArray(initialData)) {
         setImages(
-          initialData.slides.map((item: any) =>
-            typeof item === "string" ? item : item.img || item.image || item.bgImage || "",
-          ),
+          initialData.map((item: any) => (typeof item === "string" ? item : item.img || "")),
         );
       }
     }

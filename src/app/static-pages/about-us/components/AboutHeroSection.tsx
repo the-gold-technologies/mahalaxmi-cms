@@ -9,38 +9,27 @@ import { SaveButton } from "@/components/SaveButton";
 import { uploadFiles } from "@/lib/uploadHelpers";
 
 export interface AboutHeroData {
-  image?: string;
   bannerImage?: string;
   altText?: string;
-  alt?: string;
 }
-
-export const DEFAULT_HERO_DATA: AboutHeroData = {
-  image: "/About-HPCL.jpg",
-  bannerImage: "/About-HPCL.jpg",
-  altText: "About MAHALAXMI ENTERPRISES Banner",
-};
 
 export function AboutHeroSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const [images, setImages] = useState<(File | string | null)[]>([
-    DEFAULT_HERO_DATA.image || "/About-HPCL.jpg",
-  ]);
-  const [altText, setAltText] = useState(
-    DEFAULT_HERO_DATA.altText || "About MAHALAXMI ENTERPRISES Banner",
+  const [images, setImages] = useState<(File | string | null)[]>(
+    initialData?.bannerImage ? [initialData.bannerImage] : [],
   );
+  const [altText, setAltText] = useState(initialData?.altText || "");
 
   useEffect(() => {
     if (initialData) {
-      const heroImg = initialData.image || initialData.bannerImage;
-      if (heroImg) {
-        setImages([heroImg]);
+      if (initialData.bannerImage !== undefined) {
+        setImages(initialData.bannerImage ? [initialData.bannerImage] : []);
       }
-      if (initialData.altText || initialData.alt) {
-        setAltText(initialData.altText || initialData.alt);
+      if (initialData.altText !== undefined) {
+        setAltText(initialData.altText || "");
       }
     }
   }, [initialData]);
@@ -59,7 +48,7 @@ export function AboutHeroSection({ initialData }: { initialData?: any }) {
 
       // 1. Upload file if newly selected
       const [uploadedUrl] = await uploadFiles(validImages);
-      const finalImageUrl = uploadedUrl || "/About-HPCL.jpg";
+      const finalImageUrl = uploadedUrl || "";
 
       const payload = {
         bannerImage: finalImageUrl,

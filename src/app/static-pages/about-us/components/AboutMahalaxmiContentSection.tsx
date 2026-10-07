@@ -31,45 +31,6 @@ export interface AboutMahalaxmiContentData {
   whyChooseItems?: WhyChooseItem[];
 }
 
-export const DEFAULT_WHY_CHOOSE_ITEMS: WhyChooseItem[] = [
-  {
-    icon: "Building2",
-    title: "Industrial Lube Distributor",
-    description: "Catering over 100 plus Industries.",
-  },
-  {
-    icon: "Boxes",
-    title: "Wide Product Portfolio",
-    description: "Complete lubrication and industrial maintenance solutions under one roof.",
-  },
-  {
-    icon: "Wrench",
-    title: "Technical Expertise",
-    description: "Professional guidance for selecting the right products for every application.",
-  },
-  {
-    icon: "Truck",
-    title: "Reliable Supply",
-    description: "Consistent product availability with timely delivery.",
-  },
-  {
-    icon: "ShieldCheck",
-    title: "Quality Assurance",
-    description: "Only genuine, high-performance industrial products.",
-  },
-  {
-    icon: "Headphones",
-    title: "Customer-Centric Support",
-    description: "Dedicated service to ensure long-term customer satisfaction.",
-  },
-];
-
-export const DEFAULT_PARAGRAPHS = [
-  "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lube Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
-  "Since establishing Mahalaxmi Enterprises in 2023, she has been committed to delivering high-quality HP Lubricants, backed by technical knowledge, prompt service, and a customer-centric approach. Under her leadership, the company has earned the trust of more than 100 industrial customers and has successfully supplied lubricants to various government departments.",
-  "Her focus on long-term relationships, product reliability, and consistent service has positioned Mahalaxmi Enterprises as a dependable partner for industries seeking efficient and cost-effective lubrication solutions. With a vision to continuously expand the company\x27s reach and service capabilities, Neha Goyal remains dedicated to helping customers enhance equipment performance, improve operational efficiency, and reduce maintenance costs through the right lubrication practices.",
-];
-
 export function AboutMahalaxmiContentSection({
   initialData,
 }: {
@@ -79,14 +40,12 @@ export function AboutMahalaxmiContentSection({
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const [title, setTitle] = useState("ABOUT MAHALAXMI ENTERPRISES");
-  const [subtitle, setSubtitle] = useState("Neha Goyal");
-  const [proprietorRole, setProprietorRole] = useState("Proprietor, Mahalaxmi Enterprises");
-  const [distributorBadge, setDistributorBadge] = useState(
-    "Authorized Industrial Lube Distributor (ILD)",
-  );
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [subtitle, setSubtitle] = useState(initialData?.subtitle || "");
+  const [proprietorRole, setProprietorRole] = useState(initialData?.proprietorRole || "");
+  const [distributorBadge, setDistributorBadge] = useState(initialData?.distributorBadge || "");
   const [distributorCompany, setDistributorCompany] = useState(
-    "Hindustan Petroleum Corporation Limited (HPCL)",
+    initialData?.distributorCompany || "",
   );
   const [proprietorPhotos, setProprietorPhotos] = useState<(File | string | null)[]>(
     initialData?.proprietorPhoto ? [initialData.proprietorPhoto] : [],
@@ -94,20 +53,29 @@ export function AboutMahalaxmiContentSection({
   const [proprietorPhotoAlt, setProprietorPhotoAlt] = useState(
     initialData?.proprietorPhotoAlt || "",
   );
-  const [paragraphsText, setParagraphsText] = useState(DEFAULT_PARAGRAPHS.join("\n\n"));
-  const [whyChooseTitle, setWhyChooseTitle] = useState("WHY CHOOSE MAHALAXMI ENTERPRISES");
-  const [whyChooseSubtitle, setWhyChooseSubtitle] = useState("Delivering Quality. Building Trust.");
-  const [whyChooseItems, setWhyChooseItems] = useState<WhyChooseItem[]>(DEFAULT_WHY_CHOOSE_ITEMS);
+  const [paragraphsText, setParagraphsText] = useState(
+    Array.isArray(initialData?.paragraphs)
+      ? initialData.paragraphs.join("\n\n")
+      : typeof initialData?.paragraphs === "string"
+        ? initialData.paragraphs
+        : "",
+  );
+  const [whyChooseTitle, setWhyChooseTitle] = useState(initialData?.whyChooseTitle || "");
+  const [whyChooseSubtitle, setWhyChooseSubtitle] = useState(initialData?.whyChooseSubtitle || "");
+  const [whyChooseItems, setWhyChooseItems] = useState<WhyChooseItem[]>(
+    Array.isArray(initialData?.whyChooseItems) ? initialData.whyChooseItems : [],
+  );
 
   useEffect(() => {
     if (initialData) {
-      if (initialData.title) setTitle(initialData.title);
-      if (initialData.subtitle) setSubtitle(initialData.subtitle);
-      if (initialData.proprietorRole) setProprietorRole(initialData.proprietorRole);
+      if (initialData.title !== undefined) setTitle(initialData.title || "");
+      if (initialData.subtitle !== undefined) setSubtitle(initialData.subtitle || "");
+      if (initialData.proprietorRole !== undefined)
+        setProprietorRole(initialData.proprietorRole || "");
       if (initialData.distributorBadge !== undefined)
-        setDistributorBadge(initialData.distributorBadge);
+        setDistributorBadge(initialData.distributorBadge || "");
       if (initialData.distributorCompany !== undefined)
-        setDistributorCompany(initialData.distributorCompany);
+        setDistributorCompany(initialData.distributorCompany || "");
       if (initialData.proprietorPhoto !== undefined) {
         setProprietorPhotos(initialData.proprietorPhoto ? [initialData.proprietorPhoto] : []);
       }
@@ -119,9 +87,11 @@ export function AboutMahalaxmiContentSection({
       } else if (typeof initialData.paragraphs === "string") {
         setParagraphsText(initialData.paragraphs);
       }
-      if (initialData.whyChooseTitle) setWhyChooseTitle(initialData.whyChooseTitle);
-      if (initialData.whyChooseSubtitle) setWhyChooseSubtitle(initialData.whyChooseSubtitle);
-      if (Array.isArray(initialData.whyChooseItems) && initialData.whyChooseItems.length > 0) {
+      if (initialData.whyChooseTitle !== undefined)
+        setWhyChooseTitle(initialData.whyChooseTitle || "");
+      if (initialData.whyChooseSubtitle !== undefined)
+        setWhyChooseSubtitle(initialData.whyChooseSubtitle || "");
+      if (Array.isArray(initialData.whyChooseItems)) {
         setWhyChooseItems(initialData.whyChooseItems);
       }
     }

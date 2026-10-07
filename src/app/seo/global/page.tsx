@@ -20,7 +20,7 @@ export default function GlobalSEOPage() {
     customHeaderScripts: "",
     customFooterScripts: "",
     schema: "",
-    headingOptions: { heroHeadingTag: "h1", h1: "h1" },
+    headingOptions: "h1",
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -50,9 +50,13 @@ export default function GlobalSEOPage() {
                   ? JSON.stringify(data.schema, null, 2)
                   : "",
             headingOptions:
-              typeof data.headingOptions === "object" && data.headingOptions !== null
+              typeof data.headingOptions === "string"
                 ? data.headingOptions
-                : { heroHeadingTag: "h1", h1: "h1" },
+                : typeof data.headingOptions === "object" && data.headingOptions !== null
+                  ? (data.headingOptions as any).heroHeadingTag ||
+                    (data.headingOptions as any).h1 ||
+                    "h1"
+                  : "h1",
           });
         }
       } catch (error) {
@@ -181,15 +185,11 @@ export default function GlobalSEOPage() {
               Hero Headline Tag (SEO)
             </label>
             <select
-              value={formData.headingOptions?.heroHeadingTag || formData.headingOptions?.h1 || "h1"}
+              value={typeof formData.headingOptions === "string" ? formData.headingOptions : "h1"}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  headingOptions: {
-                    ...prev.headingOptions,
-                    heroHeadingTag: e.target.value,
-                    h1: e.target.value,
-                  },
+                  headingOptions: e.target.value,
                 }))
               }
               className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#002B5C] transition shadow-xs cursor-pointer"

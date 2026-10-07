@@ -57,7 +57,7 @@ export async function GET(
               targetKeywords: blogPost.category,
               canonicalUrl: `https://mahalaxmilubricants.com/${slug}`,
               noIndex: false,
-              headingOptions: { heroHeadingTag: "h1" },
+              headingOptions: "h1",
             },
           });
         }
@@ -117,7 +117,7 @@ export async function PUT(
         ogTitle: seo.ogTitle,
         ogDescription: seo.ogDescription,
         ogImage: seo.ogImage,
-        headingOptions: seo.headingOptions || { heroHeadingTag: "h1" },
+        headingOptions: seo.headingOptions || "h1",
         visibility: "published",
         schema: seo.schema,
       },

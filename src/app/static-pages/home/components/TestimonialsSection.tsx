@@ -34,250 +34,10 @@ export interface TestimonialsData {
   testimonials: TestimonialItem[];
 }
 
-export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
-  {
-    id: 1,
-    name: "MR. Gudu Bhai",
-    role: "MECHANIC",
-    org: "National Automobiles",
-    location: "Valsad-Vapi Market - Gujarat",
-    quote: "We are using Milcy happy with different skims running by the firm.",
-    image: "/testimonial-1.png",
-  },
-  {
-    id: 2,
-    name: "Sanjay Aggarwal",
-    role: "Retailer",
-    org: "Aggarwal Auto Enterprises",
-    location: "Chandrapur - Maharashtra",
-    quote: "Milcy has given great performance with longer durability.",
-    image: "/testimonial-2.png",
-  },
-  {
-    id: 3,
-    name: "Mr. Babasaheb Kale",
-    role: "Sr. Manager - Sourcing & Supply Chain",
-    org: "Gabriel India Ltd",
-    location: "Pune - Maharashtra",
-    quote:
-      "We are associated with HPCL for long time. We are happy with the services extended to us and support in new product development.",
-    image: "/hp-testimonial-3.png",
-  },
-  {
-    id: 4,
-    name: "Kartik R Shah",
-    role: "Director",
-    org: "Shah Foils Limited",
-    location: "Gandhinagar - Gujarat",
-    quote:
-      "Excellent Team and Product. We are using HP Rolmet 40 from last 15 years for cold rolling of stainless steel. Till now not faced any quality issue.",
-    image: "/hp-testimonial-4.png",
-  },
-  {
-    id: 5,
-    name: "Sanjay Dahiya",
-    role: "Fuel Inspector",
-    org: "Tughlakabad Diesel Shed",
-    location: "Tughlakabad - Delhi",
-    quote:
-      "HPCL cares for product quality and customer requirements. Customer service and resolution action are very prompt. Response of HP TS office is quick.",
-    image: "/hp-testimonial-5.png",
-  },
-  {
-    id: 6,
-    name: "Mr Dilipbhai Javia",
-    role: "Founder & Managing Partner",
-    org: "Ravi Corporation",
-    location: "Rajkot - Gujarat",
-    quote:
-      "We have been using HPCL Quenching Oil, Metaquench 43 since last 7 years for Heat Treatment. We are very satisfied with product quality & service.",
-    image: "/hp-testimonial-6.png",
-  },
-  {
-    id: 7,
-    name: "Shri Deepak Sharma",
-    role: "Technical Head",
-    org: "Tex Corp Ltd",
-    location: "Gurgaon - Haryana",
-    quote:
-      "Satisfied customer of Hytherm S. Mahalaxmi Enterprises has delivered superior performance across all our manufacturing operations.",
-    image: "/hp-testimonial-7.png",
-  },
-  {
-    id: 8,
-    name: "Prakashraj Jain",
-    role: "Managing Director",
-    org: "Real Strips Ltd.",
-    location: "Ahmedabad - Gujarat",
-    quote:
-      "HP Rolmet 40 & HP Rolmet 7 are best grades for cold rolling of stainless steel. Response of technical team and sales team is very good.",
-    image: "/hp-testimonial-8.png",
-  },
-  {
-    id: 9,
-    name: "Mr. Santosh Sankpal",
-    role: "Deputy Manager – Heat Treatment",
-    org: "SKF India Limited",
-    location: "Pune - Maharashtra",
-    quote:
-      "We in SKF Pune using the Metaquench-42 Quenching oil from more than 15 years, this is the best oil among the industry.",
-    image: "/hp-testimonial-9.jpg",
-  },
-  {
-    id: 10,
-    name: "Shri. S D KOKATE",
-    role: "C & MS (G)",
-    org: "Diesel Loco Shed GPR",
-    location: "Pune - Maharashtra",
-    quote:
-      "Mahalaxmi Enterprises is most trusted partner for Indian Railways and the only approved supplier for coolant.",
-    image: "/hp-testimonial-10.jpg",
-  },
-  {
-    id: 11,
-    name: "Shri. K W DESHMUKH",
-    role: "ADME",
-    org: "Diesel Loco Shed GPR",
-    location: "Pune - Maharashtra",
-    quote:
-      "Mahalaxmi Enterprises cares its customer for timely delivery and uninterrupted supply of its products. Customer service is prompt and efficient.",
-    image: "/hp-testimonial-11.jpg",
-  },
-  {
-    id: 12,
-    name: "Mr. Harish Samtani",
-    role: "G.M - Materials",
-    org: "Sunbeam Auto Pvt Ltd",
-    location: "Gurugram - Delhi NCR",
-    quote:
-      "We are using Hydraulic and Cutting oil for more than 20 years now. Performance is very good and technical support is exceptional.",
-    image: "/hp-testimonial-12.jpg",
-  },
-  {
-    id: 13,
-    name: "Shishir Tripathi",
-    role: "Manager Procurement",
-    org: "CEAT",
-    location: "Mumbai - Maharashtra",
-    quote:
-      "Mahalaxmi Enterprises has been a reliable and strategic partner. We expect to continue this relationship and grow together for many years to come.",
-    image: "/hp-testimonial-13.png",
-  },
-  {
-    id: 14,
-    name: "Amit Soni",
-    role: "Retailer",
-    org: "Amit Tractors",
-    location: "Naubagh - Fatehpur",
-    quote:
-      "Mahalaxmi Enterprises Retailer Program is best. Great rewards program for retailers and dealers across India.",
-    image: "/hp-testimonial-14.png",
-  },
-  {
-    id: 15,
-    name: "Praveen Kumar Singh",
-    role: "Asst. General Manager",
-    org: "JCB Alliance Industrial Marketing",
-    location: "New Delhi",
-    quote:
-      "Mahalaxmi Enterprises always deserves appreciation for their prompt action and technical support services.",
-    image: "/hp-testimonial-3.png",
-  },
-  {
-    id: 16,
-    name: "Sandeep Das",
-    role: "Secretary",
-    org: "Vintage Car & Motorcycle Club",
-    location: "Kolkata - West Bengal",
-    quote:
-      "Even for our Vintage Cars and Motorcycles, we bank upon Mahalaxmi Enterprises for maximum performance.",
-    image: "/hp-testimonial-4.png",
-  },
-  {
-    id: 17,
-    name: "Yogesh Wadhwa",
-    role: "Mechanical Engineer",
-    org: "Grasim Industries Limited",
-    location: "Jagdishpur - Amethi",
-    quote:
-      "We have been associated with HPCL for many years taking turbine oil supply with zero issues.",
-    image: "/hp-testimonial-5.png",
-  },
-  {
-    id: 18,
-    name: "Birendra Kumar",
-    role: "SSE / Motive Power",
-    org: "RDSO Manak Nagar",
-    location: "Lucknow - Uttar Pradesh",
-    quote:
-      "I appreciate HP Lube Technical Services for their support & timely response to Indian Railways.",
-    image: "/hp-testimonial-6.png",
-  },
-  {
-    id: 19,
-    name: "Rajan Mallick",
-    role: "Retailer",
-    org: "Metro Auto Center",
-    location: "Jamshedpur - Jharkhand",
-    quote:
-      "Mahalaxmi Enterprises is best in the Market. Superior quality and price structure for customers.",
-    image: "/hp-testimonial-7.png",
-  },
-  {
-    id: 20,
-    name: "Kishor Bhai",
-    role: "Retailer",
-    org: "Mihir Traders",
-    location: "Bhuj - Gujarat",
-    quote: "Mahalaxmi Enterprises is excellent with best price and Milcy is best success product.",
-    image: "/hp-testimonial-9.jpg",
-  },
-  {
-    id: 21,
-    name: "Samir Bhai",
-    role: "MECHANIC",
-    org: "Samir Auto Garage",
-    location: "Bhuj - Gujarat",
-    quote:
-      "Mahalaxmi Enterprises products give top performance, good grade wise performance like Milcy and Racer4.",
-    image: "/hp-testimonial-10.jpg",
-  },
-  {
-    id: 22,
-    name: "Arvind Srivastava",
-    role: "Retailer",
-    org: "Smita Motors",
-    location: "Unnao - Uttar Pradesh",
-    quote:
-      "We sell lubricants from Mahalaxmi Enterprises. High quality products with no complaints so far from mechanics or end-users.",
-    image: "/hp-testimonial-11.jpg",
-  },
-  {
-    id: 23,
-    name: "Pavitra Khanna",
-    role: "Managing Director",
-    org: "Natraj JCB",
-    location: "Jhansi - Uttar Pradesh",
-    quote:
-      "We are dealing with Mahalaxmi Enterprises for last 4 years. Customers using your lubricants are fully satisfied.",
-    image: "/hp-testimonial-12.jpg",
-  },
-  {
-    id: 24,
-    name: "Pankaj Barman",
-    role: "Retailer",
-    org: "Pooja Earth Movers",
-    location: "Chandrapur - Maharashtra",
-    quote: "HP lubes are the high quality lubes with affordable price for all types of consumers.",
-    image: "/hp-testimonial-13.png",
-  },
-];
-
-export const DEFAULT_TESTIMONIALS_DATA: TestimonialsData = {
-  title: "Our Prominent Customers",
-  description:
-    "Mahalaxmi Enterprises has always been in the forefront supplying and delivering technology advanced lubricants as per industrial market trends",
-  testimonials: DEFAULT_TESTIMONIALS,
+const initialTestimonialsData: TestimonialsData = {
+  title: "",
+  description: "",
+  testimonials: [],
 };
 
 function AvatarImageDropzone({
@@ -436,23 +196,22 @@ export function TestimonialsSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [data, setData] = useState<TestimonialsData>(DEFAULT_TESTIMONIALS_DATA);
+  const [data, setData] = useState<TestimonialsData>(initialTestimonialsData);
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({
     "1": true,
   });
 
   useEffect(() => {
     if (initialData) {
-      const list =
-        Array.isArray(initialData.testimonials) && initialData.testimonials.length > 0
-          ? initialData.testimonials
-          : Array.isArray(initialData) && initialData.length > 0
-            ? initialData
-            : DEFAULT_TESTIMONIALS;
+      const list = Array.isArray(initialData.testimonials)
+        ? initialData.testimonials
+        : Array.isArray(initialData)
+          ? initialData
+          : [];
 
       setData({
-        title: initialData.title || DEFAULT_TESTIMONIALS_DATA.title,
-        description: initialData.description || DEFAULT_TESTIMONIALS_DATA.description,
+        title: initialData.title || "",
+        description: initialData.description || "",
         testimonials: list,
       });
 

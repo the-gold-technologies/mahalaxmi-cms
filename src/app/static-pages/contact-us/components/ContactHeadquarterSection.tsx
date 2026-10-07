@@ -25,30 +25,26 @@ interface ContactHeadquarterSectionProps {
 
 export function ContactHeadquarterSection({ initialData, onSave }: ContactHeadquarterSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
-  const [companyName, setCompanyName] = useState("Mahalaxmi Enterprises");
-  const [badge, setBadge] = useState("Authorized Industrial Lube Distributor");
-  const [description, setDescription] = useState(
-    "Connect with our team for HP Lubricants requirements, technical seminars, and bulk inquiries.",
-  );
-  const [proprietor, setProprietor] = useState("Neha Goyal");
-  const [address, setAddress] = useState(
-    "HPCL Petrol Pump, Ground & First Floor, Kh No- 487/0048, Aggarwal Mandi Tatiri, Tatiri, Agarwal Mandi, Baghpat, Uttar Pradesh - 250601",
-  );
-  const [phone, setPhone] = useState("+91 88007 78032");
-  const [email, setEmail] = useState("info@hplubricantscfa.com");
-  const [whatsapp, setWhatsapp] = useState("+91 88007 78032");
+  const [companyName, setCompanyName] = useState(initialData?.companyName || "");
+  const [badge, setBadge] = useState(initialData?.badge || "");
+  const [description, setDescription] = useState(initialData?.description || "");
+  const [proprietor, setProprietor] = useState(initialData?.proprietor || "");
+  const [address, setAddress] = useState(initialData?.address || "");
+  const [phone, setPhone] = useState(initialData?.phone || "");
+  const [email, setEmail] = useState(initialData?.email || "");
+  const [whatsapp, setWhatsapp] = useState(initialData?.whatsapp || "");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
-      if (initialData.companyName !== undefined) setCompanyName(initialData.companyName);
-      if (initialData.badge !== undefined) setBadge(initialData.badge);
-      if (initialData.description !== undefined) setDescription(initialData.description);
-      if (initialData.proprietor !== undefined) setProprietor(initialData.proprietor);
-      if (initialData.address !== undefined) setAddress(initialData.address);
-      if (initialData.phone !== undefined) setPhone(initialData.phone);
-      if (initialData.email !== undefined) setEmail(initialData.email);
-      if (initialData.whatsapp !== undefined) setWhatsapp(initialData.whatsapp);
+      if (initialData.companyName !== undefined) setCompanyName(initialData.companyName || "");
+      if (initialData.badge !== undefined) setBadge(initialData.badge || "");
+      if (initialData.description !== undefined) setDescription(initialData.description || "");
+      if (initialData.proprietor !== undefined) setProprietor(initialData.proprietor || "");
+      if (initialData.address !== undefined) setAddress(initialData.address || "");
+      if (initialData.phone !== undefined) setPhone(initialData.phone || "");
+      if (initialData.email !== undefined) setEmail(initialData.email || "");
+      if (initialData.whatsapp !== undefined) setWhatsapp(initialData.whatsapp || "");
     }
   }, [initialData]);
 

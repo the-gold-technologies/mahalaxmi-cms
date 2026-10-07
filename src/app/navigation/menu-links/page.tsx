@@ -15,47 +15,8 @@ interface NavLinkItem {
   isStatic?: boolean;
 }
 
-const DEFAULT_DISPLAY_LINKS: NavLinkItem[] = [
-  {
-    label: "Home",
-    url: "/",
-    type: "Main Link",
-    isStatic: true,
-  },
-  {
-    label: "About Us",
-    url: "/about-us",
-    type: "Main Link",
-    isStatic: true,
-  },
-  {
-    label: "Products & Services",
-    url: "/products",
-    type: "Main Link",
-    isStatic: true,
-  },
-  {
-    label: "Events & Gallery",
-    url: "/events",
-    type: "Main Link",
-    isStatic: true,
-  },
-  {
-    label: "Blogs",
-    url: "/blogs",
-    type: "Main Link",
-    isStatic: true,
-  },
-  {
-    label: "Contact Us",
-    url: "/contact-us",
-    type: "Main Link",
-    isStatic: true,
-  },
-];
-
 export default function MenuLinksPage() {
-  const [links, setLinks] = useState<NavLinkItem[]>(DEFAULT_DISPLAY_LINKS);
+  const [links, setLinks] = useState<NavLinkItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

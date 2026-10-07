@@ -13,37 +13,35 @@ export interface LocateDistributorData {
   address: string;
   phone: string;
   email: string;
-  contactButtonText: string;
+  contactBtnText: string;
 }
 
-export const DEFAULT_LOCATE_DISTRIBUTOR_DATA: LocateDistributorData = {
-  contactTitle: "CONTACT DETAILS",
-  logo: "/mahalaxmi png logo .png",
-  companyName: "Mahalaxmi Enterprises",
-  address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India.",
-  phone: "+91 98970 56000",
-  email: "info@hplubricantscfa.com",
-  contactButtonText: "CONTACT US",
+const initialLocateData: LocateDistributorData = {
+  contactTitle: "",
+  logo: "",
+  companyName: "",
+  address: "",
+  phone: "",
+  email: "",
+  contactBtnText: "",
 };
 
 export function LocateDistributorSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [formData, setFormData] = useState<LocateDistributorData>(DEFAULT_LOCATE_DISTRIBUTOR_DATA);
+  const [formData, setFormData] = useState<LocateDistributorData>(initialLocateData);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        contactTitle: initialData.contactTitle || DEFAULT_LOCATE_DISTRIBUTOR_DATA.contactTitle,
-        logo: initialData.logo || DEFAULT_LOCATE_DISTRIBUTOR_DATA.logo,
-        companyName: initialData.companyName || DEFAULT_LOCATE_DISTRIBUTOR_DATA.companyName,
-        address: initialData.address || DEFAULT_LOCATE_DISTRIBUTOR_DATA.address,
-        phone:
-          initialData.phone || initialData.directPhone || DEFAULT_LOCATE_DISTRIBUTOR_DATA.phone,
-        email: initialData.email || DEFAULT_LOCATE_DISTRIBUTOR_DATA.email,
-        contactButtonText:
-          initialData.contactButtonText || DEFAULT_LOCATE_DISTRIBUTOR_DATA.contactButtonText,
+        contactTitle: initialData.contactTitle || "",
+        logo: initialData.logo || "",
+        companyName: initialData.companyName || "",
+        address: initialData.address || "",
+        phone: initialData.phone || "",
+        email: initialData.email || "",
+        contactBtnText: initialData.contactBtnText || "",
       });
     }
   }, [initialData]);
@@ -53,9 +51,13 @@ export function LocateDistributorSection({ initialData }: { initialData?: any })
     setSaved(false);
     try {
       const payload = {
-        ...formData,
+        contactTitle: formData.contactTitle,
+        logo: formData.logo,
+        companyName: formData.companyName,
+        address: formData.address,
         phone: formData.phone,
         email: formData.email,
+        contactBtnText: formData.contactBtnText,
       };
 
       const res = await fetch("/api/home", {
@@ -167,11 +169,11 @@ export function LocateDistributorSection({ initialData }: { initialData?: any })
               {/* Contact Button Text */}
               <InputField
                 label="Contact Action Button Text"
-                value={formData.contactButtonText}
+                value={formData.contactBtnText}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    contactButtonText: e.target.value,
+                    contactBtnText: e.target.value,
                   }))
                 }
                 placeholder="CONTACT US"

@@ -21,20 +21,18 @@ interface ContactFormConfigSectionProps {
 
 export function ContactFormConfigSection({ initialData, onSave }: ContactFormConfigSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
-  const [badge, setBadge] = useState("Online Request");
-  const [title, setTitle] = useState("Send an Enquiry");
-  const [subtitle, setSubtitle] = useState(
-    "Please fill in your details and our team will get back to you with pricing & availability.",
-  );
-  const [buttonText, setButtonText] = useState("Submit Enquiry");
+  const [badge, setBadge] = useState(initialData?.badge || "");
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [subtitle, setSubtitle] = useState(initialData?.subtitle || "");
+  const [buttonText, setButtonText] = useState(initialData?.buttonText || "");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
-      if (initialData.badge !== undefined) setBadge(initialData.badge);
-      if (initialData.title !== undefined) setTitle(initialData.title);
-      if (initialData.subtitle !== undefined) setSubtitle(initialData.subtitle);
-      if (initialData.buttonText !== undefined) setButtonText(initialData.buttonText);
+      if (initialData.badge !== undefined) setBadge(initialData.badge || "");
+      if (initialData.title !== undefined) setTitle(initialData.title || "");
+      if (initialData.subtitle !== undefined) setSubtitle(initialData.subtitle || "");
+      if (initialData.buttonText !== undefined) setButtonText(initialData.buttonText || "");
     }
   }, [initialData]);
 

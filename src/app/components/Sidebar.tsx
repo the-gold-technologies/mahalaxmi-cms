@@ -55,10 +55,7 @@ const sidebarLinks: SidebarLink[] = [
   {
     title: "Submissions",
     icon: Layers,
-    sublinks: [
-      { title: "Enquiries", href: "/submissions/enquiries" },
-      { title: "Distributor Leads", href: "/submissions/distributor-leads" },
-    ],
+    sublinks: [{ title: "Enquiries", href: "/submissions/enquiries" }],
   },
   {
     title: "SEO Management",

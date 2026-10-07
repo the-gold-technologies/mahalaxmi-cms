@@ -55,12 +55,6 @@ const STATIC_SEARCH_ITEMS: SearchItem[] = [
     url: "/submissions/enquiries",
     icon: Inbox,
   },
-  {
-    title: "Distributor Applications",
-    category: "Submissions",
-    url: "/submissions/distributor-leads",
-    icon: Inbox,
-  },
   { title: "Profile Settings", category: "Settings", url: "/settings/profile", icon: Settings },
 ];
 

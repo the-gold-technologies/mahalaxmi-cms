@@ -22,10 +22,12 @@ interface ContactHeroSectionProps {
 
 export function ContactHeroSection({ initialData, onSave }: ContactHeroSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
-  const [title, setTitle] = useState("Contact Us");
-  const [subtitle, setSubtitle] = useState("");
-  const [images, setImages] = useState<(File | string | null)[]>([]);
-  const [altText, setAltText] = useState("");
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [subtitle, setSubtitle] = useState(initialData?.subtitle || "");
+  const [images, setImages] = useState<(File | string | null)[]>(
+    initialData?.image ? [initialData.image] : [],
+  );
+  const [altText, setAltText] = useState(initialData?.altText || "");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

@@ -36,25 +36,6 @@ interface ProductFormProps {
   isNew?: boolean;
 }
 
-const DEFAULT_BENEFITS = [
-  "Superior soot dispersancy preventing oil thickening and sludge formation",
-  "High TBN retention protecting against acidic corrosion from sulfur fuels",
-  "Excellent thermal and shear stability preserving viscosity at high temperatures",
-  "Reduced oil consumption and minimized piston deposit formation",
-];
-
-const DEFAULT_SPECIAL_FEATURES = [
-  "API CI-4 / SL Certified",
-  "Meets MB 228.3, Volvo VDS-3, Cummins CES 20078",
-  "Compatible with EGR equipped engines",
-];
-
-const DEFAULT_SPECS_TABLE: PropertyRow[] = [
-  { property: "Kinematic Viscosity @ 100°C, cSt", value: "14.5" },
-  { property: "Viscosity Index", value: "135" },
-  { property: "Flash Point, °C", value: "225" },
-];
-
 export function ProductForm({ productId, isNew = false }: ProductFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -71,10 +52,10 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
   const [containerImages, setContainerImages] = useState<(File | string | null)[]>([]);
   const [description, setDescription] = useState("");
   const [applicationAreas, setApplicationAreas] = useState("");
-  const [performanceBenefits, setPerformanceBenefits] = useState<string[]>(DEFAULT_BENEFITS);
-  const [specialFeatures, setSpecialFeatures] = useState<string[]>(DEFAULT_SPECIAL_FEATURES);
+  const [performanceBenefits, setPerformanceBenefits] = useState<string[]>([]);
+  const [specialFeatures, setSpecialFeatures] = useState<string[]>([]);
   const [specsText, setSpecsText] = useState("");
-  const [propertiesTable, setPropertiesTable] = useState<PropertyRow[]>(DEFAULT_SPECS_TABLE);
+  const [propertiesTable, setPropertiesTable] = useState<PropertyRow[]>([]);
   const [pdfUrl, setPdfUrl] = useState("");
   const [msdsUrl, setMsdsUrl] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -111,13 +92,11 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
             setDescription(p.description || "");
             setApplicationAreas(p.applicationAreas || "");
             setPerformanceBenefits(
-              Array.isArray(p.performanceBenefits) ? p.performanceBenefits : DEFAULT_BENEFITS,
+              Array.isArray(p.performanceBenefits) ? p.performanceBenefits : [],
             );
-            setSpecialFeatures(
-              Array.isArray(p.specialFeatures) ? p.specialFeatures : DEFAULT_SPECIAL_FEATURES,
-            );
+            setSpecialFeatures(Array.isArray(p.specialFeatures) ? p.specialFeatures : []);
             setSpecsText(p.specsText || "");
-            setPropertiesTable(p.propertiesTable || DEFAULT_SPECS_TABLE);
+            setPropertiesTable(Array.isArray(p.propertiesTable) ? p.propertiesTable : []);
             setPdfUrl(p.pdfUrl || "");
             setMsdsUrl(p.msdsUrl || "");
             setIsFeatured(!!p.isFeatured);

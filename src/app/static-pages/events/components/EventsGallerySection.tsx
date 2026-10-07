@@ -113,8 +113,8 @@ export function EventsGallerySection({ initialData, onSave }: EventsGallerySecti
       // Format payload items
       const finalGallery = updatedGallery.map((item, idx) => ({
         id: typeof item.id === "number" ? item.id : idx + 1,
-        title: (item.title || "Event Photo").trim(),
-        altText: (item.altText || item.title || "Event Photo").trim(),
+        title: (item.title || "").trim(),
+        altText: (item.altText || item.title || "").trim(),
         image: typeof item.image === "string" ? item.image : "",
       }));
 

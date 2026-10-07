@@ -8,38 +8,35 @@ import { TextAreaField } from "@/components/TextAreaField";
 import { SaveButton } from "@/components/SaveButton";
 
 export interface AboutSectionData {
-  heading: string;
-  description: string;
-  btnLabel: string;
-  btnUrl: string;
+  title: string;
+  subtitle: string;
+  bodyText: string;
+  buttonText: string;
+  buttonLink: string;
 }
 
-export const DEFAULT_ABOUT_DATA: AboutSectionData = {
-  heading: "About Mahalaxmi Enterprises",
-  description:
-    "Mahalaxmi Enterprises is an Authorized Industrial Lube Distributor (ILD), offering a comprehensive range of industrial lubricants, greases, metalworking fluids, and industrial maintenance solutions. Backed by trusted quality, we deliver high-performance products that enhance equipment reliability, reduce downtime, and improve operational efficiency across industries.",
-  btnLabel: "Read More",
-  btnUrl: "#products",
+const initialAboutData: AboutSectionData = {
+  title: "",
+  subtitle: "",
+  bodyText: "",
+  buttonText: "",
+  buttonLink: "",
 };
 
 export function AboutSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [formData, setFormData] = useState<AboutSectionData>(DEFAULT_ABOUT_DATA);
+  const [formData, setFormData] = useState<AboutSectionData>(initialAboutData);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        heading:
-          initialData.heading ||
-          (initialData.headingPrefix
-            ? `${initialData.headingPrefix} ${initialData.headingHighlight || ""}`.trim()
-            : DEFAULT_ABOUT_DATA.heading),
-        description: initialData.description || DEFAULT_ABOUT_DATA.description,
-        btnLabel:
-          initialData.btnLabel || initialData.primaryBtnLabel || DEFAULT_ABOUT_DATA.btnLabel,
-        btnUrl: initialData.btnUrl || initialData.primaryBtnUrl || DEFAULT_ABOUT_DATA.btnUrl,
+        title: initialData.title || "",
+        subtitle: initialData.subtitle || "",
+        bodyText: initialData.bodyText || "",
+        buttonText: initialData.buttonText || "",
+        buttonLink: initialData.buttonLink || "",
       });
     }
   }, [initialData]);
@@ -49,12 +46,11 @@ export function AboutSection({ initialData }: { initialData?: any }) {
     setSaved(false);
     try {
       const payload = {
-        heading: formData.heading,
-        description: formData.description,
-        btnLabel: formData.btnLabel,
-        btnUrl: formData.btnUrl,
-        primaryBtnLabel: formData.btnLabel,
-        primaryBtnUrl: formData.btnUrl,
+        title: formData.title,
+        subtitle: formData.subtitle,
+        bodyText: formData.bodyText,
+        buttonText: formData.buttonText,
+        buttonLink: formData.buttonLink,
       };
 
       const res = await fetch("/api/home", {
@@ -97,39 +93,48 @@ export function AboutSection({ initialData }: { initialData?: any }) {
         >
           <div className="overflow-hidden">
             <div className="flex flex-col gap-6 pt-4">
-              {/* Section Heading */}
+              {/* Section Title */}
               <InputField
-                label="Section Heading"
-                value={formData.heading}
-                onChange={(e) => setFormData({ ...formData, heading: e.target.value })}
-                placeholder="About Mahalaxmi Enterprises"
+                label="Section Title"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder="ABOUT HP LUBRICANTS & MAHALAXMI ENTERPRISES"
                 helperText="Main title for the about section"
               />
 
-              {/* Description */}
+              {/* Section Subtitle */}
+              <InputField
+                label="Section Subtitle"
+                value={formData.subtitle}
+                onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                placeholder="Hindustan Petroleum Corporation Limited (HPCL)..."
+                helperText="Subtitle displayed below the title"
+              />
+
+              {/* Body Text */}
               <TextAreaField
-                label="About Description (Company Overview)"
+                label="About Description (Body Text)"
                 rows={5}
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Mahalaxmi Enterprises is an Authorized Industrial Lube Distributor (ILD)..."
+                value={formData.bodyText}
+                onChange={(e) => setFormData({ ...formData, bodyText: e.target.value })}
+                placeholder="Mahalaxmi Enterprises serves as an Authorized Industrial Lube Distributor (ILD)..."
                 helperText="Main narrative overview describing company background and operations"
               />
 
               {/* Button Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <InputField
-                  label="CTA Button Label"
-                  value={formData.btnLabel}
-                  onChange={(e) => setFormData({ ...formData, btnLabel: e.target.value })}
-                  placeholder="Read More"
+                  label="CTA Button Text"
+                  value={formData.buttonText}
+                  onChange={(e) => setFormData({ ...formData, buttonText: e.target.value })}
+                  placeholder="READ MORE ABOUT US"
                 />
 
                 <InputField
                   label="CTA Button Target URL"
-                  value={formData.btnUrl}
-                  onChange={(e) => setFormData({ ...formData, btnUrl: e.target.value })}
-                  placeholder="#products or /products"
+                  value={formData.buttonLink}
+                  onChange={(e) => setFormData({ ...formData, buttonLink: e.target.value })}
+                  placeholder="/about-us"
                   helperText="Destination link for the button"
                 />
               </div>

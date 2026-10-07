@@ -28,30 +28,14 @@ export interface ProductServiceItem {
 
 export interface ProductsServicesData {
   title: string;
-  description: string;
+  subtitle: string;
   items: ProductServiceItem[];
 }
 
-export const DEFAULT_PRODUCTS_SERVICES: ProductsServicesData = {
-  title: "OUR PRODUCTS AND SERVICES",
-  description:
-    "Mahalaxmi Enterprises has always been in the forefront developing and marketing of technology advanced lubricants as per the market trends",
-  items: [
-    {
-      id: "industrial",
-      name: "Industrial Oils",
-      link: "/products/industrial-oils",
-      hoverImg: "/industrial-1.png",
-      img: "/industrial-2.png",
-    },
-    {
-      id: "greases",
-      name: "Greases",
-      link: "/products/industrial-greases",
-      hoverImg: "/greases-1.png",
-      img: "/greases-2.png",
-    },
-  ],
+const initialProductsServices: ProductsServicesData = {
+  title: "",
+  subtitle: "",
+  items: [],
 };
 
 function CircularImageDropzone({
@@ -221,7 +205,7 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [data, setData] = useState<ProductsServicesData>(DEFAULT_PRODUCTS_SERVICES);
+  const [data, setData] = useState<ProductsServicesData>(initialProductsServices);
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({
     industrial: true,
     greases: true,
@@ -229,14 +213,11 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
 
   useEffect(() => {
     if (initialData) {
-      const items =
-        Array.isArray(initialData.items) && initialData.items.length > 0
-          ? initialData.items
-          : DEFAULT_PRODUCTS_SERVICES.items;
+      const items = Array.isArray(initialData.items) ? initialData.items : [];
 
       setData({
-        title: initialData.title || DEFAULT_PRODUCTS_SERVICES.title,
-        description: initialData.description || DEFAULT_PRODUCTS_SERVICES.description,
+        title: initialData.title || "",
+        subtitle: initialData.subtitle || "",
         items,
       });
 
@@ -349,14 +330,14 @@ export function ProductsServicesSection({ initialData }: { initialData?: any }) 
                 <TextAreaField
                   label="Section Subtitle / Description"
                   rows={3}
-                  value={data.description}
+                  value={data.subtitle}
                   onChange={(e) =>
                     setData((prev) => ({
                       ...prev,
-                      description: e.target.value,
+                      subtitle: e.target.value,
                     }))
                   }
-                  placeholder="Mahalaxmi Enterprises has always been in the forefront..."
+                  placeholder="Introductory description below the title"
                   helperText="Introductory description below the title"
                 />
               </div>

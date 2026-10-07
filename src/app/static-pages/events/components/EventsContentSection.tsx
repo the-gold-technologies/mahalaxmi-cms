@@ -19,16 +19,14 @@ interface EventsContentSectionProps {
 
 export function EventsContentSection({ initialData, onSave }: EventsContentSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
-  const [title, setTitle] = useState("EVENTS");
-  const [introText, setIntroText] = useState(
-    "Mahalaxmi Enterprises actively engages with their stakeholders by frequently hosting meetings and events with them. This includes meeting business partners, strategic partners, distributors, OEMs, agencies, mechanics, and industrial clients.",
-  );
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [introText, setIntroText] = useState(initialData?.introText || "");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
-      if (initialData.title) setTitle(initialData.title);
-      if (initialData.introText) setIntroText(initialData.introText);
+      if (initialData.title !== undefined) setTitle(initialData.title || "");
+      if (initialData.introText !== undefined) setIntroText(initialData.introText || "");
     }
   }, [initialData]);
 

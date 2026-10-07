@@ -59,7 +59,7 @@ export async function GET() {
           targetKeywords: "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
           canonicalUrl: "/privacy-policy",
           noIndex: false,
-          headingOptions: { heroHeadingTag: "h1" },
+          headingOptions: "h1",
         },
       });
     }
@@ -113,8 +113,8 @@ export async function PUT(request: Request) {
     });
 
     const contentData = {
-      title: body.title || "Privacy Policy",
-      lastUpdated: body.lastUpdated || "August 2026",
+      title: body.title || "",
+      lastUpdated: body.lastUpdated || "",
       content: body.content || "",
       isPublished: body.isPublished ?? true,
     };

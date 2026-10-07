@@ -26,42 +26,14 @@ export interface ClientItem {
 
 export interface TrustedClientsData {
   title: string;
-  description: string;
+  subtitle: string;
   clients: ClientItem[];
 }
 
-export const DEFAULT_TRUSTED_CLIENTS: ClientItem[] = [
-  {
-    id: "haldiram",
-    name: "Haldiram's",
-    category: "Food Processing Giant",
-    logo: "/Haldirams.jpeg",
-  },
-  {
-    id: "thdc",
-    name: "THDC Khurja",
-    category: "Power & Thermal Energy",
-    logo: "/THDC.jpeg",
-  },
-  {
-    id: "ordnance",
-    name: "Ordnance Factories",
-    category: "Ministry of Defence, Govt of India",
-    logo: "/Ordnan.jpeg",
-  },
-  {
-    id: "indian-army",
-    name: "Indian Army",
-    category: "Armed Forces of India",
-    logo: "/Indian_Army.jpeg",
-  },
-];
-
-export const DEFAULT_TRUSTED_CLIENTS_DATA: TrustedClientsData = {
-  title: "TRUSTED CLIENTS & PARTNERS",
-  description:
-    "Proudly serving leading public enterprises, defense organizations, and industrial giants across India with high-performance lubricants.",
-  clients: DEFAULT_TRUSTED_CLIENTS,
+const initialTrustedClients: TrustedClientsData = {
+  title: "",
+  subtitle: "",
+  clients: [],
 };
 
 function LogoDropzone({
@@ -220,23 +192,22 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [data, setData] = useState<TrustedClientsData>(DEFAULT_TRUSTED_CLIENTS_DATA);
+  const [data, setData] = useState<TrustedClientsData>(initialTrustedClients);
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({
     haldiram: true,
   });
 
   useEffect(() => {
     if (initialData) {
-      const list =
-        Array.isArray(initialData.clients) && initialData.clients.length > 0
-          ? initialData.clients
-          : Array.isArray(initialData) && initialData.length > 0
-            ? initialData
-            : DEFAULT_TRUSTED_CLIENTS;
+      const list = Array.isArray(initialData.clients)
+        ? initialData.clients
+        : Array.isArray(initialData)
+          ? initialData
+          : [];
 
       setData({
-        title: initialData.title || DEFAULT_TRUSTED_CLIENTS_DATA.title,
-        description: initialData.description || DEFAULT_TRUSTED_CLIENTS_DATA.description,
+        title: initialData.title || "",
+        subtitle: initialData.subtitle || "",
         clients: list,
       });
 
@@ -348,14 +319,14 @@ export function TrustedClientsSection({ initialData }: { initialData?: any }) {
                 <TextAreaField
                   label="Section Subtitle / Description"
                   rows={2}
-                  value={data.description}
+                  value={data.subtitle}
                   onChange={(e) =>
                     setData((prev) => ({
                       ...prev,
-                      description: e.target.value,
+                      subtitle: e.target.value,
                     }))
                   }
-                  placeholder="Proudly serving leading public enterprises..."
+                  placeholder="Introductory subline below the title"
                   helperText="Introductory subline below the title"
                 />
               </div>
