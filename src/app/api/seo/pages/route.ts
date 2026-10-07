@@ -156,40 +156,8 @@ export async function GET() {
       }
     }
 
-    // 4. Automatically inject Dynamic Products from DB under their respective categories
-    const productsList = await prisma.product.findMany({
-      orderBy: { order: "asc" },
-    });
-
-    for (const prod of productsList) {
-      const prodPageSlug = `products/${prod.categorySlug}/${prod.slug}`;
-      const normalizedProdSlug = prodPageSlug.toLowerCase().trim();
-
-      if (!seenSlugs.has(normalizedProdSlug)) {
-        seenSlugs.add(normalizedProdSlug);
-
-        // Find the category item in mergedData to be its parent
-        const catItem = mergedData.find((m: any) => m.slug === `products/${prod.categorySlug}`);
-        const parentId = catItem ? catItem.id : prodParentId;
-
-        mergedData.push({
-          id: `product-${prod.id}`,
-          pageId: prod.id,
-          title: prod.name,
-          slug: prodPageSlug,
-          metaTitle: prod.metaTitle,
-          metaDescription: prod.metaDescription,
-          type: "Product",
-          visibility: "published",
-          parent: parentId,
-          order: prod.order || 0,
-          description: null,
-          navTitle: prod.name,
-          isStatic: false,
-          headingOptions: prod.headingOptions,
-        });
-      }
-    }
+    // 4. Categories are nested directly under Products without injecting individual products
+    // (Individual product SEO is managed directly in each product's add/edit form)
 
     // 5. Automatically inject Dynamic Blog Posts from DB under Blogs parent
     let blogParentIdx = mergedData.findIndex((m: any) => m.slug === "blogs" || m.slug === "blog");
