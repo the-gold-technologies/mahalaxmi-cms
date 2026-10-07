@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  cleanupObsoleteCloudinaryAssets,
+  deleteCloudinaryAssetsFromData,
+} from "@/lib/cloudinaryCleanup";
 
 const BLOGS_SLUG = "blogs";
 
@@ -168,6 +172,8 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: "Blog ID is required" }, { status: 400 });
     }
 
+    const existing = await prisma.blogPost.findUnique({ where: { id } });
+
     const updated = await prisma.blogPost.update({
       where: { id },
       data: {
@@ -185,6 +191,13 @@ export async function PUT(request: Request) {
       },
     });
 
+    if (existing) {
+      // Automatically clean up older replaced assets from Cloudinary after saving form
+      cleanupObsoleteCloudinaryAssets(existing, updated).catch((err) =>
+        console.error("Cleanup error:", err),
+      );
+    }
+
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     console.error("Error updating blog post:", error);
@@ -201,7 +214,14 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ success: false, error: "Blog ID is required" }, { status: 400 });
     }
 
+    const existing = await prisma.blogPost.findUnique({ where: { id } });
+
     await prisma.blogPost.delete({ where: { id } });
+
+    if (existing) {
+      deleteCloudinaryAssetsFromData(existing).catch((err) => console.error("Cleanup error:", err));
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting blog post:", error);

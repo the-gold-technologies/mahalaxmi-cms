@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  cleanupObsoleteCloudinaryAssets,
+  deleteCloudinaryAssetsFromData,
+} from "@/lib/cloudinaryCleanup";
 
 export async function GET() {
   try {
@@ -72,6 +76,10 @@ export async function PUT(request: Request) {
       );
     }
 
+    const existing = await prisma.productCategory.findUnique({
+      where: { id },
+    });
+
     const updated = await prisma.productCategory.update({
       where: { id },
       data: {
@@ -84,6 +92,13 @@ export async function PUT(request: Request) {
         ...(order !== undefined && { order: Number(order) }),
       },
     });
+
+    if (existing) {
+      // Automatically clean up older replaced assets from Cloudinary after saving form
+      cleanupObsoleteCloudinaryAssets(existing, updated).catch((err) =>
+        console.error("Cleanup error:", err),
+      );
+    }
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {
@@ -107,9 +122,17 @@ export async function DELETE(request: Request) {
       );
     }
 
+    const existing = await prisma.productCategory.findUnique({
+      where: { id },
+    });
+
     await prisma.productCategory.delete({
       where: { id },
     });
+
+    if (existing) {
+      deleteCloudinaryAssetsFromData(existing).catch((err) => console.error("Cleanup error:", err));
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  cleanupObsoleteCloudinaryAssets,
+  deleteCloudinaryAssetsFromData,
+} from "@/lib/cloudinaryCleanup";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -153,10 +157,21 @@ export async function PUT(request: Request) {
       );
     }
 
+    const existing = await prisma.product.findUnique({
+      where: { id },
+    });
+
     const product = await prisma.product.update({
       where: { id },
       data,
     });
+
+    if (existing) {
+      // Automatically clean up older replaced assets from Cloudinary after saving form
+      cleanupObsoleteCloudinaryAssets(existing, product).catch((err) =>
+        console.error("Cleanup error:", err),
+      );
+    }
 
     return NextResponse.json({ success: true, data: product });
   } catch (error) {
@@ -177,9 +192,18 @@ export async function DELETE(request: Request) {
       );
     }
 
+    const existing = await prisma.product.findUnique({
+      where: { id },
+    });
+
     await prisma.product.delete({
       where: { id },
     });
+
+    if (existing) {
+      // Clean up assets on entity deletion
+      deleteCloudinaryAssetsFromData(existing).catch((err) => console.error("Cleanup error:", err));
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
 
 const HOME_SLUG = "home";
 
@@ -78,6 +79,9 @@ export async function PUT(request: Request) {
         where: { id: existingSection.id },
         data: { content },
       });
+      cleanupObsoleteCloudinaryAssets(existingSection.content, content).catch((err) =>
+        console.error("Cleanup error:", err),
+      );
     } else {
       const highestOrder = await prisma.section.aggregate({
         where: { pageId: page.id },

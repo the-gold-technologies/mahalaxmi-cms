@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
 
 const ABOUT_SLUG = "about-us";
 
@@ -80,6 +81,9 @@ export async function PUT(request: Request) {
           where: { id: existing.id },
           data: { content: content as any },
         });
+        cleanupObsoleteCloudinaryAssets(existing.content, content).catch((err) =>
+          console.error("Cleanup error:", err),
+        );
       } else {
         const count = await prisma.section.count({ where: { pageId: page.id } });
         await prisma.section.create({
