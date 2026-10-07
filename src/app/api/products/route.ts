@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -12,14 +15,38 @@ export async function GET(request: Request) {
       const product = await prisma.product.findUnique({
         where: { id },
       });
-      return NextResponse.json({ success: true, data: product, seo: null });
+      if (!product) {
+        return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+      }
+      const seo = {
+        metaTitle: product.metaTitle,
+        metaDescription: product.metaDescription,
+        targetKeywords: product.targetKeywords,
+        canonicalUrl: product.canonicalUrl,
+        noIndex: product.noIndex,
+        schema: product.schema,
+        headingOptions: product.headingOptions,
+      };
+      return NextResponse.json({ success: true, data: product, seo });
     }
 
     if (slug) {
       const product = await prisma.product.findUnique({
         where: { slug },
       });
-      return NextResponse.json({ success: true, data: product, seo: null });
+      if (!product) {
+        return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+      }
+      const seo = {
+        metaTitle: product.metaTitle,
+        metaDescription: product.metaDescription,
+        targetKeywords: product.targetKeywords,
+        canonicalUrl: product.canonicalUrl,
+        noIndex: product.noIndex,
+        schema: product.schema,
+        headingOptions: product.headingOptions,
+      };
+      return NextResponse.json({ success: true, data: product, seo });
     }
 
     const where: any = {};
@@ -36,12 +63,28 @@ export async function GET(request: Request) {
       orderBy: { order: "asc" },
     });
 
-    const productsPage = await prisma.page.findUnique({
-      where: { slug: "products" },
-    });
-
-    const seo = productsPage
-      ? {
+    let seo = null;
+    if (categorySlug && categorySlug !== "all") {
+      const seoPage = await prisma.page.findUnique({
+        where: { slug: `products/${categorySlug}` },
+      });
+      if (seoPage) {
+        seo = {
+          metaTitle: seoPage.metaTitle,
+          metaDescription: seoPage.metaDescription,
+          targetKeywords: seoPage.targetKeywords,
+          canonicalUrl: seoPage.canonicalUrl,
+          noIndex: seoPage.noIndex,
+          schema: seoPage.schema,
+          headingOptions: seoPage.headingOptions,
+        };
+      }
+    } else {
+      const productsPage = await prisma.page.findUnique({
+        where: { slug: "products" },
+      });
+      if (productsPage) {
+        seo = {
           title: productsPage.metaTitle || productsPage.title,
           metaTitle: productsPage.metaTitle || productsPage.title,
           metaDescription: productsPage.metaDescription,
@@ -50,8 +93,9 @@ export async function GET(request: Request) {
           noIndex: productsPage.noIndex,
           schema: productsPage.schema,
           headingOptions: productsPage.headingOptions,
-        }
-      : null;
+        };
+      }
+    }
 
     return NextResponse.json({
       success: true,

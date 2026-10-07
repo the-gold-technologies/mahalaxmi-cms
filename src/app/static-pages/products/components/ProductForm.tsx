@@ -12,6 +12,7 @@ import {
   FlaskConical,
   ShieldCheck,
   Plus,
+  Globe,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { PageHeader } from "@/components/PageHeader";
@@ -46,19 +47,29 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [categorySlug, setCategorySlug] = useState("industrial-oils");
-  const [categoryName, setCategoryName] = useState("Industrial Oils");
+  const [categorySlug, setCategorySlug] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [subCategoryTitle, setSubCategoryTitle] = useState("");
   const [containerImages, setContainerImages] = useState<(File | string | null)[]>([]);
+  const [descriptionTitle, setDescriptionTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [applicationAreasTitle, setApplicationAreasTitle] = useState("");
   const [applicationAreas, setApplicationAreas] = useState("");
+  const [performanceBenefitsTitle, setPerformanceBenefitsTitle] = useState("");
   const [performanceBenefits, setPerformanceBenefits] = useState<string[]>([]);
+  const [specialFeaturesTitle, setSpecialFeaturesTitle] = useState("");
   const [specialFeatures, setSpecialFeatures] = useState<string[]>([]);
   const [specsText, setSpecsText] = useState("");
+  const [propertiesTableTitle, setPropertiesTableTitle] = useState("");
   const [propertiesTable, setPropertiesTable] = useState<PropertyRow[]>([]);
   const [pdfUrl, setPdfUrl] = useState("");
   const [msdsUrl, setMsdsUrl] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+  const [targetKeywords, setTargetKeywords] = useState("");
+  const [canonicalUrl, setCanonicalUrl] = useState("");
+  const [headingOptions, setHeadingOptions] = useState("h1");
 
   // Load Categories & Product Data
   useEffect(() => {
@@ -66,7 +77,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
       try {
         setFetching(true);
         // 1. Fetch categories
-        const catRes = await fetch("/api/products/categories");
+        const catRes = await fetch("/api/products/categories", { cache: "no-store" });
         const catJson = await catRes.json();
         if (catJson.success && Array.isArray(catJson.data)) {
           setCategories(catJson.data);
@@ -78,28 +89,38 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
 
         // 2. Fetch product if editing
         if (!isNew && productId) {
-          const prodRes = await fetch(`/api/products?id=${productId}`);
+          const prodRes = await fetch(`/api/products?id=${productId}`, { cache: "no-store" });
           const prodJson = await prodRes.json();
           if (prodJson.success && prodJson.data) {
             const p = prodJson.data;
             setName(p.name || "");
             setSlug(p.slug || "");
             setSubtitle(p.subtitle || "");
-            setCategorySlug(p.categorySlug || "industrial-oils");
-            setCategoryName(p.categoryName || "Industrial Oils");
+            setCategorySlug(p.categorySlug || "");
+            setCategoryName(p.categoryName || "");
             setSubCategoryTitle(p.subCategoryTitle || "");
             setContainerImages(p.containerImage ? [p.containerImage] : []);
+            setDescriptionTitle(p.descriptionTitle || "");
             setDescription(p.description || "");
+            setApplicationAreasTitle(p.applicationAreasTitle || "");
             setApplicationAreas(p.applicationAreas || "");
+            setPerformanceBenefitsTitle(p.performanceBenefitsTitle || "");
             setPerformanceBenefits(
               Array.isArray(p.performanceBenefits) ? p.performanceBenefits : [],
             );
+            setSpecialFeaturesTitle(p.specialFeaturesTitle || "");
             setSpecialFeatures(Array.isArray(p.specialFeatures) ? p.specialFeatures : []);
             setSpecsText(p.specsText || "");
+            setPropertiesTableTitle(p.propertiesTableTitle || "");
             setPropertiesTable(Array.isArray(p.propertiesTable) ? p.propertiesTable : []);
             setPdfUrl(p.pdfUrl || "");
             setMsdsUrl(p.msdsUrl || "");
             setIsFeatured(!!p.isFeatured);
+            setMetaTitle(p.metaTitle || "");
+            setMetaDescription(p.metaDescription || "");
+            setTargetKeywords(p.targetKeywords || "");
+            setCanonicalUrl(p.canonicalUrl || "");
+            setHeadingOptions(p.headingOptions || "h1");
           } else {
             toast.error("Product not found");
             router.push("/static-pages/products");
@@ -152,15 +173,25 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
         categoryName: categories.find((c) => c.slug === categorySlug)?.name || categoryName,
         subCategoryTitle: subCategoryTitle.trim(),
         containerImage: finalContainerImageUrl,
+        descriptionTitle: descriptionTitle.trim(),
         description: description.trim(),
+        applicationAreasTitle: applicationAreasTitle.trim(),
         applicationAreas: applicationAreas.trim(),
+        performanceBenefitsTitle: performanceBenefitsTitle.trim(),
         performanceBenefits: performanceBenefits.map((s) => s.trim()).filter(Boolean),
+        specialFeaturesTitle: specialFeaturesTitle.trim(),
         specialFeatures: specialFeatures.map((s) => s.trim()).filter(Boolean),
         specsText: specsText.trim(),
+        propertiesTableTitle: propertiesTableTitle.trim(),
         propertiesTable,
         pdfUrl: pdfUrl.trim(),
         msdsUrl: msdsUrl.trim(),
         isFeatured,
+        metaTitle: metaTitle.trim(),
+        metaDescription: metaDescription.trim(),
+        targetKeywords: targetKeywords.trim(),
+        canonicalUrl: canonicalUrl.trim(),
+        headingOptions: headingOptions || "h1",
       };
 
       const url = "/api/products";
@@ -297,11 +328,26 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
           </div>
 
           {/* Card 2: Narrative & Application Scope */}
-          <div className="bg-white rounded-3xl p-7 border border-gray-100 shadow-sm flex flex-col gap-5">
+          <div className="bg-white rounded-3xl p-7 border border-gray-100 shadow-sm flex flex-col gap-6">
             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
               <Layers className="w-4 h-4 text-[#D8232A]" />
               2. Description & Application Scope
             </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <InputField
+                label="Description Section Heading"
+                value={descriptionTitle}
+                onChange={(e) => setDescriptionTitle(e.target.value)}
+                placeholder="Description (default)"
+              />
+              <InputField
+                label="Application Areas Section Heading"
+                value={applicationAreasTitle}
+                onChange={(e) => setApplicationAreasTitle(e.target.value)}
+                placeholder="Application Areas (default)"
+              />
+            </div>
 
             <TextAreaField
               label="General Formulation Description"
@@ -326,6 +372,21 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
               <ShieldCheck className="w-4 h-4 text-[#D8232A]" />
               3. Benefits & OEM Approvals
             </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <InputField
+                label="Benefits Section Heading"
+                value={performanceBenefitsTitle}
+                onChange={(e) => setPerformanceBenefitsTitle(e.target.value)}
+                placeholder="Performance Benefits (default)"
+              />
+              <InputField
+                label="Special Features Section Heading"
+                value={specialFeaturesTitle}
+                onChange={(e) => setSpecialFeaturesTitle(e.target.value)}
+                placeholder="Special Features (default)"
+              />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <StringListEditor
@@ -353,11 +414,18 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
           </div>
 
           {/* Card 4: Physico-Chemical Lab Properties */}
-          <div className="bg-white rounded-3xl p-7 border border-gray-100 shadow-sm flex flex-col gap-5">
+          <div className="bg-white rounded-3xl p-7 border border-gray-100 shadow-sm flex flex-col gap-6">
             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
               <FlaskConical className="w-4 h-4 text-[#D8232A]" />
               4. Physico-Chemical Test Specifications
             </h3>
+
+            <InputField
+              label="Table Display Title"
+              value={propertiesTableTitle}
+              onChange={(e) => setPropertiesTableTitle(e.target.value)}
+              placeholder="Physico-Chemical Properties (default)"
+            />
 
             <PropertiesTableEditor properties={propertiesTable} onChange={setPropertiesTable} />
           </div>
@@ -401,6 +469,65 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
               onChange={setMsdsUrl}
               tooltip="Upload product MSDS safety sheet (.pdf) or edit direct URL."
             />
+          </div>
+
+          {/* Card: Search Engine Optimization (SEO) */}
+          <div className="bg-white rounded-3xl p-7 border border-gray-100 shadow-sm flex flex-col gap-5">
+            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
+              <Globe className="w-4 h-4 text-[#D8232A]" />
+              Product SEO Metadata
+            </h3>
+
+            <InputField
+              label="Meta Title"
+              value={metaTitle}
+              onChange={(e) => setMetaTitle(e.target.value)}
+              placeholder="Enter meta title..."
+              tooltip="The title tag appearing in Google search results and browser tabs."
+            />
+
+            <TextAreaField
+              label="Meta Description"
+              rows={2}
+              value={metaDescription}
+              onChange={(e) => setMetaDescription(e.target.value)}
+              placeholder="Enter meta description..."
+              tooltip="The description displayed underneath the link in search results."
+            />
+
+            <InputField
+              label="Target Keywords"
+              value={targetKeywords}
+              onChange={(e) => setTargetKeywords(e.target.value)}
+              placeholder="Enter target keywords (comma separated)..."
+              tooltip="Comma-separated focus keywords for SEO indexing."
+            />
+
+            <InputField
+              label="Canonical URL"
+              value={canonicalUrl}
+              onChange={(e) => setCanonicalUrl(e.target.value)}
+              placeholder="Enter canonical URL..."
+              tooltip="Canonical URL link tag to avoid duplicate content penalty."
+            />
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                Hero Heading Tag
+              </label>
+              <select
+                value={headingOptions}
+                onChange={(e) => setHeadingOptions(e.target.value)}
+                className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl text-sm text-gray-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#D8232A]/20 focus:border-[#D8232A] transition-all"
+              >
+                <option value="h1">H1 (Default primary tag)</option>
+                <option value="h2">H2 (Alternative heading tag)</option>
+                <option value="h3">H3 (Sub-heading tag)</option>
+                <option value="h4">H4 (Sub-heading tag)</option>
+                <option value="h5">H5 (Sub-heading tag)</option>
+                <option value="h6">H6 (Sub-heading tag)</option>
+              </select>
+            </div>
           </div>
 
           {/* Card 7: Visibility & Featured */}

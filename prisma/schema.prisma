@@ -68,17 +68,29 @@ model Product {
   categoryName        String
   subCategoryTitle    String?
   containerImage      String?
-  description         String?
-  applicationAreas    String?
-  performanceBenefits Json?            @default("[]")
-  specialFeatures     Json?            @default("[]")
-  specsText           String?
-  tableHeaders        Json?            @default("[\"Property\", \"Value\"]")
-  propertiesTable     Json?            @default("[]")
+  descriptionTitle         String?         
+  description              String?
+  applicationAreasTitle    String?        
+  applicationAreas         String?
+  performanceBenefitsTitle String?         
+  performanceBenefits      Json?            @default("[]")
+  specialFeaturesTitle     String?        
+  specialFeatures          Json?            @default("[]")
+  specsText                String?
+  propertiesTableTitle     String?         
+  tableHeaders             Json?           
+  propertiesTable          Json?            @default("[]")
   pdfUrl              String?
   msdsUrl             String?
   isFeatured          Boolean          @default(false)
   order               Int              @default(0)
+  metaTitle           String?
+  metaDescription     String?
+  targetKeywords      String?
+  canonicalUrl        String?
+  noIndex             Boolean          @default(false)
+  schema              String?
+  headingOptions      String?
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
   category            ProductCategory? @relation(fields: [categorySlug], references: [slug], onDelete: SetNull)

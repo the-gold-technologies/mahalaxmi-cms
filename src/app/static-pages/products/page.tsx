@@ -409,10 +409,23 @@ export default function ProductsCatalogCMSPage() {
                       href={p.pdfUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="p-1.5 rounded-lg bg-gray-50 text-gray-500 hover:text-[#D8232A] transition-colors"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-50 text-[10px] font-bold text-[#D8232A] hover:bg-red-100 transition-colors"
                       title="View TDS Document"
                     >
-                      <FileText className="w-3.5 h-3.5" />
+                      <FileText className="w-3 h-3" />
+                      TDS
+                    </a>
+                  )}
+                  {p.msdsUrl && (
+                    <a
+                      href={p.msdsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-blue-50 text-[10px] font-bold text-[#002b5c] hover:bg-blue-100 transition-colors"
+                      title="View MSDS Document"
+                    >
+                      <FileText className="w-3 h-3" />
+                      MSDS
                     </a>
                   )}
                 </div>
