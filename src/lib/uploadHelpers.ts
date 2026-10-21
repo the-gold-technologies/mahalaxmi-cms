@@ -30,19 +30,3 @@ export async function uploadFiles(files: File[] | FileList | (File | string)[]):
 
   return urls;
 }
-
-export async function deleteFileFromCloudinary(url: string): Promise<boolean> {
-  try {
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export async function deleteFileFromSupabase(url: string): Promise<boolean> {
-  try {
-    return true;
-  } catch {
-    return false;
-  }
-}

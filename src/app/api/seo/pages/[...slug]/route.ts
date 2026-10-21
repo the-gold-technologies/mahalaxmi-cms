@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
 
 export const dynamic = "force-dynamic";
 
@@ -137,6 +138,8 @@ export async function PUT(
       }
     }
 
+    const existingPage = await prisma.page.findUnique({ where: { slug } });
+
     const updatedPage = await prisma.page.upsert({
       where: { slug },
       update: {
@@ -169,6 +172,12 @@ export async function PUT(
         schema: seo.schema,
       },
     });
+
+    if (existingPage) {
+      cleanupObsoleteCloudinaryAssets(existingPage, updatedPage).catch((err) =>
+        console.error("Page SEO cleanup error:", err),
+      );
+    }
 
     return NextResponse.json({ success: true, data: updatedPage });
   } catch (error) {

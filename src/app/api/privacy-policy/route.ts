@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
 
 export const dynamic = "force-dynamic";
 
@@ -124,6 +125,9 @@ export async function PUT(request: Request) {
     });
 
     if (existingSection) {
+      cleanupObsoleteCloudinaryAssets(existingSection.content, contentData).catch((err) =>
+        console.error("Privacy policy cleanup error:", err),
+      );
       await prisma.section.update({
         where: { id: existingSection.id },
         data: { content: contentData as any },

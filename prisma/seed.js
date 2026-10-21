@@ -1,12 +1,21 @@
+require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { Pool } = require("pg");
 const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 
-const connectionString =
-  process.env.DATABASE_URL ||
-  "postgresql://postgres.oyqprxabpaqzmkmuhwxl:Mahalaxmi%40tgt@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres";
-const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  console.error("Error: DATABASE_URL is not defined in environment variables or .env file.");
+  process.exit(1);
+}
+
+const isLocal =
+  connectionString.includes("localhost") || connectionString.includes("127.0.0.1");
+const pool = new Pool({
+  connectionString,
+  ssl: isLocal ? false : { rejectUnauthorized: false },
+});
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 

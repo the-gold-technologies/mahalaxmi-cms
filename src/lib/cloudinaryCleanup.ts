@@ -8,17 +8,22 @@ cloudinary.config({
 });
 
 /**
- * Extracts all Cloudinary URLs belonging to mahalaxmi uploads from any string, array, or object
+ * Extracts all Cloudinary URLs belonging to this project from any string, array, or object
  */
 export function extractCloudinaryUrls(data: any, collected: Set<string> = new Set()): Set<string> {
   if (!data) return collected;
 
   if (typeof data === "string") {
-    const matches = data.match(/https?:\/\/[^\s"'<>]*(?:res\.cloudinary\.com)[^\s"'<>]*/gi);
+    const matches = data.match(/https?:\/\/[^\s"'<>)\]]+(?:res\.cloudinary\.com)[^\s"'<>)\]]*/gi);
     if (matches) {
-      for (const m of matches) {
-        // Only target uploaded assets in the mahalaxmi upload folder
-        if (m.includes("/mahalaxmi/uploads/")) {
+      const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+      for (let m of matches) {
+        // Strip trailing punctuation
+        m = m.replace(/[),;.]+$/, "");
+        // Only target uploaded assets in this cloudinary cloud or mahalaxmi folder
+        const isOurCloud = cloudName && m.includes(`res.cloudinary.com/${cloudName}/`);
+        const isMahalaxmi = m.includes("/mahalaxmi");
+        if (isOurCloud || isMahalaxmi || (!cloudName && m.includes("cloudinary.com"))) {
           collected.add(m);
         }
       }
@@ -37,35 +42,63 @@ export function extractCloudinaryUrls(data: any, collected: Set<string> = new Se
 }
 
 /**
+ * Parses Cloudinary URL into publicId and resourceType
+ */
+export function getPublicIdFromUrl(
+  url: string,
+): { publicId: string; resourceType: "image" | "video" | "raw" } | null {
+  if (!url || typeof url !== "string" || !url.includes("cloudinary.com")) return null;
+
+  try {
+    const cleanUrl = url.split("?")[0].replace(/[),;.]+$/, "");
+    const isRaw = cleanUrl.includes("/raw/upload/");
+    const isVideo = cleanUrl.includes("/video/upload/");
+    const resourceType: "image" | "video" | "raw" = isRaw ? "raw" : isVideo ? "video" : "image";
+
+    const uploadIdx = cleanUrl.indexOf("/upload/");
+    if (uploadIdx === -1) return null;
+    const afterUpload = cleanUrl.slice(uploadIdx + "/upload/".length);
+
+    const parts = afterUpload.split("/");
+    let startIndex = 0;
+    while (startIndex < parts.length - 1) {
+      const part = parts[startIndex];
+      if (/^v\d+$/.test(part)) {
+        startIndex++;
+        break;
+      } else if (part.includes(",") || part.includes("_")) {
+        startIndex++;
+      } else {
+        break;
+      }
+    }
+
+    const publicIdWithExt = parts.slice(startIndex).join("/");
+    if (isRaw) {
+      return { publicId: publicIdWithExt, resourceType };
+    } else {
+      const lastDot = publicIdWithExt.lastIndexOf(".");
+      const publicId = lastDot !== -1 ? publicIdWithExt.substring(0, lastDot) : publicIdWithExt;
+      return { publicId, resourceType };
+    }
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Permanently deletes a single Cloudinary asset by URL
  */
 export async function deleteCloudinaryAsset(url: string | null | undefined): Promise<boolean> {
-  if (
-    !url ||
-    typeof url !== "string" ||
-    !url.includes("cloudinary.com") ||
-    !url.includes("/mahalaxmi/uploads/")
-  ) {
+  if (!url || typeof url !== "string" || !url.includes("cloudinary.com")) {
     return false;
   }
 
   try {
-    const isRaw = url.includes("/raw/upload/");
-    const isVideo = url.includes("/video/upload/");
-    const resourceType = isRaw ? "raw" : isVideo ? "video" : "image";
+    const parsed = getPublicIdFromUrl(url);
+    if (!parsed || !parsed.publicId) return false;
 
-    let publicId = "";
-    if (isRaw) {
-      // Raw assets preserve their full filename and extension in public_id
-      const match = url.match(/\/raw\/upload\/(?:v\d+\/)?(.+)$/i);
-      if (match) publicId = match[1];
-    } else {
-      // Images & videos typically strip file extension in public_id
-      const match = url.match(/\/(?:image|video)\/upload\/(?:v\d+\/)?(.+?)(?:\.[a-zA-Z0-9]+)?$/i);
-      if (match) publicId = match[1];
-    }
-
-    if (!publicId) return false;
+    const { publicId, resourceType } = parsed;
 
     let res = await cloudinary.uploader.destroy(publicId, {
       resource_type: resourceType,
@@ -73,11 +106,12 @@ export async function deleteCloudinaryAsset(url: string | null | undefined): Pro
     });
 
     // If image deletion returned not_found, try with full extension included
-    if (res?.result === "not found" && !isRaw) {
-      const matchWithExt = url.match(/\/image\/upload\/(?:v\d+\/)?(.+)$/i);
+    if (res?.result === "not found" && resourceType !== "raw") {
+      const cleanUrl = url.split("?")[0].replace(/[),;.]+$/, "");
+      const matchWithExt = cleanUrl.match(/\/upload\/(?:v\d+\/)?(.+)$/i);
       if (matchWithExt && matchWithExt[1] !== publicId) {
         res = await cloudinary.uploader.destroy(matchWithExt[1], {
-          resource_type: "image",
+          resource_type: resourceType,
           invalidate: true,
         });
       }
@@ -86,6 +120,8 @@ export async function deleteCloudinaryAsset(url: string | null | undefined): Pro
     const success = res?.result === "ok";
     if (success) {
       console.log(`[Cloudinary Cleanup] Deleted obsolete asset: ${publicId} (${resourceType})`);
+    } else {
+      console.warn(`[Cloudinary Cleanup] Result for ${publicId}:`, res?.result);
     }
     return success;
   } catch (error) {
@@ -96,7 +132,7 @@ export async function deleteCloudinaryAsset(url: string | null | undefined): Pro
 
 /**
  * Compares old data against new data, finding Cloudinary URLs that were replaced or removed,
- * and deletes them from Cloudinary.
+ * and deletes them from Cloudinary. Triggered on Save button in forms.
  */
 export async function cleanupObsoleteCloudinaryAssets(oldData: any, newData: any): Promise<void> {
   try {
@@ -106,7 +142,10 @@ export async function cleanupObsoleteCloudinaryAssets(oldData: any, newData: any
     const obsoleteUrls = oldUrls.filter((url) => !newUrls.includes(url));
 
     if (obsoleteUrls.length > 0) {
-      console.log(`[Cloudinary Cleanup] Cleaning up ${obsoleteUrls.length} obsolete asset(s)...`);
+      console.log(
+        `[Cloudinary Cleanup] Cleaning up ${obsoleteUrls.length} obsolete asset(s)...`,
+        obsoleteUrls,
+      );
       await Promise.allSettled(obsoleteUrls.map((url) => deleteCloudinaryAsset(url)));
     }
   } catch (err) {
@@ -121,7 +160,10 @@ export async function deleteCloudinaryAssetsFromData(data: any): Promise<void> {
   try {
     const urls = Array.from(extractCloudinaryUrls(data));
     if (urls.length > 0) {
-      console.log(`[Cloudinary Cleanup] Deleting ${urls.length} asset(s) on entity removal...`);
+      console.log(
+        `[Cloudinary Cleanup] Deleting ${urls.length} asset(s) on entity removal...`,
+        urls,
+      );
       await Promise.allSettled(urls.map((url) => deleteCloudinaryAsset(url)));
     }
   } catch (err) {

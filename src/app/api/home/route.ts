@@ -49,13 +49,6 @@ export async function PUT(request: Request) {
     const sectionName = body.section || body.sectionType;
     const { content } = body;
 
-    if (!sectionName || typeof sectionName !== "string") {
-      return NextResponse.json(
-        { success: false, error: "'section' or 'sectionType' (string) is required" },
-        { status: 400 },
-      );
-    }
-
     const page = await prisma.page.upsert({
       where: { slug: HOME_SLUG },
       create: {
@@ -67,36 +60,58 @@ export async function PUT(request: Request) {
       update: {},
     });
 
-    const existingSection = await prisma.section.findFirst({
-      where: {
-        pageId: page.id,
-        type: sectionName,
-      },
-    });
+    const sectionsToSave: Record<string, any> = {};
+    if (sectionName && content !== undefined) {
+      sectionsToSave[sectionName] = content;
+    } else if (body.sections && typeof body.sections === "object") {
+      Object.assign(sectionsToSave, body.sections);
+    } else if (typeof body === "object") {
+      for (const [key, val] of Object.entries(body)) {
+        if (key !== "seo" && key !== "section" && key !== "sectionType" && key !== "content") {
+          sectionsToSave[key] = val;
+        }
+      }
+    }
 
-    if (existingSection) {
-      await prisma.section.update({
-        where: { id: existingSection.id },
-        data: { content },
-      });
-      cleanupObsoleteCloudinaryAssets(existingSection.content, content).catch((err) =>
-        console.error("Cleanup error:", err),
+    if (Object.keys(sectionsToSave).length === 0) {
+      return NextResponse.json(
+        { success: false, error: "'section' or 'sections' is required" },
+        { status: 400 },
       );
-    } else {
-      const highestOrder = await prisma.section.aggregate({
-        where: { pageId: page.id },
-        _max: { order: true },
-      });
-      const newOrder = (highestOrder._max.order ?? -1) + 1;
+    }
 
-      await prisma.section.create({
-        data: {
+    for (const [sName, sContent] of Object.entries(sectionsToSave)) {
+      const existingSection = await prisma.section.findFirst({
+        where: {
           pageId: page.id,
-          type: sectionName,
-          content,
-          order: newOrder,
+          type: sName,
         },
       });
+
+      if (existingSection) {
+        await prisma.section.update({
+          where: { id: existingSection.id },
+          data: { content: sContent as any },
+        });
+        cleanupObsoleteCloudinaryAssets(existingSection.content, sContent).catch((err) =>
+          console.error("Cleanup error:", err),
+        );
+      } else {
+        const highestOrder = await prisma.section.aggregate({
+          where: { pageId: page.id },
+          _max: { order: true },
+        });
+        const newOrder = (highestOrder._max.order ?? -1) + 1;
+
+        await prisma.section.create({
+          data: {
+            pageId: page.id,
+            type: sName,
+            content: sContent as any,
+            order: newOrder,
+          },
+        });
+      }
     }
 
     return NextResponse.json({ success: true });

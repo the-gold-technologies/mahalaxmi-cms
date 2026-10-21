@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,9 @@ export async function PUT(request: Request) {
       if (!slug) {
         return NextResponse.json({ success: false, error: "slug is required" }, { status: 400 });
       }
+
+      const existingPage = await prisma.page.findUnique({ where: { slug } });
+
       const updated = await prisma.page.upsert({
         where: { slug },
         create: {
@@ -45,8 +49,17 @@ export async function PUT(request: Request) {
         },
         update: seoData,
       });
+
+      if (existingPage) {
+        cleanupObsoleteCloudinaryAssets(existingPage, updated).catch((err) =>
+          console.error("SEO page cleanup error:", err),
+        );
+      }
+
       return NextResponse.json({ success: true, data: updated });
     }
+
+    const existingConfig = await prisma.globalConfig.findFirst({ where: { id: "global" } });
 
     const updatedConfig = await prisma.globalConfig.upsert({
       where: { id: "global" },
@@ -58,6 +71,12 @@ export async function PUT(request: Request) {
       },
       update: body,
     });
+
+    if (existingConfig) {
+      cleanupObsoleteCloudinaryAssets(existingConfig, updatedConfig).catch((err) =>
+        console.error("Global SEO cleanup error:", err),
+      );
+    }
 
     // Also sync home page headingOptions and metaTitle/metaDescription
     if (body.headingOptions || body.siteTitle || body.siteDescription) {

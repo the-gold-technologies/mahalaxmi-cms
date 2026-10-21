@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { auth } from "@/auth";
 
+import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
+
 export const dynamic = "force-dynamic";
 
 export async function GET() {
@@ -46,7 +48,7 @@ export async function PUT(request: Request) {
     const sessionEmail = session?.user?.email;
 
     const body = await request.json();
-    const { name, email, currentPassword, newPassword } = body;
+    const { name, email, currentPassword, newPassword, image } = body;
 
     // Find the user to update
     let user = null;
@@ -67,7 +69,14 @@ export async function PUT(request: Request) {
       );
     }
 
-    const updateData: { name?: string; email?: string; password?: string } = {};
+    const updateData: { name?: string; email?: string; password?: string; image?: string } = {};
+
+    if (image !== undefined && image !== user.image) {
+      updateData.image = image;
+      cleanupObsoleteCloudinaryAssets(user.image, image).catch((err) =>
+        console.error("Profile image cleanup error:", err),
+      );
+    }
 
     if (name && name.trim()) {
       updateData.name = name.trim();
