@@ -1,33 +1,34 @@
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
-const { Pool } = require("pg");
-const { PrismaPg } = require("@prisma/adapter-pg");
 const bcrypt = require("bcryptjs");
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) {
-  console.error("Error: DATABASE_URL is not defined in environment variables or .env file.");
-  process.exit(1);
-}
-
-const isLocal =
-  connectionString.includes("localhost") || connectionString.includes("127.0.0.1");
-const pool = new Pool({
-  connectionString,
-  ssl: isLocal ? false : { rejectUnauthorized: false },
-});
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 async function main() {
   console.log("Starting full database seeding with 100% website data...");
+
+  // 0. Clean up existing database records
+  console.log("Cleaning up existing database records before fresh seeding...");
+  await prisma.section.deleteMany({});
+  await prisma.page.deleteMany({});
+  await prisma.product.deleteMany({});
+  await prisma.productCategory.deleteMany({});
+  await prisma.blogPost.deleteMany({});
+  await prisma.event.deleteMany({});
+  await prisma.officeLocation.deleteMany({});
+  await prisma.enquiry.deleteMany({});
+  await prisma.distributorApplication.deleteMany({});
+  await prisma.navLink.deleteMany({});
+  await prisma.globalConfig.deleteMany({});
+  await prisma.user.deleteMany({});
+  console.log("✓ Existing database records successfully cleared.");
 
   // 1. Admin User
   const adminPassword = await bcrypt.hash("Admin@123", 10);
 
   await prisma.user.upsert({
     where: { email: "admin@mahalaxmi.com" },
-    update: {},
+    update: { password: adminPassword },
     create: {
       email: "admin@mahalaxmi.com",
       name: "Mahalaxmi Admin",
@@ -1079,6 +1080,31 @@ async function main() {
       where: { slug: cat.slug },
       update: cat,
       create: cat,
+    });
+
+    const catPageSlug = `products/${cat.slug}`;
+    await prisma.page.upsert({
+      where: { slug: catPageSlug },
+      update: {
+        title: cat.name,
+        parent: "products",
+        type: "Category",
+      },
+      create: {
+        slug: catPageSlug,
+        title: cat.name,
+        parent: "products",
+        type: "Category",
+        visibility: "published",
+        metaTitle: `${cat.name} | Mahalaxmi Enterprises`,
+        metaDescription:
+          cat.description ||
+          `Browse high-performance genuine ${cat.name} from Mahalaxmi Enterprises.`,
+        targetKeywords: `${cat.name}, HP Lubricants, Mahalaxmi Enterprises`,
+        canonicalUrl: `https://mahalaxmilubricants.com/${catPageSlug}`,
+        noIndex: false,
+        headingOptions: "h1",
+      },
     });
   }
   console.log(`✓ ${categories.length} Product categories ready.`);
@@ -3214,6 +3240,33 @@ async function main() {
       update: b,
       create: b,
     });
+
+    const blogPageSlug = `blogs/${b.slug}`;
+    await prisma.page.upsert({
+      where: { slug: blogPageSlug },
+      update: {
+        title: b.title,
+        parent: "blogs",
+        type: "Blog Article",
+        metaTitle: b.title,
+        metaDescription: b.excerpt,
+        targetKeywords: b.category,
+        canonicalUrl: `https://mahalaxmilubricants.com/${blogPageSlug}`,
+      },
+      create: {
+        slug: blogPageSlug,
+        title: b.title,
+        parent: "blogs",
+        type: "Blog Article",
+        visibility: "published",
+        metaTitle: b.title,
+        metaDescription: b.excerpt,
+        targetKeywords: b.category,
+        canonicalUrl: `https://mahalaxmilubricants.com/${blogPageSlug}`,
+        noIndex: false,
+        headingOptions: "h1",
+      },
+    });
   }
   console.log(`✓ ${sampleBlogs.length} Blog posts ready.`);
 
@@ -3235,6 +3288,25 @@ async function main() {
         "Read the Privacy Policy of Mahalaxmi Enterprises, authorized Industrial Lube Distributor (ILD) for HPCL lubricants and greases.",
       targetKeywords: "Privacy Policy, Mahalaxmi Enterprises, HP Lubricants data protection",
       canonicalUrl: "/privacy-policy",
+      noIndex: false,
+    },
+  });
+
+  // 11. Terms of Service Page & Content
+  await prisma.page.upsert({
+    where: { slug: "terms-of-service" },
+    update: {},
+    create: {
+      title: "Terms of Service",
+      slug: "terms-of-service",
+      type: "legal",
+      visibility: "published",
+      order: 51,
+      metaTitle: "Terms of Service | Mahalaxmi Enterprises",
+      metaDescription:
+        "Review terms and conditions for industrial lubricant purchases and supply agreements with Mahalaxmi Enterprises.",
+      targetKeywords: "Terms of Service, Mahalaxmi Enterprises, HPCL Lubricants terms",
+      canonicalUrl: "/terms-of-service",
       noIndex: false,
     },
   });

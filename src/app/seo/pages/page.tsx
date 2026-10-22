@@ -209,7 +209,7 @@ export default function PageSEODashboard() {
                               <div className="w-6" />
                             )}
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-bold text-sm text-gray-900 group-hover:text-[#002B5C] transition-colors whitespace-nowrap">
+                              <span className="font-bold text-sm text-gray-900 group-hover:text-[#002B5C] transition-colors line-clamp-2 max-w-xs sm:max-w-sm md:max-w-md break-words leading-snug">
                                 {root.title}
                               </span>
                             </div>
@@ -310,7 +310,7 @@ export default function PageSEODashboard() {
                                     ) : (
                                       <span className="text-gray-300 text-lg shrink-0">↳</span>
                                     )}
-                                    <span className="font-semibold text-xs sm:text-sm text-gray-700 group-hover:text-[#002B5C] transition-colors truncate">
+                                    <span className="font-semibold text-xs sm:text-sm text-gray-700 group-hover:text-[#002B5C] transition-colors line-clamp-2 max-w-xs sm:max-w-sm md:max-w-md break-words leading-snug">
                                       {child.title}
                                     </span>
                                   </div>
@@ -375,7 +375,7 @@ export default function PageSEODashboard() {
                                       <td className="px-6 py-3">
                                         <div className="flex items-center gap-2 pl-12 border-l-2 border-indigo-100/50 min-w-0">
                                           <span className="text-gray-300 text-xs shrink-0">↳</span>
-                                          <span className="font-medium text-xs text-gray-600 group-hover:text-[#002B5C] transition-colors truncate">
+                                          <span className="font-medium text-xs text-gray-600 group-hover:text-[#002B5C] transition-colors line-clamp-2 max-w-xs sm:max-w-sm md:max-w-md break-words leading-snug">
                                             {sub.title}
                                           </span>
                                         </div>

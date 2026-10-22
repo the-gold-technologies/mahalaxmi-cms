@@ -35,8 +35,7 @@ export async function GET() {
     for (const link of links) {
       const urlMatchesSlug = (url: string, slug: string) => {
         if (url === "/" && slug === "home") return true;
-        if ((url === "/products/industrial-oils" || url === "/products") && slug === "products")
-          return true;
+        if (url === "/products" && slug === "products") return true;
         return url === `/${slug}`;
       };
 
@@ -53,7 +52,6 @@ export async function GET() {
       }
       seenSlugs.add(normalizedSlug);
 
-      const isProd = link.url === "/products" || link.label.toLowerCase().includes("product");
       const assignedOrder = link.order !== undefined && link.order >= 0 ? link.order : navIndex++;
 
       if (matchedPage) {
@@ -64,7 +62,7 @@ export async function GET() {
           slug: matchedPage.slug,
           metaTitle: matchedPage.metaTitle,
           metaDescription: matchedPage.metaDescription,
-          type: isProd ? "Dropdown" : link.type || matchedPage.type,
+          type: link.type || matchedPage.type,
           visibility: matchedPage.visibility,
           parent: link.parent,
           order: assignedOrder,
@@ -81,7 +79,7 @@ export async function GET() {
           slug: targetSlug,
           metaTitle: null as string | null,
           metaDescription: null as string | null,
-          type: isProd ? "Dropdown" : link.type || "Main Link",
+          type: link.type || "static",
           visibility: "published",
           parent: link.parent,
           order: assignedOrder,
@@ -96,6 +94,10 @@ export async function GET() {
     let secondaryIndex = 50;
     for (const page of pages) {
       const normalizedSlug = page.slug.toLowerCase().trim();
+      // Skip nested product and blog subpages so they are accurately grouped under their parent categories / blogs
+      if (normalizedSlug.startsWith("products/") || normalizedSlug.startsWith("blogs/")) {
+        continue;
+      }
       if (!seenSlugs.has(normalizedSlug)) {
         seenSlugs.add(normalizedSlug);
         mergedData.push({
@@ -183,7 +185,7 @@ export async function GET() {
 
         mergedData.push({
           id: `blog-post-${blog.id}`,
-          pageId: blog.id,
+          pageId: matchedBlogPage?.id || blog.id,
           title: blog.title || "Untitled Blog",
           slug: blogPageSlug,
           metaTitle: matchedBlogPage?.metaTitle || blog.title,
@@ -196,6 +198,35 @@ export async function GET() {
           navTitle: blog.title,
           isStatic: false,
           headingOptions: matchedBlogPage?.headingOptions,
+        });
+      }
+    }
+
+    // Also include any orphan blog pages in Page table starting with blogs/
+    for (const page of pages) {
+      const normalizedSlug = page.slug.toLowerCase().trim();
+      if (normalizedSlug.startsWith("blogs/") && !seenSlugs.has(normalizedSlug)) {
+        seenSlugs.add(normalizedSlug);
+        mergedData.push({
+          id: `page-${page.id}`,
+          pageId: page.id,
+          title:
+            page.title ||
+            page.slug
+              .replace(/^blogs\//, "")
+              .replace(/-/g, " ")
+              .replace(/\b\w/g, (l: string) => l.toUpperCase()),
+          slug: page.slug,
+          metaTitle: page.metaTitle,
+          metaDescription: page.metaDescription,
+          type: "Blog Article",
+          visibility: page.visibility,
+          parent: blogParentId,
+          order: 0,
+          description: page.description || `SEO Configuration for ${page.title || page.slug}`,
+          navTitle: page.title,
+          isStatic: false,
+          headingOptions: page.headingOptions,
         });
       }
     }

@@ -7,7 +7,7 @@ let mockUsers: any[] = [
     name: "Mahalaxmi Admin",
     email: "admin@mahalaxmi.com",
     role: "admin",
-    password: "$2a$10$YourHashedPasswordHere",
+    password: "$2b$10$3MvKE1AeYQL617trG3.ROOBnuHtGI1o.C7VbTh6Fdc4zLHICjdX2W",
     avatar:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
     createdAt: new Date(),
