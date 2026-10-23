@@ -5,6 +5,9 @@ import {
   deleteCloudinaryAssetsFromData,
 } from "@/lib/cloudinaryCleanup";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const BLOGS_SLUG = "blogs";
 
 export async function GET(request: Request) {

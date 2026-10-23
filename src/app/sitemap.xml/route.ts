@@ -2,17 +2,23 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
   try {
     const config = await prisma.globalConfig.findFirst();
 
-    // If custom sitemap XML was uploaded and sitemap is enabled
-    if (config?.sitemapCustomContent && config.sitemapEnabled !== false) {
-      return new NextResponse(config.sitemapCustomContent, {
+    // If custom sitemap XML was uploaded and is a valid sitemap
+    if (
+      config?.sitemapCustomContent &&
+      config.sitemapEnabled !== false &&
+      (config.sitemapCustomContent.includes("<urlset") ||
+        config.sitemapCustomContent.includes("<sitemapindex"))
+    ) {
+      return new NextResponse(config.sitemapCustomContent.trim(), {
         headers: {
           "Content-Type": "application/xml; charset=utf-8",
-          "Cache-Control": "public, max-age=3600, s-maxage=3600",
+          "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
         },
       });
     }
@@ -87,7 +93,7 @@ ${blogsXml}
     return new NextResponse(xml, {
       headers: {
         "Content-Type": "application/xml; charset=utf-8",
-        "Cache-Control": "public, max-age=3600, s-maxage=3600",
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
       },
     });
   } catch (err) {

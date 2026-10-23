@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const EVENTS_SLUG = "events";
 
 export async function GET(request: Request) {

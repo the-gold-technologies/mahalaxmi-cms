@@ -50,13 +50,14 @@ export default function SitemapRobotsPage() {
     setIsSaving(true);
     const tid = toast.loading("Saving Sitemap & Robots.txt rules...");
     try {
+      const cleanCustomXml = sitemapCustomContent.trim();
       const res = await fetch("/api/seo", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           sitemapEnabled,
           robotsTxt,
-          sitemapCustomContent,
+          sitemapCustomContent: cleanCustomXml ? cleanCustomXml : null,
         }),
       });
 
@@ -93,9 +94,16 @@ export default function SitemapRobotsPage() {
     const reader = new FileReader();
     reader.onload = (evt) => {
       const text = (evt.target?.result as string) || "";
+      if (!text.includes("<urlset") && !text.includes("<sitemapindex")) {
+        toast.error(
+          "Warning: Uploaded XML does not contain <urlset> or <sitemapindex>. Sitemaps must follow standard XML format.",
+          { duration: 5000 },
+        );
+      } else {
+        toast.success(`${file.name} imported successfully!`);
+      }
       setSitemapCustomContent(text);
       setCustomSitemapFileName(file.name);
-      toast.success(`${file.name} imported successfully!`);
     };
     reader.readAsText(file);
     if (xmlInputRef.current) xmlInputRef.current.value = "";
@@ -119,7 +127,9 @@ export default function SitemapRobotsPage() {
   const clearCustomXml = () => {
     setSitemapCustomContent("");
     setCustomSitemapFileName("");
-    toast.success("Custom XML sitemap removed, using auto-generated version.");
+    toast.success(
+      "Custom XML sitemap removed. Click 'Save Changes' to switch back to dynamic auto-generation.",
+    );
   };
 
   if (isLoading) {
@@ -206,7 +216,8 @@ export default function SitemapRobotsPage() {
           <div>
             <h3 className="text-sm font-bold text-slate-900">Generate sitemap.xml</h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Automatically compiles static links and published blogs into a sitemap format.
+              Automatically compiles all published website pages, product categories, individual
+              products, and blogs into a live XML sitemap.
             </p>
           </div>
 
@@ -226,7 +237,7 @@ export default function SitemapRobotsPage() {
           <div>
             <h3 className="text-sm font-bold text-slate-900">Custom Sitemap XML File</h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Upload a custom XML sitemap to override the automatically generated version.
+              Upload a custom XML sitemap if you need manual static sitemap overrides.
             </p>
           </div>
 
@@ -264,6 +275,25 @@ export default function SitemapRobotsPage() {
             </button>
           </div>
         </div>
+
+        {customSitemapFileName ? (
+          <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-800 flex items-center justify-between gap-2">
+            <span>
+              <strong>Notice:</strong> An uploaded custom XML sitemap is currently saved. It takes
+              precedence over auto-generation. To revert to dynamic auto-generation from products
+              and blogs, click the remove button (<X className="inline w-3 h-3 text-red-500" />) and
+              click Save Changes.
+            </span>
+          </div>
+        ) : (
+          <div className="p-3 bg-emerald-50/70 border border-emerald-200/60 rounded-2xl text-xs text-emerald-800 flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>
+              <strong>Auto-Generation Active:</strong> The website serves a dynamic sitemap
+              including all live pages, categories, products, and blogs with real-time updates.
+            </span>
+          </div>
+        )}
       </div>
 
       {/* 3. Robots.txt Rules Card */}

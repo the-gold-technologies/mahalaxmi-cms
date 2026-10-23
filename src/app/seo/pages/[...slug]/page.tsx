@@ -33,6 +33,11 @@ export default function PageSpecificSEODetail() {
   });
 
   useEffect(() => {
+    if (slug === "home" || slug === "") {
+      router.replace("/seo/global");
+      return;
+    }
+
     async function fetchPageSEO() {
       if (!slug) return;
       try {

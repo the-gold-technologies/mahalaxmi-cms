@@ -78,14 +78,20 @@ export async function PUT(request: Request) {
       );
     }
 
-    // Also sync home page headingOptions and metaTitle/metaDescription
-    if (body.headingOptions || body.siteTitle || body.siteDescription) {
+    // Also sync home page headingOptions, schema, and metaTitle/metaDescription
+    if (
+      body.headingOptions !== undefined ||
+      body.siteTitle !== undefined ||
+      body.siteDescription !== undefined ||
+      body.schema !== undefined
+    ) {
       await prisma.page.upsert({
         where: { slug: "home" },
         update: {
-          metaTitle: body.siteTitle,
-          metaDescription: body.siteDescription,
-          headingOptions: body.headingOptions,
+          ...(body.siteTitle !== undefined ? { metaTitle: body.siteTitle } : {}),
+          ...(body.siteDescription !== undefined ? { metaDescription: body.siteDescription } : {}),
+          ...(body.headingOptions !== undefined ? { headingOptions: body.headingOptions } : {}),
+          ...(body.schema !== undefined ? { schema: body.schema } : {}),
         },
         create: {
           slug: "home",
@@ -93,6 +99,7 @@ export async function PUT(request: Request) {
           metaTitle: body.siteTitle,
           metaDescription: body.siteDescription,
           headingOptions: body.headingOptions,
+          schema: body.schema,
           visibility: "published",
         },
       });

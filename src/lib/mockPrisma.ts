@@ -2796,58 +2796,56 @@ let mockEnquiries: any[] = [
   },
 ];
 
+let mockGlobalConfig: any = {
+  id: "global",
+  siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
+  siteDescription:
+    "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
+  logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747905/mahalaxmi-enterprises/branding/aet8vc9jfakxqvmybcib.webp",
+  phone: "+91 88007 78032",
+  email: "info@hplubricantscfa.com",
+  address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
+  sitemapEnabled: true,
+  sitemapCustomContent: null,
+  robotsTxt: "User-agent: *\nAllow: /\n\nSitemap: https://mahalaxmilubricants.com/sitemap.xml",
+  socialLinks: {
+    facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
+    youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
+    instagram: "https://www.instagram.com/hplubricants_hpcl/",
+    linkedin: "https://www.linkedin.com/company/hpcl",
+    hpclBadge:
+      "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748019/mahalaxmi-enterprises/footer/aygvpp2xhjpyk555i2x4.webp",
+    indiaGovBadge:
+      "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
+    globalCompactBadge:
+      "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
+    copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
+  },
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 export const mockPrisma: any = {
   globalConfig: {
-    findFirst: async () => ({
-      id: "global",
-      siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
-      siteDescription:
-        "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
-      logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747905/mahalaxmi-enterprises/branding/aet8vc9jfakxqvmybcib.webp",
-      phone: "+91 88007 78032",
-      email: "info@hplubricantscfa.com",
-      address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
-      socialLinks: {
-        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
-        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
-        instagram: "https://www.instagram.com/hplubricants_hpcl/",
-        linkedin: "https://www.linkedin.com/company/hpcl",
-        hpclBadge:
-          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748019/mahalaxmi-enterprises/footer/aygvpp2xhjpyk555i2x4.webp",
-        indiaGovBadge:
-          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
-        globalCompactBadge:
-          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
-        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
-      },
-    }),
-    findUnique: async () => ({
-      id: "global",
-      siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
-      siteDescription:
-        "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
-      logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747905/mahalaxmi-enterprises/branding/aet8vc9jfakxqvmybcib.webp",
-      phone: "+91 88007 78032",
-      email: "info@hplubricantscfa.com",
-      address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
-      socialLinks: {
-        facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
-        youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
-        instagram: "https://www.instagram.com/hplubricants_hpcl/",
-        linkedin: "https://www.linkedin.com/company/hpcl",
-        hpclBadge:
-          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748019/mahalaxmi-enterprises/footer/aygvpp2xhjpyk555i2x4.webp",
-        indiaGovBadge:
-          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
-        globalCompactBadge:
-          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
-        copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
-      },
-    }),
-    upsert: async ({ create, update }: any) => ({
-      id: "global",
-      ...(update || create || {}),
-    }),
+    findFirst: async () => mockGlobalConfig,
+    findUnique: async () => mockGlobalConfig,
+    upsert: async ({ create, update }: any) => {
+      mockGlobalConfig = {
+        ...mockGlobalConfig,
+        ...(create || {}),
+        ...(update || {}),
+        updatedAt: new Date(),
+      };
+      return mockGlobalConfig;
+    },
+    update: async ({ data }: any) => {
+      mockGlobalConfig = {
+        ...mockGlobalConfig,
+        ...(data || {}),
+        updatedAt: new Date(),
+      };
+      return mockGlobalConfig;
+    },
   },
   user: {
     findUnique: async ({ where }: any) => {

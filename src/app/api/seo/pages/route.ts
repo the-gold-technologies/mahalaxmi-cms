@@ -30,7 +30,7 @@ export async function GET() {
     const mergedData: any[] = [];
     const seenSlugs = new Set<string>();
 
-    // 1. Process Navigation Links first (Main Website Order: Home, About Us, Products, Events, Blogs, Contact)
+    // 1. Process Navigation Links first (Main Website Order: About Us, Products, Events, Blogs, Contact)
     let navIndex = 1;
     for (const link of links) {
       const urlMatchesSlug = (url: string, slug: string) => {
@@ -47,6 +47,18 @@ export async function GET() {
           : link.url.replace(/^\//, "");
 
       const normalizedSlug = targetSlug.toLowerCase().trim();
+
+      // Exclude Home page from Per-Page SEO since Home / Landing page SEO is configured under Global SEO Settings
+      if (
+        normalizedSlug === "home" ||
+        normalizedSlug === "" ||
+        link.url === "/" ||
+        link.url === "/home" ||
+        link.label?.toLowerCase() === "home"
+      ) {
+        continue;
+      }
+
       if (seenSlugs.has(normalizedSlug)) {
         continue;
       }
@@ -94,6 +106,12 @@ export async function GET() {
     let secondaryIndex = 50;
     for (const page of pages) {
       const normalizedSlug = page.slug.toLowerCase().trim();
+
+      // Exclude Home page since Home / Landing page SEO is configured under Global SEO Settings
+      if (normalizedSlug === "home" || normalizedSlug === "") {
+        continue;
+      }
+
       // Skip nested product and blog subpages so they are accurately grouped under their parent categories / blogs
       if (normalizedSlug.startsWith("products/") || normalizedSlug.startsWith("blogs/")) {
         continue;

@@ -58,6 +58,7 @@ export default function PageSEODashboard() {
   };
 
   const filteredPages = pages.filter((page) => {
+    if (page.slug.toLowerCase() === "home" || page.slug === "") return false;
     const q = searchQuery.toLowerCase();
     return (
       page.title.toLowerCase().includes(q) ||
@@ -70,11 +71,11 @@ export default function PageSEODashboard() {
     .filter((p) => p.parent === "-" || !p.parent)
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
-  const totalPages = pages.length;
-  const configuredTitleCount = pages.filter(
+  const totalPages = filteredPages.length;
+  const configuredTitleCount = filteredPages.filter(
     (p) => p.metaTitle && p.metaTitle.trim().length > 0,
   ).length;
-  const configuredDescCount = pages.filter(
+  const configuredDescCount = filteredPages.filter(
     (p) => p.metaDescription && p.metaDescription.trim().length > 0,
   ).length;
 
@@ -90,6 +91,37 @@ export default function PageSEODashboard() {
             Configure metadata, open graph cards, and indexing targets across all site pages.
           </p>
         </div>
+      </div>
+
+      {/* Notice about Global SEO */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50/50 border border-blue-100/80 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-[#002B5C] text-white flex items-center justify-center shrink-0">
+            <Globe className="w-4 h-4" />
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-[#002B5C] uppercase tracking-wider">
+              Home Page SEO Note
+            </h4>
+            <p className="text-xs text-slate-600 mt-0.5">
+              The Home Page / Root Landing Page metadata is managed globally under{" "}
+              <Link
+                href="/seo/global"
+                className="font-bold text-[#002B5C] underline hover:text-[#D8232A] transition-colors"
+              >
+                Global SEO Settings
+              </Link>
+              . All other website sub-pages and dynamic routes are managed below.
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/seo/global"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white border border-blue-200 text-[#002B5C] hover:bg-blue-50/60 rounded-xl text-xs font-bold transition-all shadow-xs shrink-0 self-start sm:self-auto"
+        >
+          <span>Global SEO Settings</span>
+          <ChevronRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
 
       {/* Metrics Row */}
