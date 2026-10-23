@@ -50,14 +50,14 @@ async function main() {
       phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
-      logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
+      logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747905/mahalaxmi-enterprises/branding/aet8vc9jfakxqvmybcib.webp",
       socialLinks: {
         facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
         youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
         instagram: "https://www.instagram.com/hplubricants_hpcl/",
         linkedin: "https://www.linkedin.com/company/hpcl",
         hpclBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748019/mahalaxmi-enterprises/footer/aygvpp2xhjpyk555i2x4.webp",
         indiaGovBadge: "",
         globalCompactBadge: "",
         copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
@@ -71,18 +71,18 @@ async function main() {
       phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
-      logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
+      logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747905/mahalaxmi-enterprises/branding/aet8vc9jfakxqvmybcib.webp",
       socialLinks: {
         facebook: "https://www.facebook.com/hindustanpetroleumcorporateltd",
         youtube: "https://www.youtube.com/channel/UCJzt53YmvAJQjT-rLSTqNjg",
         instagram: "https://www.instagram.com/hplubricants_hpcl/",
         linkedin: "https://www.linkedin.com/company/hpcl",
         hpclBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748019/mahalaxmi-enterprises/footer/aygvpp2xhjpyk555i2x4.webp",
         indiaGovBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
         globalCompactBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
         copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
       },
     },
@@ -168,61 +168,61 @@ async function main() {
         slides: [
           {
             id: 1,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726300/mahalaxmi/banners/xra1pg306ketpuq4ab3k.png",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747983/mahalaxmi-enterprises/banners/xra1pg306ketpuq4ab3k.webp",
             link: "#products",
             title: "HP Lubricants No. 1 Banner",
           },
           {
             id: 2,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726301/mahalaxmi/banners/zgo69n1kol3nyentztgn.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747985/mahalaxmi-enterprises/banners/zgo69n1kol3nyentztgn.webp",
             link: "#products",
             title: "FUTUR-X ULTRA-SYNTHETIC PREMIUM ENGINE OILS",
           },
           {
             id: 3,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726303/mahalaxmi/banners/s0sa8sjhamtftngfd1rr.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747978/mahalaxmi-enterprises/banners/s0sa8sjhamtftngfd1rr.webp",
             link: "#products",
             title: "FUTUR-X NEXT GEN ENGINE PROTECTION",
           },
           {
             id: 4,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726304/mahalaxmi/banners/dtvoaac6u9cecqbdscpm.png",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747964/mahalaxmi-enterprises/banners/dtvoaac6u9cecqbdscpm.webp",
             link: "#products",
             title: "HP Lube New Banner",
           },
           {
             id: 5,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726305/mahalaxmi/banners/let7pxnxkacymkupzsxa.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747975/mahalaxmi-enterprises/banners/let7pxnxkacymkupzsxa.webp",
             link: "#products",
             title: "HP Racer New Banner",
           },
           {
             id: 6,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726307/mahalaxmi/banners/iqfigsf6tkyolkuhbztq.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747970/mahalaxmi-enterprises/banners/iqfigsf6tkyolkuhbztq.webp",
             link: "#products",
             title: "HIGH PERFORMANCE INDUSTRIAL & SECTORIAL LUBRICANTS",
           },
           {
             id: 7,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726308/mahalaxmi/banners/duryfwzobvjhaloafhff.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747967/mahalaxmi-enterprises/banners/duryfwzobvjhaloafhff.webp",
             link: "#products",
             title: "INDIA'S LEADING LUBE MARKETER",
           },
           {
             id: 8,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726309/mahalaxmi/banners/jlwhuhdhwwtgqtzamv60.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747973/mahalaxmi-enterprises/banners/jlwhuhdhwwtgqtzamv60.webp",
             link: "#products",
             title: "HP MILCY FLEET HEAVY DUTY DIESEL ENGINE OIL",
           },
           {
             id: 9,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726310/mahalaxmi/banners/vsr1aewspmvdp17sjyrd.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747981/mahalaxmi-enterprises/banners/vsr1aewspmvdp17sjyrd.webp",
             link: "#products",
             title: "HP NEOSYNTH ENGINE OIL",
           },
           {
             id: 10,
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726371/mahalaxmi/banners/c9uociisss9tqz5ytmxa.jpg",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747962/mahalaxmi-enterprises/banners/c9uociisss9tqz5ytmxa.webp",
             link: "#products",
             title: "HP RACER GEN6 2-WHEELER ENGINE OIL",
           },
@@ -255,16 +255,16 @@ async function main() {
             name: "Industrial Oils",
             link: "/products/industrial-oils",
             hoverImg:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726763/mahalaxmi/categories/mumoftaiiufxqmihyfrn.png",
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726764/mahalaxmi/categories/yxbtenjom0icur0ubwmm.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748004/mahalaxmi-enterprises/categories/mumoftaiiufxqmihyfrn.webp",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748006/mahalaxmi-enterprises/categories/yxbtenjom0icur0ubwmm.webp",
           },
           {
             id: "greases",
             name: "Greases",
             link: "/products/industrial-greases",
             hoverImg:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726765/mahalaxmi/categories/m6vhana1ocyt25gcqyfm.png",
-            img: "https://res.cloudinary.com/dpa93copz/image/upload/v1787726766/mahalaxmi/categories/dqbzxsek6v52ifwoxvb8.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748002/mahalaxmi-enterprises/categories/m6vhana1ocyt25gcqyfm.webp",
+            img: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748001/mahalaxmi-enterprises/categories/dqbzxsek6v52ifwoxvb8.webp",
           },
         ],
       },
@@ -283,7 +283,7 @@ async function main() {
             name: "MR. Gudu Bhai",
             role: "MECHANIC",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726866/mahalaxmi/testimonials/fzlpp5qdzzikoc9wcmqt.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748031/mahalaxmi-enterprises/testimonials/fzlpp5qdzzikoc9wcmqt.webp",
             quote: "We are using Milcy happy with different skims running by the firm.",
             location: "Valsad-Vapi Market - Gujarat",
           },
@@ -293,7 +293,7 @@ async function main() {
             name: "Sanjay Aggarwal",
             role: "Retailer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726867/mahalaxmi/testimonials/kzzowa1y35oxdrarqzti.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748037/mahalaxmi-enterprises/testimonials/kzzowa1y35oxdrarqzti.webp",
             quote: "Milcy has given great performance with longer durability.",
             location: "Chandrapur - Maharashtra",
           },
@@ -303,7 +303,7 @@ async function main() {
             name: "Bikash",
             role: "Retailer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726872/mahalaxmi/testimonials/nkhvdnzz9zqz2ehy1nxj.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748041/mahalaxmi-enterprises/testimonials/nkhvdnzz9zqz2ehy1nxj.webp",
             quote: "Good in performance and reasonable price for our customers.",
             location: "Siliguri - West Bengal",
           },
@@ -313,7 +313,7 @@ async function main() {
             name: "Karan Singh",
             role: "Distributor Partner",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726873/mahalaxmi/testimonials/ne8iotlazm0nqii5skkf.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748039/mahalaxmi-enterprises/testimonials/ne8iotlazm0nqii5skkf.webp",
             quote:
               "Genuine HP products and rapid delivery have grown our customer base tremendously.",
             location: "Patna - Bihar",
@@ -324,7 +324,7 @@ async function main() {
             name: "Rameshwar Patel",
             role: "Workshop Owner",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726874/mahalaxmi/testimonials/xk8gpjxlkufmvl4vaaoy.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748049/mahalaxmi-enterprises/testimonials/xk8gpjxlkufmvl4vaaoy.webp",
             quote:
               "Excellent oil viscosity retention even in extreme heavy vehicle highway conditions.",
             location: "Ahmedabad - Gujarat",
@@ -335,7 +335,7 @@ async function main() {
             name: "Mahesh Verma",
             role: "Senior Mechanic",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726875/mahalaxmi/testimonials/pimg6tb3w8hbuxlyxssk.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748042/mahalaxmi-enterprises/testimonials/pimg6tb3w8hbuxlyxssk.webp",
             quote: "We recommend only HP Racer and Milcy to our regular commercial customers.",
             location: "Lucknow - Uttar Pradesh",
           },
@@ -345,7 +345,7 @@ async function main() {
             name: "Devendra Choudhary",
             role: "Fleet In-charge",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726876/mahalaxmi/testimonials/bjd0z6onit7szqxsji6l.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748025/mahalaxmi-enterprises/testimonials/bjd0z6onit7szqxsji6l.webp",
             quote:
               "Significantly reduced engine wear and minimized downtime for our 40-truck fleet.",
             location: "Jaipur - Rajasthan",
@@ -356,7 +356,7 @@ async function main() {
             name: "Pooja Earth Movers",
             role: "Equipment Manager",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726884/mahalaxmi/testimonials/dmwsjrvbn3xaljgj7syw.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748027/mahalaxmi-enterprises/testimonials/dmwsjrvbn3xaljgj7syw.webp",
             quote:
               "HP lubes are the high quality lubes with affordable price for all heavy machinery.",
             location: "Chandrapur - Maharashtra",
@@ -367,7 +367,7 @@ async function main() {
             name: "Mr. Santosh Sankpal",
             role: "Deputy Manager – Heat Treatment",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726878/mahalaxmi/testimonials/um5c2owltmv66llgtkim.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748045/mahalaxmi-enterprises/testimonials/um5c2owltmv66llgtkim.webp",
             quote:
               "We in SKF Pune using the Metaquench-42 Quenching oil from more than 15 years, this is the best oil among the industry.",
             location: "Pune - Maharashtra",
@@ -378,7 +378,7 @@ async function main() {
             name: "Shri. S D KOKATE",
             role: "C & MS (G)",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726880/mahalaxmi/testimonials/dzpz7oyr077tzbsypout.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748030/mahalaxmi-enterprises/testimonials/dzpz7oyr077tzbsypout.webp",
             quote:
               "Mahalaxmi Enterprises is most trusted partner for Indian Railways and the only approved supplier for coolant.",
             location: "Pune - Maharashtra",
@@ -389,7 +389,7 @@ async function main() {
             name: "Shri. K W DESHMUKH",
             role: "ADME",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726882/mahalaxmi/testimonials/k7zx7qofdtvo0dk6jrnq.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748035/mahalaxmi-enterprises/testimonials/k7zx7qofdtvo0dk6jrnq.webp",
             quote:
               "Mahalaxmi Enterprises cares its customer for timely delivery and uninterrupted supply of its products. Customer service is prompt and efficient.",
             location: "Pune - Maharashtra",
@@ -400,7 +400,7 @@ async function main() {
             name: "Mr. Harish Samtani",
             role: "G.M - Materials",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726883/mahalaxmi/testimonials/incphtosk3mrtaast3mb.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748034/mahalaxmi-enterprises/testimonials/incphtosk3mrtaast3mb.webp",
             quote:
               "We are using Hydraulic and Cutting oil for more than 20 years now. Performance is very good and technical support is exceptional.",
             location: "Gurugram - Delhi NCR",
@@ -411,7 +411,7 @@ async function main() {
             name: "Shishir Tripathi",
             role: "Manager Procurement",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726884/mahalaxmi/testimonials/dmwsjrvbn3xaljgj7syw.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748027/mahalaxmi-enterprises/testimonials/dmwsjrvbn3xaljgj7syw.webp",
             quote:
               "Mahalaxmi Enterprises has been a reliable and strategic partner. We expect to continue this relationship and grow together for many years to come.",
             location: "Mumbai - Maharashtra",
@@ -422,7 +422,7 @@ async function main() {
             name: "Amit Soni",
             role: "Retailer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726885/mahalaxmi/testimonials/aht3sbuhu1vou5lbsccs.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748023/mahalaxmi-enterprises/testimonials/aht3sbuhu1vou5lbsccs.webp",
             quote:
               "Mahalaxmi Enterprises Retailer Program is best. Great rewards program for retailers and dealers across India.",
             location: "Naubagh - Fatehpur",
@@ -433,7 +433,7 @@ async function main() {
             name: "Praveen Kumar Singh",
             role: "Asst. General Manager",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726872/mahalaxmi/testimonials/nkhvdnzz9zqz2ehy1nxj.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748041/mahalaxmi-enterprises/testimonials/nkhvdnzz9zqz2ehy1nxj.webp",
             quote:
               "Mahalaxmi Enterprises always deserves appreciation for their prompt action and technical support services.",
             location: "New Delhi",
@@ -444,7 +444,7 @@ async function main() {
             name: "Sandeep Das",
             role: "Secretary",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726873/mahalaxmi/testimonials/ne8iotlazm0nqii5skkf.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748039/mahalaxmi-enterprises/testimonials/ne8iotlazm0nqii5skkf.webp",
             quote:
               "Even for our Vintage Cars and Motorcycles, we bank upon Mahalaxmi Enterprises for maximum performance.",
             location: "Kolkata - West Bengal",
@@ -455,7 +455,7 @@ async function main() {
             name: "Yogesh Wadhwa",
             role: "Mechanical Engineer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726874/mahalaxmi/testimonials/xk8gpjxlkufmvl4vaaoy.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748049/mahalaxmi-enterprises/testimonials/xk8gpjxlkufmvl4vaaoy.webp",
             quote:
               "We have been associated with HPCL for many years taking turbine oil supply with zero issues.",
             location: "Jagdishpur - Amethi",
@@ -466,7 +466,7 @@ async function main() {
             name: "Birendra Kumar",
             role: "SSE / Motive Power",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726875/mahalaxmi/testimonials/pimg6tb3w8hbuxlyxssk.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748042/mahalaxmi-enterprises/testimonials/pimg6tb3w8hbuxlyxssk.webp",
             quote:
               "I appreciate HP Lube Technical Services for their support & timely response to Indian Railways.",
             location: "Lucknow - Uttar Pradesh",
@@ -477,7 +477,7 @@ async function main() {
             name: "Rajan Mallick",
             role: "Retailer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726876/mahalaxmi/testimonials/bjd0z6onit7szqxsji6l.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748025/mahalaxmi-enterprises/testimonials/bjd0z6onit7szqxsji6l.webp",
             quote:
               "Mahalaxmi Enterprises is best in the Market. Superior quality and price structure for customers.",
             location: "Jamshedpur - Jharkhand",
@@ -488,7 +488,7 @@ async function main() {
             name: "Kishor Bhai",
             role: "Retailer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726878/mahalaxmi/testimonials/um5c2owltmv66llgtkim.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748045/mahalaxmi-enterprises/testimonials/um5c2owltmv66llgtkim.webp",
             quote:
               "Mahalaxmi Enterprises is excellent with best price and Milcy is best success product.",
             location: "Bhuj - Gujarat",
@@ -499,7 +499,7 @@ async function main() {
             name: "Samir Bhai",
             role: "MECHANIC",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726880/mahalaxmi/testimonials/dzpz7oyr077tzbsypout.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748030/mahalaxmi-enterprises/testimonials/dzpz7oyr077tzbsypout.webp",
             quote:
               "Mahalaxmi Enterprises products give top performance, good grade wise performance like Milcy and Racer4.",
             location: "Bhuj - Gujarat",
@@ -510,7 +510,7 @@ async function main() {
             name: "Arvind Srivastava",
             role: "Retailer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726882/mahalaxmi/testimonials/k7zx7qofdtvo0dk6jrnq.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748035/mahalaxmi-enterprises/testimonials/k7zx7qofdtvo0dk6jrnq.webp",
             quote:
               "We sell lubricants from Mahalaxmi Enterprises. High quality products with no complaints so far from mechanics or end-users.",
             location: "Unnao - Uttar Pradesh",
@@ -521,7 +521,7 @@ async function main() {
             name: "Pavitra Khanna",
             role: "Managing Director",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726883/mahalaxmi/testimonials/incphtosk3mrtaast3mb.jpg",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748034/mahalaxmi-enterprises/testimonials/incphtosk3mrtaast3mb.webp",
             quote:
               "We are dealing with Mahalaxmi Enterprises for last 4 years. Customers using your lubricants are fully satisfied.",
             location: "Jhansi - Uttar Pradesh",
@@ -532,7 +532,7 @@ async function main() {
             name: "Pankaj Barman",
             role: "Retailer",
             image:
-              "https://res.cloudinary.com/dpa93copz/image/upload/v1787726884/mahalaxmi/testimonials/dmwsjrvbn3xaljgj7syw.png",
+              "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748027/mahalaxmi-enterprises/testimonials/dmwsjrvbn3xaljgj7syw.webp",
             quote:
               "HP lubes are the high quality lubes with affordable price for all types of consumers.",
             location: "Chandrapur - Maharashtra",
@@ -552,25 +552,25 @@ async function main() {
             id: "haldiram",
             name: "Haldiram's",
             category: "Food Processing Giant",
-            logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787727090/mahalaxmi/clients/iwjyvy3p4tm4pfjwoqp9.jpg",
+            logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748009/mahalaxmi-enterprises/clients/iwjyvy3p4tm4pfjwoqp9.webp",
           },
           {
             id: "thdc",
             name: "THDC Khurja",
             category: "Power & Thermal Energy",
-            logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787727091/mahalaxmi/clients/x6erp0glqa6qkzgogs8l.jpg",
+            logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748013/mahalaxmi-enterprises/clients/x6erp0glqa6qkzgogs8l.webp",
           },
           {
             id: "ordnance",
             name: "Ordnance Factories",
             category: "Ministry of Defence, Govt of India",
-            logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787727092/mahalaxmi/clients/d7vj33wjvr5ectr839ku.jpg",
+            logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748008/mahalaxmi-enterprises/clients/d7vj33wjvr5ectr839ku.webp",
           },
           {
             id: "indian-army",
             name: "Indian Army",
             category: "Armed Forces of India",
-            logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787727094/mahalaxmi/clients/wzer7j4ztww2jqvkmvf0.jpg",
+            logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748011/mahalaxmi-enterprises/clients/wzer7j4ztww2jqvkmvf0.webp",
           },
         ],
       },
@@ -640,7 +640,7 @@ async function main() {
       order: 0,
       content: {
         bannerImage:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787736239/mahalaxmi/about/About-HPCL.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747959/mahalaxmi-enterprises/about/About-HPCL.webp",
         altText: "About MAHALAXMI ENTERPRISES Banner",
         title: "About MAHALAXMI ENTERPRISES",
       },
@@ -655,7 +655,7 @@ async function main() {
         distributorBadge: "Authorized Industrial Lube Distributor (ILD)",
         distributorCompany: "Hindustan Petroleum Corporation Limited (HPCL)",
         proprietorPhoto:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1788858309/mahalaxmi/team/neha-goyal-proprietor.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748022/mahalaxmi-enterprises/team/neha-goyal-proprietor.webp",
         proprietorPhotoAlt: "Neha Goyal — Proprietor, Mahalaxmi Enterprises",
         paragraphs: [
           "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lube Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
@@ -767,7 +767,7 @@ async function main() {
         title: "Contact Us",
         subtitle: "",
         image:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787738184/mahalaxmi/contact/contact-us-banner.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748014/mahalaxmi-enterprises/contact/contact-us-banner.webp",
         altText: "Contact Us - Mahalaxmi Enterprises",
       },
     },
@@ -851,7 +851,7 @@ async function main() {
       order: 0,
       content: {
         image:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787737913/mahalaxmi/events/events-banner.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748016/mahalaxmi-enterprises/events/events-banner.webp",
         altText: "MAHALAXMI ENTERPRISES Events & Activities Gallery Banner",
       },
     },
@@ -2710,7 +2710,7 @@ async function main() {
       order: 0,
       content: {
         image:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787738185/mahalaxmi/blogs/blogs-banner.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747986/mahalaxmi-enterprises/blogs/blogs-banner.webp",
         altText: "Blogs - Mahalaxmi Enterprises HP Lubricants",
       },
     },

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import sharp from "sharp";
+import { PDFDocument } from "pdf-lib";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,8 +13,11 @@ cloudinary.config({
 export async function POST(request: Request) {
   try {
     const data = await request.formData();
-    const file: File | null = data.get("file") as unknown as File;
-    const folder = (data.get("folder") as string) || "mahalaxmi/uploads";
+    const file: File | null = (data.get("file") || data.get("files")) as unknown as File;
+    let folder = (data.get("folder") as string) || "mahalaxmi-enterprises/uploads";
+    if (folder.startsWith("mahalaxmi/")) {
+      folder = folder.replace(/^mahalaxmi\//, "mahalaxmi-enterprises/");
+    }
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -32,7 +36,31 @@ export async function POST(request: Request) {
     let finalFileName = file.name;
     let resourceType: "raw" | "image" | "auto" = isPdf ? "raw" : "auto";
 
-    // Compress image to lightweight WebP in KB before uploading to Cloudinary
+    // 1. Compress PDF using stream compaction
+    if (isPdf) {
+      try {
+        const originalSizeKb = (originalBuffer.length / 1024).toFixed(1);
+        const pdfDoc = await PDFDocument.load(originalBuffer, { ignoreEncryption: true });
+        const compressedBytes = await pdfDoc.save({ useObjectStreams: true });
+        const compressedBuffer = Buffer.from(compressedBytes);
+
+        if (compressedBuffer.length <= originalBuffer.length) {
+          uploadBuffer = compressedBuffer;
+        }
+
+        const finalSizeKb = (uploadBuffer.length / 1024).toFixed(1);
+        console.log(
+          `[Cloudinary Upload] Compressed PDF ${file.name} (${originalSizeKb} KB) -> (${finalSizeKb} KB)`,
+        );
+      } catch (pdfError) {
+        console.warn(
+          "[Cloudinary Upload] PDF compression failed, falling back to original file:",
+          pdfError,
+        );
+      }
+    }
+
+    // 2. Compress image to lightweight WebP in KB before uploading to Cloudinary
     if (isImage) {
       try {
         const originalSizeKb = (originalBuffer.length / 1024).toFixed(1);
@@ -90,6 +118,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       url: result.secure_url,
+      urls: [result.secure_url],
       publicId: result.public_id,
       name: finalFileName,
       size: uploadBuffer.length,

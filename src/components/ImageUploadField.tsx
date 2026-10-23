@@ -21,7 +21,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   maxImages = 1,
   containerClassName = "",
   tooltip,
-  folder = "mahalaxmi/uploads",
+  folder = "mahalaxmi-enterprises/uploads",
 }) => {
   const [internalImages, setInternalImages] = useState<(File | string | null)[]>([]);
   const [isDragging, setIsDragging] = useState(false);

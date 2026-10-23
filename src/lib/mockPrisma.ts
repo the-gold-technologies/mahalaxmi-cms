@@ -79,6 +79,82 @@ let mockNavigation: any[] = [
 
 let mockPages: any[] = [
   {
+    id: "page-products",
+    title: "Products & Services",
+    slug: "products",
+    parent: "-",
+    order: 2,
+    type: "standard",
+    visibility: "published",
+    isStatic: true,
+    description: "HP Lubricants industrial oils, automotive oils, greases, and specialty fluids.",
+    metaTitle: "HP Lubricants Products & Industrial Oils | Mahalaxmi Enterprises",
+    metaDescription:
+      "Explore our full range of genuine HPCL lubricants, hydraulic oils, gear lubricants, and industrial greases.",
+    targetKeywords: "hp lubricants catalog, industrial oils, automotive lubricants",
+    canonicalUrl: "https://mahalaxmilubricants.com/products",
+    noIndex: false,
+    featuredImage: "",
+    ogTitle: "Products & Services | Mahalaxmi Enterprises",
+    ogDescription: "HP Lubricants industrial oils, automotive oils, greases",
+    ogImage: "",
+    headingOptions: {},
+    createdAt: "2026-10-23T09:48:02.272Z",
+    updatedAt: "2026-10-23T09:48:02.272Z",
+    sections: [],
+  },
+  {
+    id: "page-privacy-policy",
+    title: "Privacy Policy",
+    slug: "privacy-policy",
+    parent: "-",
+    order: 50,
+    type: "standard",
+    visibility: "published",
+    isStatic: false,
+    description: "Privacy policy and terms of data protection for Mahalaxmi Enterprises.",
+    metaTitle: "Privacy Policy | Mahalaxmi Enterprises",
+    metaDescription:
+      "Learn how Mahalaxmi Enterprises protects and respects your privacy and personal data.",
+    targetKeywords: "privacy policy, data protection, mahalaxmi enterprises",
+    canonicalUrl: "https://mahalaxmilubricants.com/privacy-policy",
+    noIndex: false,
+    featuredImage: "",
+    ogTitle: "Privacy Policy",
+    ogDescription: "Privacy Policy for Mahalaxmi Enterprises",
+    ogImage: "",
+    headingOptions: {},
+    createdAt: "2026-10-23T09:48:02.272Z",
+    updatedAt: "2026-10-23T09:48:02.272Z",
+    sections: [],
+  },
+  {
+    id: "page-terms-of-service",
+    title: "Terms of Service",
+    slug: "terms-of-service",
+    parent: "-",
+    order: 51,
+    type: "standard",
+    visibility: "published",
+    isStatic: false,
+    description:
+      "Terms and conditions governing the use of Mahalaxmi Enterprises services and website.",
+    metaTitle: "Terms of Service | Mahalaxmi Enterprises",
+    metaDescription:
+      "Review the terms and conditions for using the Mahalaxmi Enterprises website and services.",
+    targetKeywords: "terms of service, user agreement, mahalaxmi enterprises",
+    canonicalUrl: "https://mahalaxmilubricants.com/terms-of-service",
+    noIndex: false,
+    featuredImage: "",
+    ogTitle: "Terms of Service",
+    ogDescription: "Terms of Service for Mahalaxmi Enterprises",
+    ogImage: "",
+    headingOptions: {},
+    createdAt: "2026-10-23T09:48:02.272Z",
+    updatedAt: "2026-10-23T09:48:02.272Z",
+    sections: [],
+  },
+  {
     id: "page-home",
     title: "Home",
     slug: "home",
@@ -239,7 +315,7 @@ let mockPages: any[] = [
         order: 0,
         content: {
           bannerImage:
-            "https://res.cloudinary.com/dpa93copz/image/upload/v1787736239/mahalaxmi/about/About-HPCL.jpg",
+            "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747959/mahalaxmi-enterprises/about/About-HPCL.webp",
           altText: "About MAHALAXMI ENTERPRISES Banner",
           title: "About MAHALAXMI ENTERPRISES",
         },
@@ -256,7 +332,7 @@ let mockPages: any[] = [
           distributorBadge: "Authorized Industrial Lube Distributor (ILD)",
           distributorCompany: "Hindustan Petroleum Corporation Limited (HPCL)",
           proprietorPhoto:
-            "https://res.cloudinary.com/dpa93copz/image/upload/v1788858309/mahalaxmi/team/neha-goyal-proprietor.jpg",
+            "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748022/mahalaxmi-enterprises/team/neha-goyal-proprietor.webp",
           proprietorPhotoAlt: "Neha Goyal — Proprietor, Mahalaxmi Enterprises",
           paragraphs: [
             "Neha Goyal is the Proprietor of Mahalaxmi Enterprises, an authorized Industrial Lube Distributor (ILD) for HP Lubricants, serving the Baghpat region. With over a decade of experience in the lubricants industry, she has developed extensive expertise in providing reliable lubrication solutions across a wide range of industrial applications.",
@@ -2727,7 +2803,7 @@ export const mockPrisma: any = {
       siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
       siteDescription:
         "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
-      logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
+      logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747905/mahalaxmi-enterprises/branding/aet8vc9jfakxqvmybcib.webp",
       phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
@@ -2737,11 +2813,11 @@ export const mockPrisma: any = {
         instagram: "https://www.instagram.com/hplubricants_hpcl/",
         linkedin: "https://www.linkedin.com/company/hpcl",
         hpclBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748019/mahalaxmi-enterprises/footer/aygvpp2xhjpyk555i2x4.webp",
         indiaGovBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
         globalCompactBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
         copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
       },
     }),
@@ -2750,7 +2826,7 @@ export const mockPrisma: any = {
       siteTitle: "Mahalaxmi Enterprises | HP Lubricants Distributor",
       siteDescription:
         "Authorized Industrial Lube Distributor (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
-      logo: "https://res.cloudinary.com/dpa93copz/image/upload/v1787728459/mahalaxmi/branding/aet8vc9jfakxqvmybcib.png",
+      logo: "https://res.cloudinary.com/lfsnye1i/image/upload/v1792747905/mahalaxmi-enterprises/branding/aet8vc9jfakxqvmybcib.webp",
       phone: "+91 88007 78032",
       email: "info@hplubricantscfa.com",
       address: "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India",
@@ -2760,11 +2836,11 @@ export const mockPrisma: any = {
         instagram: "https://www.instagram.com/hplubricants_hpcl/",
         linkedin: "https://www.linkedin.com/company/hpcl",
         hpclBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731176/mahalaxmi/footer/aygvpp2xhjpyk555i2x4.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748019/mahalaxmi-enterprises/footer/aygvpp2xhjpyk555i2x4.webp",
         indiaGovBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
         globalCompactBadge:
-          "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg",
+          "https://res.cloudinary.com/lfsnye1i/image/upload/v1792748020/mahalaxmi-enterprises/footer/rnrmsenowtlzykcxuprr.webp",
         copyrightText: "© 2026 Mahalaxmi Enterprises. All rights reserved.",
       },
     }),
@@ -2836,6 +2912,30 @@ export const mockPrisma: any = {
     },
   },
 
+  navLink: {
+    findMany: async (args?: any) => {
+      let list = [...mockNavigation];
+      if (args?.orderBy?.order === "asc") {
+        list.sort((a, b) => (a.order || 0) - (b.order || 0));
+      }
+      return list;
+    },
+    findFirst: async ({ where }: any) => {
+      return (
+        mockNavigation.find(
+          (n) =>
+            (!where.location || n.location === where.location) &&
+            (!where.label || n.label === where.label),
+        ) || null
+      );
+    },
+    create: async ({ data }: any) => {
+      const item = { id: `nav-${Date.now()}`, ...data };
+      mockNavigation.push(item);
+      return item;
+    },
+    deleteMany: async () => ({ count: 0 }),
+  },
   navigationLink: {
     findMany: async () => mockNavigation,
     findFirst: async ({ where }: any) => {

@@ -20,7 +20,7 @@ export function ImagePickerField({
   onChange,
   helperText,
   placeholder = "https://... or upload from computer",
-  folder = "mahalaxmi/uploads",
+  folder = "mahalaxmi-enterprises/uploads",
 }: ImagePickerFieldProps) {
   const [uploading, setUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -29,14 +29,8 @@ export function ImagePickerField({
   const handleFileUpload = async (file: File) => {
     if (!file) return;
 
-    // Validate size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("File size too large (maximum 10MB)");
-      return;
-    }
-
     setUploading(true);
-    const toastId = toast.loading(`Uploading ${file.name} to Cloudinary...`);
+    const toastId = toast.loading(`Uploading ${file.name}...`);
 
     try {
       const formData = new FormData();
