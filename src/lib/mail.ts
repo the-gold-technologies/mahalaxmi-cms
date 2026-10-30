@@ -71,7 +71,7 @@ function getFromAddress(): string {
 export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
   try {
     const transporter = getMailTransporter();
-    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "info@hplubricantscfa.com";
     const fromAddress = getFromAddress();
 
     if (!transporter) {
@@ -383,7 +383,7 @@ export async function sendEnquiryNotificationEmail(data: EnquiryEmailData) {
 export async function sendDistributorLeadNotificationEmail(data: DistributorLeadEmailData) {
   try {
     const transporter = getMailTransporter();
-    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "sude8920esh@gmail.com";
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "info@hplubricantscfa.com";
     const fromAddress = getFromAddress();
 
     if (!transporter) {
