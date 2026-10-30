@@ -61,6 +61,15 @@ export async function PUT(request: Request) {
 
     const existingConfig = await prisma.globalConfig.findFirst({ where: { id: "global" } });
 
+    // Merge partial socialLinks updates so saving one form never wipes other keys
+    if (body.socialLinks && typeof body.socialLinks === "object") {
+      const existingSocials =
+        existingConfig?.socialLinks && typeof existingConfig.socialLinks === "object"
+          ? existingConfig.socialLinks
+          : {};
+      body.socialLinks = { ...existingSocials, ...body.socialLinks };
+    }
+
     const updatedConfig = await prisma.globalConfig.upsert({
       where: { id: "global" },
       create: {
@@ -72,8 +81,12 @@ export async function PUT(request: Request) {
       update: body,
     });
 
+    // Only compare fields this request actually changed, so saving unrelated settings
+    // can never delete assets (like footer badges) stored in other fields
     if (existingConfig) {
-      cleanupObsoleteCloudinaryAssets(existingConfig, updatedConfig).catch((err) =>
+      const changedKeys = Object.keys(body);
+      const pick = (obj: any) => Object.fromEntries(changedKeys.map((k) => [k, obj?.[k]]));
+      cleanupObsoleteCloudinaryAssets(pick(existingConfig), pick(body)).catch((err) =>
         console.error("Global SEO cleanup error:", err),
       );
     }

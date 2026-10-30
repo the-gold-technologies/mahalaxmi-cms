@@ -50,24 +50,11 @@ export default function FooterSocialMediaCMSPage() {
     loadConfig();
   }, []);
 
+  // Only send the fields owned by the form being saved; the API merges them into the
+  // stored socialLinks so other fields (e.g. footer badges) are never overwritten.
   const saveConfig = async (updatedFields: Record<string, any>) => {
-    const getRes = await fetch("/api/seo");
-    const currentJson = await getRes.json();
-    const currentSocials = currentJson.data?.socialLinks || {};
-
     const payload = {
-      socialLinks: {
-        ...currentSocials,
-        facebook,
-        linkedin,
-        instagram,
-        youtube,
-        hpclBadge,
-        indiaGovBadge,
-        globalCompactBadge,
-        copyrightText,
-        ...updatedFields,
-      },
+      socialLinks: updatedFields,
     };
 
     const res = await fetch("/api/seo", {
