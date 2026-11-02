@@ -93,11 +93,21 @@ export default function SitemapRobotsPage() {
 
     const reader = new FileReader();
     reader.onload = (evt) => {
-      const text = (evt.target?.result as string) || "";
-      if (!text.includes("<urlset") && !text.includes("<sitemapindex")) {
-        toast.error(
-          "Warning: Uploaded XML does not contain <urlset> or <sitemapindex>. Sitemaps must follow standard XML format.",
-          { duration: 5000 },
+      // trim() also removes a leading byte-order mark, which would break XML parsing
+      const text = ((evt.target?.result as string) || "").trim();
+      if (!text) {
+        toast.error(`${file.name} is empty`);
+        return;
+      }
+      // Any .xml file is accepted; non-standard sitemaps only get a heads-up
+      const problem = validateSitemapXml(text);
+      if (problem) {
+        toast(
+          `${file.name} imported. Note: ${problem} Search engines may not read it as a sitemap.`,
+          {
+            icon: "⚠️",
+            duration: 7000,
+          },
         );
       } else {
         toast.success(`${file.name} imported successfully!`);
@@ -346,4 +356,26 @@ export default function SitemapRobotsPage() {
       </div>
     </div>
   );
+}
+
+/**
+ * Checks that text is a well-formed XML sitemap. Returns a readable problem, or null if valid.
+ * Uses a real XML parser and looks at the root element, so namespace prefixes
+ * (e.g. <ns:urlset>) and letter case don't cause false warnings.
+ */
+function validateSitemapXml(text: string): string | null {
+  if (!text) return "the file is empty.";
+  const doc = new DOMParser().parseFromString(text, "application/xml");
+  const parseError = doc.getElementsByTagName("parsererror")[0];
+  if (parseError) {
+    const detail = (parseError.textContent || "").replace(/\s+/g, " ").trim().slice(0, 160);
+    return `the file is not valid XML (${detail || "parse error"}).`;
+  }
+  const root = doc.documentElement?.localName?.toLowerCase();
+  if (root !== "urlset" && root !== "sitemapindex") {
+    return `the root element is <${doc.documentElement?.nodeName || "?"}>, but a sitemap must start with <urlset> or <sitemapindex>.`;
+  }
+  const entries = doc.getElementsByTagNameNS("*", "loc").length;
+  if (entries === 0) return "the sitemap has no <loc> URLs.";
+  return null;
 }
