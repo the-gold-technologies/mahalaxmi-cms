@@ -2,40 +2,39 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { auth } from "@/auth";
+import { EMAIL_RE } from "@/lib/security";
 
 import { cleanupObsoleteCloudinaryAssets } from "@/lib/cloudinaryCleanup";
 
 export const dynamic = "force-dynamic";
 
+const MIN_PASSWORD_LENGTH = 8;
+
+async function getSessionUser() {
+  const session = await auth();
+  const sessionEmail = session?.user?.email;
+  if (!sessionEmail) return null;
+  return prisma.user.findUnique({ where: { email: sessionEmail } });
+}
+
 export async function GET() {
   try {
-    const session = await auth();
-    const sessionEmail = session?.user?.email;
-
-    const user = await prisma.user.findFirst({
-      where: sessionEmail ? { email: sessionEmail } : { role: "admin" },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        image: true,
-        createdAt: true,
-      },
-    });
-
+    const user = await getSessionUser();
     if (!user) {
-      return NextResponse.json({
-        success: true,
-        data: {
-          name: "Mahalaxmi Admin",
-          email: "admin@mahalaxmi.com",
-          role: "admin",
-        },
-      });
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    return NextResponse.json({ success: true, data: user });
+    return NextResponse.json({
+      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        image: user.image,
+        createdAt: user.createdAt,
+      },
+    });
   } catch (error: any) {
     console.error("Error fetching profile:", error);
     return NextResponse.json({ success: false, error: "Failed to load profile" }, { status: 500 });
@@ -44,32 +43,41 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
-    const session = await auth();
-    const sessionEmail = session?.user?.email;
+    const user = await getSessionUser();
+    if (!user) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
 
     const body = await request.json();
     const { name, email, currentPassword, newPassword, image } = body;
 
-    // Find the user to update
-    let user = null;
-    if (sessionEmail) {
-      user = await prisma.user.findUnique({ where: { email: sessionEmail } });
-    }
-    if (!user && email) {
-      user = await prisma.user.findUnique({ where: { email } });
-    }
-    if (!user) {
-      user = await prisma.user.findFirst({ where: { role: "admin" } });
-    }
-
-    if (!user) {
-      return NextResponse.json(
-        { success: false, error: "Admin user record not found" },
-        { status: 404 },
-      );
-    }
-
     const updateData: { name?: string; email?: string; password?: string; image?: string } = {};
+
+    const trimmedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    const wantsEmailChange = !!trimmedEmail && trimmedEmail !== user.email;
+    const wantsPasswordChange = typeof newPassword === "string" && !!newPassword.trim();
+
+    // Sensitive changes (email / password) require the current password
+    if (wantsEmailChange || wantsPasswordChange) {
+      if (!currentPassword) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Please enter your current password to change your email or password",
+          },
+          { status: 400 },
+        );
+      }
+      const isMatch = user.password
+        ? await bcrypt.compare(String(currentPassword), user.password)
+        : false;
+      if (!isMatch) {
+        return NextResponse.json(
+          { success: false, error: "Current password is incorrect" },
+          { status: 400 },
+        );
+      }
+    }
 
     if (image !== undefined && image !== user.image) {
       updateData.image = image;
@@ -78,16 +86,18 @@ export async function PUT(request: Request) {
       );
     }
 
-    if (name && name.trim()) {
-      updateData.name = name.trim();
+    if (typeof name === "string" && name.trim()) {
+      updateData.name = name.trim().slice(0, 120);
     }
 
-    if (email && email.trim() && email.trim() !== user.email) {
-      const trimmedEmail = email.trim().toLowerCase();
-      // Check if email is already taken by another user
-      const existing = await prisma.user.findUnique({
-        where: { email: trimmedEmail },
-      });
+    if (wantsEmailChange) {
+      if (!EMAIL_RE.test(trimmedEmail)) {
+        return NextResponse.json(
+          { success: false, error: "Please enter a valid email address" },
+          { status: 400 },
+        );
+      }
+      const existing = await prisma.user.findUnique({ where: { email: trimmedEmail } });
       if (existing && existing.id !== user.id) {
         return NextResponse.json(
           { success: false, error: "This email address is already in use by another user" },
@@ -97,35 +107,17 @@ export async function PUT(request: Request) {
       updateData.email = trimmedEmail;
     }
 
-    // Password Update Flow
-    if (newPassword && newPassword.trim()) {
+    if (wantsPasswordChange) {
       const trimmedNewPassword = newPassword.trim();
-
-      if (trimmedNewPassword.length < 6) {
+      if (trimmedNewPassword.length < MIN_PASSWORD_LENGTH) {
         return NextResponse.json(
-          { success: false, error: "New password must be at least 6 characters long" },
+          {
+            success: false,
+            error: `New password must be at least ${MIN_PASSWORD_LENGTH} characters long`,
+          },
           { status: 400 },
         );
       }
-
-      if (!currentPassword) {
-        return NextResponse.json(
-          { success: false, error: "Please enter your current password to authorize this change" },
-          { status: 400 },
-        );
-      }
-
-      // Verify current password against hashed database password
-      if (user.password) {
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!isMatch && currentPassword !== "Admin@123") {
-          return NextResponse.json(
-            { success: false, error: "Current password is incorrect" },
-            { status: 400 },
-          );
-        }
-      }
-
       updateData.password = await bcrypt.hash(trimmedNewPassword, 10);
     }
 
@@ -147,9 +139,6 @@ export async function PUT(request: Request) {
     });
   } catch (error: any) {
     console.error("Error updating profile:", error);
-    return NextResponse.json(
-      { success: false, error: error?.message || "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
 }

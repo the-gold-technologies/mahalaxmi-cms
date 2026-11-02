@@ -12,15 +12,74 @@ cloudinary.config({
 
 export const dynamic = "force-dynamic";
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+// Only these local folders may serve PDFs
+const LOCAL_PUBLIC_ROOTS = [
+  path.resolve(process.cwd(), "public"),
+  path.resolve(process.cwd(), "..", "mahalaxmi-enterprises ", "public"),
+];
+
+function resolveLocalPdf(fileUrl: string): string | null {
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(fileUrl.split("?")[0]);
+  } catch {
+    return null;
+  }
+  if (decoded.includes("\0") || !decoded.toLowerCase().endsWith(".pdf")) return null;
+
+  const relative = decoded.replace(/^\/+/, "");
+  const fileName = path.basename(relative);
+
+  for (const root of LOCAL_PUBLIC_ROOTS) {
+    for (const candidate of [path.resolve(root, relative), path.resolve(root, "docs", fileName)]) {
+      // Block path traversal: the resolved file must stay inside the public root
+      if (!candidate.startsWith(root + path.sep)) continue;
+      if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+    }
+  }
+  return null;
+}
+
+/** Only allow files hosted in this project's own Cloudinary account. */
+function isOwnCloudinaryUrl(fileUrl: string): boolean {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  if (!cloudName) return false;
+  try {
+    const u = new URL(fileUrl);
+    return (
+      u.protocol === "https:" &&
+      u.hostname === "res.cloudinary.com" &&
+      u.pathname.startsWith(`/${cloudName}/`) &&
+      /\/(raw|image)\/upload\//.test(u.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
+async function fetchPdf(url: string): Promise<ArrayBuffer | null> {
+  try {
+    const response = await fetch(url, { redirect: "error" });
+    if (!response.ok) return null;
+    const buffer = await response.arrayBuffer();
+    // Verify PDF magic bytes "%PDF"
+    const head = new Uint8Array(buffer.slice(0, 4));
+    if (String.fromCharCode(...head) !== "%PDF") return null;
+    return buffer;
+  } catch (err) {
+    console.warn("PDF fetch failed:", err);
+    return null;
+  }
+}
+
 export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
+  return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
 }
 
 export async function GET(request: Request) {
@@ -34,115 +93,69 @@ export async function GET(request: Request) {
     }
 
     const sanitizedName = customName.endsWith(".pdf") ? customName : customName + ".pdf";
-    const cleanFilename = sanitizedName.replace(/[^a-zA-Z0-9_.-]/g, "_");
+    const cleanFilename = sanitizedName.replace(/[^a-zA-Z0-9_.-]/g, "_").slice(0, 150);
 
     const responseHeaders: Record<string, string> = {
+      ...CORS_HEADERS,
       "Content-Type": "application/pdf",
       "Content-Disposition": 'attachment; filename="' + cleanFilename + '"',
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "X-Content-Type-Options": "nosniff",
       "Cache-Control": "public, max-age=3600",
     };
 
     // Case 1: Local / Relative path (e.g. /docs/... or /uploads/...)
-    const isRelative = !fileUrl.startsWith("http://") && !fileUrl.startsWith("https://");
+    const isRemote = /^[a-z][a-z0-9+.-]*:/i.test(fileUrl) || fileUrl.startsWith("//");
 
-    if (isRelative) {
-      const cleanPath = fileUrl.startsWith("/") ? fileUrl.slice(1) : fileUrl;
-      const fileName = path.basename(fileUrl);
+    if (!isRemote) {
+      const localPath = resolveLocalPdf(fileUrl);
+      if (!localPath) {
+        return NextResponse.json(
+          { error: "Requested PDF file does not exist on the server" },
+          { status: 404 },
+        );
+      }
+      return new NextResponse(fs.readFileSync(localPath), {
+        status: 200,
+        headers: responseHeaders,
+      });
+    }
 
-      const candidatePaths = [
-        path.join(process.cwd(), "public", cleanPath),
-        path.join(process.cwd(), "public", "docs", fileName),
-        path.join(process.cwd(), "..", "mahalaxmi-enterprises ", "public", cleanPath),
-        path.join(process.cwd(), "..", "mahalaxmi-enterprises ", "public", "docs", fileName),
-      ];
+    // Case 2: Remote URL — only this project's Cloudinary account is allowed
+    if (!isOwnCloudinaryUrl(fileUrl)) {
+      return NextResponse.json({ error: "File source is not allowed" }, { status: 400 });
+    }
 
-      for (const candidate of candidatePaths) {
-        if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
-          const fileBuffer = fs.readFileSync(candidate);
-          return new NextResponse(fileBuffer, {
-            status: 200,
-            headers: responseHeaders,
+    const cleanUrl = fileUrl.split("?")[0];
+    let signedUrl: string | null = null;
+    try {
+      if (cleanUrl.includes("/raw/upload/")) {
+        const match = cleanUrl.match(/\/upload\/(?:v\d+\/)?(.+)$/i);
+        if (match?.[1]) {
+          signedUrl = cloudinary.utils.private_download_url(match[1], "", {
+            resource_type: "raw",
+            type: "upload",
+            attachment: true,
+          });
+        }
+      } else {
+        const match = cleanUrl.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.pdf)?$/i);
+        if (match?.[1]) {
+          signedUrl = cloudinary.utils.private_download_url(match[1], "pdf", {
+            resource_type: "image",
+            type: "upload",
+            attachment: true,
           });
         }
       }
-
-      return NextResponse.json(
-        { error: "Requested PDF file does not exist on the server" },
-        { status: 404 },
-      );
-    }
-
-    // Case 2: Remote URL (Cloudinary uploaded file or external URL)
-    let downloadTarget = fileUrl;
-
-    if (fileUrl.includes("cloudinary.com")) {
-      try {
-        const isRaw = fileUrl.includes("/raw/upload/");
-        if (isRaw) {
-          const match = fileUrl.match(/\/upload\/(?:v\d+\/)?(.+)$/i);
-          if (match && match[1]) {
-            const publicId = match[1];
-            downloadTarget = cloudinary.utils.private_download_url(publicId, "", {
-              resource_type: "raw",
-              type: "upload",
-              attachment: true,
-            });
-          }
-        } else {
-          const match = fileUrl.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.pdf)?$/i);
-          if (match && match[1]) {
-            const publicId = match[1];
-            downloadTarget = cloudinary.utils.private_download_url(publicId, "pdf", {
-              resource_type: "image",
-              type: "upload",
-              attachment: true,
-            });
-          }
-        }
-      } catch (err) {
-        console.error("Error generating Cloudinary private download URL:", err);
-      }
+    } catch (err) {
+      console.error("Error generating Cloudinary private download URL:", err);
     }
 
     let fileBuffer: ArrayBuffer | null = null;
-
-    // 1. Try fetching from Cloudinary signed private download URL
-    if (downloadTarget) {
-      try {
-        const response = await fetch(downloadTarget);
-        if (response.ok) {
-          fileBuffer = await response.arrayBuffer();
-        }
-      } catch (err) {
-        console.warn("Signed Cloudinary download fetch failed:", err);
-      }
-    }
-
-    // 2. If signed URL failed or wasn't available, try direct fileUrl
-    if (!fileBuffer && downloadTarget !== fileUrl) {
-      try {
-        const response = await fetch(fileUrl);
-        if (response.ok) {
-          fileBuffer = await response.arrayBuffer();
-        }
-      } catch (err) {
-        console.warn("Direct fileUrl fetch failed:", err);
-      }
-    }
-
-    // 3. Try with fl_attachment transformation if still not retrieved
-    if (!fileBuffer && fileUrl.includes("cloudinary.com")) {
-      try {
-        const attachmentUrl = fileUrl.replace("/upload/", "/upload/fl_attachment/");
-        const response = await fetch(attachmentUrl);
-        if (response.ok) {
-          fileBuffer = await response.arrayBuffer();
-        }
-      } catch (err) {
-        console.warn("Cloudinary attachment URL fetch failed:", err);
-      }
+    if (signedUrl) fileBuffer = await fetchPdf(signedUrl);
+    if (!fileBuffer) fileBuffer = await fetchPdf(cleanUrl);
+    if (!fileBuffer) {
+      fileBuffer = await fetchPdf(cleanUrl.replace("/upload/", "/upload/fl_attachment/"));
     }
 
     if (!fileBuffer) {
@@ -161,6 +174,6 @@ export async function GET(request: Request) {
     });
   } catch (error: any) {
     console.error("PDF download proxy error:", error);
-    return NextResponse.json({ error: error?.message || "Download failed" }, { status: 500 });
+    return NextResponse.json({ error: "Download failed" }, { status: 500 });
   }
 }

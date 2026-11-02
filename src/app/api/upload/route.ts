@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import sharp from "sharp";
 import { PDFDocument } from "pdf-lib";
+import { requireAdmin } from "@/lib/security";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -10,31 +11,72 @@ cloudinary.config({
   secure: true,
 });
 
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // 10 MB
+const MAX_PDF_BYTES = 20 * 1024 * 1024; // 20 MB
+const ROOT_FOLDER = "mahalaxmi-enterprises";
+
+function sanitizeFolder(raw: unknown): string {
+  let folder = typeof raw === "string" && raw.trim() ? raw.trim() : `${ROOT_FOLDER}/uploads`;
+  if (folder.startsWith("mahalaxmi/")) {
+    folder = folder.replace(/^mahalaxmi\//, `${ROOT_FOLDER}/`);
+  }
+  // Allow only simple path segments, always inside the project's root folder
+  folder = folder
+    .split("/")
+    .map((s) => s.replace(/[^a-zA-Z0-9_-]/g, ""))
+    .filter(Boolean)
+    .join("/");
+  if (folder !== ROOT_FOLDER && !folder.startsWith(`${ROOT_FOLDER}/`)) {
+    folder = `${ROOT_FOLDER}/uploads`;
+  }
+  return folder;
+}
+
 export async function POST(request: Request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   try {
     const data = await request.formData();
     const file: File | null = (data.get("file") || data.get("files")) as unknown as File;
-    let folder = (data.get("folder") as string) || "mahalaxmi-enterprises/uploads";
-    if (folder.startsWith("mahalaxmi/")) {
-      folder = folder.replace(/^mahalaxmi\//, "mahalaxmi-enterprises/");
+    const folder = sanitizeFolder(data.get("folder"));
+
+    if (!file || typeof file === "string") {
+      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    if (!file) {
-      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+    const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+    const isImage =
+      (file.type.startsWith("image/") ||
+        /\.(jpe?g|png|webp|avif|tiff|bmp|gif)$/i.test(file.name)) &&
+      !file.type.includes("svg") &&
+      !file.name.toLowerCase().endsWith(".svg");
+
+    if (!isPdf && !isImage) {
+      return NextResponse.json(
+        { error: "Only image files (JPG, PNG, WebP, AVIF, GIF) and PDFs can be uploaded" },
+        { status: 400 },
+      );
+    }
+
+    const maxBytes = isPdf ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
+    if (file.size > maxBytes) {
+      return NextResponse.json(
+        { error: `File is too large. Maximum size is ${maxBytes / (1024 * 1024)} MB` },
+        { status: 413 },
+      );
     }
 
     const bytes = await file.arrayBuffer();
     const originalBuffer = Buffer.from(bytes);
 
-    const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
-    const isImage =
-      (file.type.startsWith("image/") || /\.(jpe?g|png|webp|avif|tiff|bmp)$/i.test(file.name)) &&
-      !file.type.includes("svg") &&
-      !file.name.toLowerCase().endsWith(".svg");
+    if (isPdf && originalBuffer.subarray(0, 4).toString("latin1") !== "%PDF") {
+      return NextResponse.json({ error: "File is not a valid PDF" }, { status: 400 });
+    }
 
     let uploadBuffer = originalBuffer;
     let finalFileName = file.name;
-    let resourceType: "raw" | "image" | "auto" = isPdf ? "raw" : "auto";
+    let resourceType: "raw" | "image" = isPdf ? "raw" : "image";
 
     // 1. Compress PDF using stream compaction
     if (isPdf) {
@@ -126,9 +168,6 @@ export async function POST(request: Request) {
     });
   } catch (error: any) {
     console.error("Cloudinary upload error:", error);
-    return NextResponse.json(
-      { success: false, error: error?.message || "Upload failed" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, error: "Upload failed" }, { status: 500 });
   }
 }

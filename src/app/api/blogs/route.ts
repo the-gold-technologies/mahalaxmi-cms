@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminRequest } from "@/lib/security";
 import {
   cleanupObsoleteCloudinaryAssets,
   deleteCloudinaryAssetsFromData,
@@ -15,9 +16,12 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     const slug = searchParams.get("slug");
+    const isAdmin = await isAdminRequest();
 
     if (id) {
-      const blog = await prisma.blogPost.findUnique({ where: { id } });
+      const found = await prisma.blogPost.findUnique({ where: { id } });
+      // Draft posts are only visible to logged-in CMS admins
+      const blog = found && (isAdmin || found.isPublished !== false) ? found : null;
       if (blog) {
         const blogPage = await prisma.page.findUnique({
           where: { slug: `blogs/${blog.slug}` },
@@ -40,7 +44,8 @@ export async function GET(request: Request) {
 
     if (slug && slug !== BLOGS_SLUG) {
       const pureSlug = slug.replace(/^blogs\//, "");
-      const blog = await prisma.blogPost.findUnique({ where: { slug: pureSlug } });
+      const found = await prisma.blogPost.findUnique({ where: { slug: pureSlug } });
+      const blog = found && (isAdmin || found.isPublished !== false) ? found : null;
       if (blog) {
         const blogPage = await prisma.page.findUnique({
           where: { slug: `blogs/${pureSlug}` },
@@ -63,6 +68,7 @@ export async function GET(request: Request) {
 
     // 1. Fetch blogs list
     const blogs = await prisma.blogPost.findMany({
+      ...(isAdmin ? {} : { where: { isPublished: true } }),
       orderBy: { createdAt: "desc" },
     });
 

@@ -55,8 +55,8 @@ export default function ProfileSettingsPage() {
         toast.error("Please enter your current password to set a new password");
         return;
       }
-      if (newPassword.length < 6) {
-        toast.error("New password must be at least 6 characters long");
+      if (newPassword.length < 8) {
+        toast.error("New password must be at least 8 characters long");
         return;
       }
       if (newPassword !== confirmPassword) {

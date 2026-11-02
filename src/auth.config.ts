@@ -7,7 +7,11 @@ export default {
     signIn: "/login",
   },
   trustHost: true,
-  secret: process.env.AUTH_SECRET || "mahalaxmi-hp-lubricants-cms-secret-key-2026-auth",
+  // Never fall back to a hard-coded secret in production (anyone could forge sessions).
+  // NextAuth refuses to start without AUTH_SECRET, which is the desired behaviour.
+  secret:
+    process.env.AUTH_SECRET ||
+    (process.env.NODE_ENV !== "production" ? "dev-only-insecure-auth-secret" : undefined),
   cookies: {
     sessionToken: {
       name: "mahalaxmi-cms.session-token",
