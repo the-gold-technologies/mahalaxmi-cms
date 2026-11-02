@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
+import { prisma } from "@/lib/prisma";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -131,6 +132,47 @@ export async function deleteCloudinaryAsset(url: string | null | undefined): Pro
 }
 
 /**
+ * Collects every Cloudinary URL still referenced anywhere in the database.
+ * Must be called AFTER the triggering record has been saved / deleted.
+ */
+async function getReferencedCloudinaryUrls(): Promise<Set<string>> {
+  const refs = new Set<string>();
+  const [sections, pages, products, categories, blogs, configs, users] = await Promise.all([
+    prisma.section.findMany({ select: { content: true } }),
+    prisma.page.findMany(),
+    prisma.product.findMany(),
+    prisma.productCategory.findMany(),
+    prisma.blogPost.findMany(),
+    prisma.globalConfig.findMany(),
+    prisma.user.findMany({ select: { image: true } }),
+  ]);
+  for (const rows of [sections, pages, products, categories, blogs, configs, users]) {
+    extractCloudinaryUrls(rows, refs);
+  }
+  return refs;
+}
+
+/**
+ * Removes URLs that are still used by another page / product / setting,
+ * so replacing an image in one place never breaks it somewhere else.
+ */
+async function filterUnreferenced(urls: string[]): Promise<string[]> {
+  if (urls.length === 0) return urls;
+  try {
+    const referenced = await getReferencedCloudinaryUrls();
+    const kept = urls.filter((u) => referenced.has(u));
+    if (kept.length > 0) {
+      console.log(`[Cloudinary Cleanup] Keeping ${kept.length} asset(s) still used elsewhere`);
+    }
+    return urls.filter((u) => !referenced.has(u));
+  } catch (err) {
+    // If we cannot verify, never delete
+    console.error("[Cloudinary Cleanup] Could not verify asset references, skipping delete:", err);
+    return [];
+  }
+}
+
+/**
  * Compares old data against new data, finding Cloudinary URLs that were replaced or removed,
  * and deletes them from Cloudinary. Triggered on Save button in forms.
  */
@@ -139,7 +181,8 @@ export async function cleanupObsoleteCloudinaryAssets(oldData: any, newData: any
     const oldUrls = Array.from(extractCloudinaryUrls(oldData));
     const newUrls = Array.from(extractCloudinaryUrls(newData));
 
-    const obsoleteUrls = oldUrls.filter((url) => !newUrls.includes(url));
+    const candidates = oldUrls.filter((url) => !newUrls.includes(url));
+    const obsoleteUrls = await filterUnreferenced(candidates);
 
     if (obsoleteUrls.length > 0) {
       console.log(
@@ -158,7 +201,7 @@ export async function cleanupObsoleteCloudinaryAssets(oldData: any, newData: any
  */
 export async function deleteCloudinaryAssetsFromData(data: any): Promise<void> {
   try {
-    const urls = Array.from(extractCloudinaryUrls(data));
+    const urls = await filterUnreferenced(Array.from(extractCloudinaryUrls(data)));
     if (urls.length > 0) {
       console.log(
         `[Cloudinary Cleanup] Deleting ${urls.length} asset(s) on entity removal...`,

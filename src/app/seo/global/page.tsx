@@ -8,6 +8,7 @@ import { TextAreaField } from "@/components/TextAreaField";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { Globe, Activity, Shield, Upload } from "lucide-react";
 import toast from "react-hot-toast";
+import { SectionsLoadState } from "@/components/SectionsLoader";
 
 export default function GlobalSEOPage() {
   const [formData, setFormData] = useState({
@@ -24,6 +25,7 @@ export default function GlobalSEOPage() {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const schemaInputRef = useRef<HTMLInputElement>(null);
 
@@ -32,7 +34,8 @@ export default function GlobalSEOPage() {
       try {
         const res = await fetch("/api/seo");
         const json = await res.json();
-        if (json.success && json.data) {
+        if (!res.ok || !json.success) throw new Error(json.error || "Failed to load");
+        if (json.data) {
           const data = json.data;
           setFormData({
             siteTitle: data.siteTitle || "",
@@ -62,6 +65,7 @@ export default function GlobalSEOPage() {
       } catch (error) {
         console.error("Error loading SEO data:", error);
         toast.error("Failed to load SEO data");
+        setLoadError(true);
       } finally {
         setIsLoading(false);
       }
@@ -132,6 +136,10 @@ export default function GlobalSEOPage() {
     reader.readAsText(file);
     if (schemaInputRef.current) schemaInputRef.current.value = "";
   };
+
+  if (loadError) {
+    return <SectionsLoadState status="error" onRetry={() => window.location.reload()} />;
+  }
 
   if (isLoading) {
     return (

@@ -171,8 +171,17 @@ export async function PUT(request: Request) {
       description: description !== undefined ? description.trim() : categories[index].description,
     };
 
+    const previousName = categories[index].name;
     categories[index] = updatedCategory;
     await saveStoredCategories(categories);
+
+    // Posts store the category name: rename them too so filters stay consistent
+    if (previousName && previousName !== updatedCategory.name) {
+      await prisma.blogPost.updateMany({
+        where: { category: previousName },
+        data: { category: updatedCategory.name },
+      });
+    }
 
     return NextResponse.json({ success: true, data: updatedCategory });
   } catch (error) {

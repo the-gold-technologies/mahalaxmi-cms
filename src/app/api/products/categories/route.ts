@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { moveSeoPage } from "@/lib/pageSections";
 import {
   cleanupObsoleteCloudinaryAssets,
   deleteCloudinaryAssetsFromData,
@@ -92,6 +93,28 @@ export async function PUT(request: Request) {
         ...(order !== undefined && { order: Number(order) }),
       },
     });
+
+    if (existing && (existing.slug !== updated.slug || existing.name !== updated.name)) {
+      // Products store the category slug + name: keep them in sync
+      const moved = await prisma.product.findMany({
+        where: { categorySlug: { in: [existing.slug, updated.slug] } },
+        select: { slug: true },
+      });
+      await prisma.product.updateMany({
+        where: { categorySlug: { in: [existing.slug, updated.slug] } },
+        data: { categorySlug: updated.slug, categoryName: updated.name },
+      });
+      // Keep SEO settings when the category URL changes
+      if (existing.slug !== updated.slug) {
+        await moveSeoPage(`products/${existing.slug}`, `products/${updated.slug}`);
+        for (const p of moved) {
+          await moveSeoPage(
+            `products/${existing.slug}/${p.slug}`,
+            `products/${updated.slug}/${p.slug}`,
+          );
+        }
+      }
+    }
 
     if (existing) {
       // Automatically clean up older replaced assets from Cloudinary after saving form

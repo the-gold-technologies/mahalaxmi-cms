@@ -7,6 +7,7 @@ import { InputField } from "@/components/InputField";
 import { RichTextEditor } from "@/components/RichTextEditor";
 import { ShieldCheck, FileText, Calendar, Eye, Sparkles } from "lucide-react";
 import toast from "react-hot-toast";
+import { SectionsLoadState } from "@/components/SectionsLoader";
 
 export default function PrivacyPolicyAdminPage() {
   const [title, setTitle] = useState("");
@@ -14,6 +15,7 @@ export default function PrivacyPolicyAdminPage() {
   const [content, setContent] = useState("");
   const [isPublished, setIsPublished] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -21,7 +23,8 @@ export default function PrivacyPolicyAdminPage() {
       try {
         const res = await fetch("/api/privacy-policy");
         const json = await res.json();
-        if (json.success && json.data) {
+        if (!res.ok || !json.success) throw new Error(json.error || "Failed to load");
+        if (json.data) {
           const data = json.data;
           setTitle(data.title || "");
           setLastUpdated(data.lastUpdated || "");
@@ -31,6 +34,7 @@ export default function PrivacyPolicyAdminPage() {
       } catch (err) {
         console.error("Failed to load privacy policy:", err);
         toast.error("Failed to load Privacy Policy");
+        setLoadError(true);
       } finally {
         setIsLoading(false);
       }
@@ -66,6 +70,10 @@ export default function PrivacyPolicyAdminPage() {
       setIsSaving(false);
     }
   };
+
+  if (loadError) {
+    return <SectionsLoadState status="error" onRetry={() => window.location.reload()} />;
+  }
 
   if (isLoading) {
     return (

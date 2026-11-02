@@ -17,7 +17,24 @@ export async function GET(request: Request) {
     }
 
     const config = await prisma.globalConfig.findFirst();
-    return NextResponse.json({ success: true, data: config });
+
+    // Company contact details are managed on the Contact Us page (Headquarter section);
+    // serve them here so the header, privacy page and SEO schema use the same values.
+    const contactPage = await prisma.page.findUnique({
+      where: { slug: "contact-us" },
+      include: { sections: { where: { type: "ContactHeadquarter" } } },
+    });
+    const hq = (contactPage?.sections?.[0]?.content || {}) as Record<string, any>;
+    const data = config
+      ? {
+          ...config,
+          phone: hq.phone || config.phone,
+          email: hq.email || config.email,
+          address: hq.address || config.address,
+        }
+      : config;
+
+    return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error("Error fetching SEO config:", error);
     return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });

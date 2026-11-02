@@ -131,7 +131,9 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
         }
       } catch (err) {
         console.error("Error loading product data:", err);
-        toast.error("Failed to load product");
+        // Never leave an empty form open: saving it would blank the product
+        toast.error("Failed to load product. Please try again.");
+        router.push("/static-pages/products");
       } finally {
         setFetching(false);
       }

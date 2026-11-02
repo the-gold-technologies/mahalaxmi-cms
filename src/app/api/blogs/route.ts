@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { isAdminRequest } from "@/lib/security";
+import { handleSectionsPut, moveSeoPage, deleteSeoPage } from "@/lib/pageSections";
 import {
   cleanupObsoleteCloudinaryAssets,
   deleteCloudinaryAssetsFromData,
@@ -162,6 +163,12 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
+
+    // Blogs page sections (hero banner, heading) — not a blog post update
+    if (!body?.id && (body?.section || body?.sections)) {
+      return handleSectionsPut(body, BLOGS_SLUG, { title: "Blogs" });
+    }
+
     const {
       id,
       title,
@@ -183,6 +190,14 @@ export async function PUT(request: Request) {
 
     const existing = await prisma.blogPost.findUnique({ where: { id } });
 
+    // Merge structured content so fields the editor doesn't manage
+    // (sections, conclusion, recommendedProducts...) are not lost
+    const isObj = (v: unknown) => !!v && typeof v === "object" && !Array.isArray(v);
+    const mergedContent =
+      content !== undefined && isObj(existing?.content) && isObj(content)
+        ? { ...(existing!.content as object), ...content }
+        : content;
+
     const updated = await prisma.blogPost.update({
       where: { id },
       data: {
@@ -194,11 +209,16 @@ export async function PUT(request: Request) {
         author,
         excerpt,
         coverImage,
-        content,
+        content: mergedContent,
         recommendedProducts,
         isPublished,
       },
     });
+
+    // Keep the post's SEO settings when its URL changes
+    if (existing && existing.slug !== updated.slug) {
+      await moveSeoPage(`blogs/${existing.slug}`, `blogs/${updated.slug}`);
+    }
 
     if (existing) {
       // Automatically clean up older replaced assets from Cloudinary after saving form
@@ -228,6 +248,7 @@ export async function DELETE(request: Request) {
     await prisma.blogPost.delete({ where: { id } });
 
     if (existing) {
+      await deleteSeoPage(`blogs/${existing.slug}`);
       deleteCloudinaryAssetsFromData(existing).catch((err) => console.error("Cleanup error:", err));
     }
 

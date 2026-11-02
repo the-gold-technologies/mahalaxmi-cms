@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { moveSeoPage, deleteSeoPage } from "@/lib/pageSections";
 import {
   cleanupObsoleteCloudinaryAssets,
   deleteCloudinaryAssetsFromData,
@@ -167,6 +168,13 @@ export async function PUT(request: Request) {
     });
 
     if (existing) {
+      // Keep SEO in ONE place: the website reads the Page record first, so mirror
+      // the product form's SEO fields into it (and move it if the URL changed).
+      const oldSeoSlug = `products/${existing.categorySlug}/${existing.slug}`;
+      const newSeoSlug = `products/${product.categorySlug}/${product.slug}`;
+      await moveSeoPage(oldSeoSlug, newSeoSlug);
+      await syncProductSeoPage(newSeoSlug, data);
+
       // Automatically clean up older replaced assets from Cloudinary after saving form
       cleanupObsoleteCloudinaryAssets(existing, product).catch((err) =>
         console.error("Cleanup error:", err),
@@ -201,6 +209,7 @@ export async function DELETE(request: Request) {
     });
 
     if (existing) {
+      await deleteSeoPage(`products/${existing.categorySlug}/${existing.slug}`);
       // Clean up assets on entity deletion
       deleteCloudinaryAssetsFromData(existing).catch((err) => console.error("Cleanup error:", err));
     }
@@ -210,4 +219,24 @@ export async function DELETE(request: Request) {
     console.error("Error deleting product:", error);
     return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
   }
+}
+
+const SEO_FIELDS = [
+  "metaTitle",
+  "metaDescription",
+  "targetKeywords",
+  "canonicalUrl",
+  "noIndex",
+  "schema",
+  "headingOptions",
+] as const;
+
+/** Copies SEO fields sent from the product form onto the product's SEO Page record, if one exists. */
+async function syncProductSeoPage(seoSlug: string, data: Record<string, any>) {
+  const update: Record<string, any> = {};
+  for (const key of SEO_FIELDS) {
+    if (data[key] !== undefined) update[key] = data[key];
+  }
+  if (Object.keys(update).length === 0) return;
+  await prisma.page.updateMany({ where: { slug: seoSlug }, data: update });
 }

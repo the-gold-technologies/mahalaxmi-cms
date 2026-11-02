@@ -26,13 +26,21 @@ export default function FooterSocialMediaCMSPage() {
   const [indiaGovBadge, setIndiaGovBadge] = useState("");
   const [globalCompactBadge, setGlobalCompactBadge] = useState("");
   const [copyrightText, setCopyrightText] = useState("");
+  const [logo, setLogo] = useState("");
+
+  // Saving is blocked until the current values have loaded, so a failed load
+  // can never overwrite live links / badges with empty values
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     async function loadConfig() {
       try {
         const res = await fetch("/api/seo");
         const json = await res.json();
-        if (json.success && json.data?.socialLinks) {
+        if (!res.ok || !json.success) throw new Error(json.error || "Failed to load");
+        setLoaded(true);
+        setLogo(json.data?.logo || "");
+        if (json.data?.socialLinks) {
           const s = json.data.socialLinks;
           if (s.facebook) setFacebook(s.facebook);
           if (s.linkedin) setLinkedin(s.linkedin);
@@ -45,6 +53,7 @@ export default function FooterSocialMediaCMSPage() {
         }
       } catch (err) {
         console.error("Failed to load footer & social config:", err);
+        toast.error("Failed to load saved links. Refresh the page before editing.");
       }
     }
     loadConfig();
@@ -52,9 +61,16 @@ export default function FooterSocialMediaCMSPage() {
 
   // Only send the fields owned by the form being saved; the API merges them into the
   // stored socialLinks so other fields (e.g. footer badges) are never overwritten.
-  const saveConfig = async (updatedFields: Record<string, any>) => {
+  const saveConfig = async (
+    updatedFields: Record<string, any>,
+    topLevelFields: Record<string, any> = {},
+  ) => {
+    if (!loaded) {
+      return { success: false, error: "Saved values have not loaded yet. Refresh the page." };
+    }
     const payload = {
       socialLinks: updatedFields,
+      ...topLevelFields,
     };
 
     const res = await fetch("/api/seo", {
@@ -93,12 +109,15 @@ export default function FooterSocialMediaCMSPage() {
     setLoadingBadges(true);
     setSavedBadges(false);
     try {
-      const json = await saveConfig({
-        hpclBadge,
-        indiaGovBadge,
-        globalCompactBadge,
-        copyrightText,
-      });
+      const json = await saveConfig(
+        {
+          hpclBadge,
+          indiaGovBadge,
+          globalCompactBadge,
+          copyrightText,
+        },
+        { logo },
+      );
       if (json.success) {
         setSavedBadges(true);
         toast.success("Footer partner badges & copyright updated successfully!");
@@ -192,6 +211,16 @@ export default function FooterSocialMediaCMSPage() {
           </div>
 
           <div className="flex flex-col gap-6">
+            <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100">
+              <ImagePickerField
+                label="Website Logo"
+                value={logo}
+                onChange={(url) => setLogo(url)}
+                folder="mahalaxmi/branding"
+                helperText="Company logo shown in the website header."
+              />
+            </div>
+
             <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100">
               <ImagePickerField
                 label="HPCL Official Partner Logo Badge"

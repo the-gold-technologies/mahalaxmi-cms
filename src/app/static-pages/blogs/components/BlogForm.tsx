@@ -149,7 +149,9 @@ export function BlogForm({ blogId, isNew = false }: BlogFormProps) {
         }
       } catch (err) {
         console.error("Error loading blog:", err);
-        toast.error("Failed to load article");
+        // Never leave an empty form open: saving it would blank the article
+        toast.error("Failed to load article. Please try again.");
+        router.push("/static-pages/blogs");
       } finally {
         setFetching(false);
       }

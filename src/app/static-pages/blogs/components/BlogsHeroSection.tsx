@@ -9,6 +9,7 @@ import { SaveButton } from "@/components/SaveButton";
 import { uploadFiles } from "@/lib/uploadHelpers";
 
 interface BlogsHeroData {
+  title?: string;
   image?: string;
   altText?: string;
 }
@@ -22,12 +23,14 @@ export function BlogsHeroSection({ initialData, onSave }: BlogsHeroSectionProps)
   const [isOpen, setIsOpen] = useState(true);
   const [images, setImages] = useState<(File | string | null)[]>([]);
   const [altText, setAltText] = useState("");
+  const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       setImages(initialData.image ? [initialData.image] : []);
       setAltText(initialData.altText || "");
+      setTitle(initialData.title || "");
     }
   }, [initialData]);
 
@@ -44,6 +47,7 @@ export function BlogsHeroSection({ initialData, onSave }: BlogsHeroSectionProps)
       }
 
       const payload: BlogsHeroData = {
+        title: title.trim(),
         image: finalImageUrl,
         altText: altText.trim(),
       };
@@ -105,6 +109,13 @@ export function BlogsHeroSection({ initialData, onSave }: BlogsHeroSectionProps)
               value={altText}
               onChange={(e) => setAltText(e.target.value)}
               placeholder="e.g. Blogs - Mahalaxmi Enterprises HP Lubricants"
+            />
+
+            <InputField
+              label="Page Heading"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Technical Insights & Blogs"
             />
 
             <div className="pt-4 border-t border-gray-100">

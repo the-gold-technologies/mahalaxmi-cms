@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { usePageSections, SectionsLoadState } from "@/components/SectionsLoader";
 import { PageHeader } from "@/components/PageHeader";
 import { HeroSliderSection } from "./components/HeroSliderSection";
 import { AboutSection } from "./components/AboutSection";
@@ -10,22 +11,7 @@ import { TestimonialsSection } from "./components/TestimonialsSection";
 import { LocateDistributorSection } from "./components/LocateDistributorSection";
 
 export default function HomePageEditor() {
-  const [homeData, setHomeData] = useState<any>(null);
-
-  useEffect(() => {
-    async function loadHomeData() {
-      try {
-        const res = await fetch("/api/home");
-        const json = await res.json();
-        if (json.success && json.data) {
-          setHomeData(json.data);
-        }
-      } catch (err) {
-        console.error("Failed to load home sections:", err);
-      }
-    }
-    loadHomeData();
-  }, []);
+  const { data: homeData, status, reload } = usePageSections("/api/home");
 
   return (
     <section className="flex flex-col gap-8 pb-12">
@@ -34,12 +20,17 @@ export default function HomePageEditor() {
         description="Manage the layout sections of your homepage. Expand any section to edit its details."
       />
 
-      <HeroSliderSection initialData={homeData?.HeroSlider} />
-      <AboutSection initialData={homeData?.AboutSection} />
-      <ProductsServicesSection initialData={homeData?.ProductsServicesSection} />
-      <TrustedClientsSection initialData={homeData?.TrustedClientsSection} />
-      <TestimonialsSection initialData={homeData?.TestimonialsSection} />
-      <LocateDistributorSection initialData={homeData?.LocateDistributorSection} />
+      <SectionsLoadState status={status} onRetry={reload} />
+      {status === "ready" && (
+        <>
+          <HeroSliderSection initialData={homeData?.HeroSlider} />
+          <AboutSection initialData={homeData?.AboutSection} />
+          <ProductsServicesSection initialData={homeData?.ProductsServicesSection} />
+          <TrustedClientsSection initialData={homeData?.TrustedClientsSection} />
+          <TestimonialsSection initialData={homeData?.TestimonialsSection} />
+          <LocateDistributorSection initialData={homeData?.LocateDistributorSection} />
+        </>
+      )}
     </section>
   );
 }

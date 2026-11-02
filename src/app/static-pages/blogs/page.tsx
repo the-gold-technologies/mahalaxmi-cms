@@ -42,6 +42,7 @@ export default function BlogsCMSPage() {
   const [sections, setSections] = useState<Record<string, any>>({});
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sectionsLoaded, setSectionsLoaded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
@@ -60,6 +61,7 @@ export default function BlogsCMSPage() {
       if (blogsJson.success) {
         setBlogs(blogsJson.data.blogs || []);
         setSections(blogsJson.data.sections || {});
+        setSectionsLoaded(true);
       }
 
       if (catJson.success && Array.isArray(catJson.data)) {
@@ -122,7 +124,16 @@ export default function BlogsCMSPage() {
       </div>
 
       {/* 1. Hero Banner Management */}
-      <BlogsHeroSection initialData={sections.BlogsHero} />
+      {/* Only show section editors once their saved data has loaded, so saving can never blank them */}
+      {sectionsLoaded ? (
+        <BlogsHeroSection initialData={sections.BlogsHero} />
+      ) : (
+        <div className="bg-white rounded-3xl border border-gray-100 p-8 text-sm text-gray-400 text-center">
+          {loading
+            ? "Loading page sections..."
+            : "Could not load page sections. Refresh to try again."}
+        </div>
+      )}
 
       {/* Category Pills & Search Filter Card with Fixed Bottom Category Action */}
       <div className="flex flex-col gap-4 bg-white p-5 rounded-3xl border border-gray-100 shadow-sm">
