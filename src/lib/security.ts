@@ -49,28 +49,6 @@ export function rateLimit(key: string, limit: number, windowMs: number): boolean
 }
 
 // ---------------------------------------------------------------------------
-// Captcha (Cloudflare Turnstile). Enforced when TURNSTILE_SECRET_KEY is set.
-// ---------------------------------------------------------------------------
-export async function verifyCaptcha(token: unknown, ip: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return true; // not configured: rely on rate limiting only
-  if (typeof token !== "string" || !token) return false;
-  try {
-    const body = new URLSearchParams({ secret, response: token });
-    if (ip && ip !== "unknown") body.set("remoteip", ip);
-    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      body,
-    });
-    const json = await res.json();
-    return json?.success === true;
-  } catch (err) {
-    console.error("Captcha verification failed:", err);
-    return false;
-  }
-}
-
-// ---------------------------------------------------------------------------
 // Input helpers
 // ---------------------------------------------------------------------------
 export function cleanString(value: unknown, maxLength: number): string | null {

@@ -20,7 +20,8 @@ import { InputField } from "@/components/InputField";
 import { TextAreaField } from "@/components/TextAreaField";
 import { SelectField } from "@/components/SelectField";
 import { ImageUploadField } from "@/components/ImageUploadField";
-import { PropertiesTableEditor, PropertyRow } from "@/components/PropertiesTableEditor";
+import { PropertiesTableEditor } from "@/components/PropertiesTableEditor";
+import { fromStored, toStored, type PropertiesTableData } from "@/lib/propertiesTable";
 import { StringListEditor } from "@/components/StringListEditor";
 import { PdfUploadField } from "@/components/PdfUploadField";
 import { SaveButton } from "@/components/SaveButton";
@@ -61,7 +62,9 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
   const [specialFeatures, setSpecialFeatures] = useState<string[]>([]);
   const [specsText, setSpecsText] = useState("");
   const [propertiesTableTitle, setPropertiesTableTitle] = useState("");
-  const [propertiesTable, setPropertiesTable] = useState<PropertyRow[]>([]);
+  const [propertiesTable, setPropertiesTable] = useState<PropertiesTableData>(() =>
+    fromStored([], []),
+  );
   const [pdfUrl, setPdfUrl] = useState("");
   const [msdsUrl, setMsdsUrl] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -112,7 +115,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
             setSpecialFeatures(Array.isArray(p.specialFeatures) ? p.specialFeatures : []);
             setSpecsText(p.specsText || "");
             setPropertiesTableTitle(p.propertiesTableTitle || "");
-            setPropertiesTable(Array.isArray(p.propertiesTable) ? p.propertiesTable : []);
+            setPropertiesTable(fromStored(p.tableHeaders, p.propertiesTable));
             setPdfUrl(p.pdfUrl || "");
             setMsdsUrl(p.msdsUrl || "");
             setIsFeatured(!!p.isFeatured);
@@ -183,7 +186,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
         specialFeatures: specialFeatures.map((s) => s.trim()).filter(Boolean),
         specsText: specsText.trim(),
         propertiesTableTitle: propertiesTableTitle.trim(),
-        propertiesTable,
+        ...toStored(propertiesTable), // tableHeaders + propertiesTable
         pdfUrl: pdfUrl.trim(),
         msdsUrl: msdsUrl.trim(),
         isFeatured,
@@ -427,7 +430,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
               placeholder="Physico-Chemical Properties (default)"
             />
 
-            <PropertiesTableEditor properties={propertiesTable} onChange={setPropertiesTable} />
+            <PropertiesTableEditor value={propertiesTable} onChange={setPropertiesTable} />
           </div>
         </div>
 

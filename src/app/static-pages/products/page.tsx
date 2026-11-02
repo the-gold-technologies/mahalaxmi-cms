@@ -36,7 +36,7 @@ interface Product {
   performanceBenefits?: string[];
   specialFeatures?: string[];
   specsText?: string;
-  propertiesTable?: { property: string; value: string }[];
+  propertiesTable?: { property: string; value?: string; values?: string[] }[];
   pdfUrl?: string;
   msdsUrl?: string;
   isFeatured?: boolean;
@@ -395,7 +395,8 @@ export default function ProductsCatalogCMSPage() {
                         key={i}
                         className="px-2 py-0.5 rounded-md bg-gray-50 text-[10px] font-semibold text-gray-600 border border-gray-100"
                       >
-                        {prop.property.split("@")[0].trim()}: {prop.value}
+                        {prop.property.split("@")[0].trim()}:{" "}
+                        {prop.values?.length ? prop.values.filter(Boolean).join(" / ") : prop.value}
                       </span>
                     ))}
                   </div>

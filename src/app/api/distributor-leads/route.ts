@@ -5,7 +5,6 @@ import {
   requireAdmin,
   rateLimit,
   getClientIp,
-  verifyCaptcha,
   cleanString,
   EMAIL_RE,
   PHONE_RE,
@@ -41,13 +40,6 @@ export async function POST(request: Request) {
 
     if (body?.website) {
       return NextResponse.json({ success: true });
-    }
-
-    if (!(await verifyCaptcha(body?.captchaToken, ip))) {
-      return NextResponse.json(
-        { success: false, error: "Captcha verification failed. Please try again." },
-        { status: 400 },
-      );
     }
 
     const name = cleanString(body.name, 120);
