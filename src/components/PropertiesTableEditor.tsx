@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, useCallback, useRef } from "react";
+import React, { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { Columns3, Combine, Plus, Trash2, X } from "lucide-react";
 import {
   applyGrid,
@@ -16,6 +16,8 @@ interface PropertiesTableEditorProps {
   label?: string;
   value: PropertiesTableData;
   onChange: (next: PropertiesTableData) => void;
+  topHeader?: string;
+  topHeaderPlaceholder?: string;
 }
 
 const inputCls =
@@ -23,13 +25,40 @@ const inputCls =
 const iconBtn =
   "p-1.5 text-gray-400 rounded-lg transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed";
 
+/**
+ * Auto-growing multi-line cell: Enter adds a new line inside the cell
+ * (instead of submitting the product form). Shift/Ctrl+Enter behave the same.
+ */
+const CellInput = memo(function CellInput({
+  className = "",
+  value,
+  ...props
+}: Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "value"> & { value: string }) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [value]);
+  return (
+    <textarea
+      ref={ref}
+      rows={1}
+      value={value}
+      {...props}
+      className={`${className} block resize-none overflow-hidden leading-snug`}
+    />
+  );
+});
+
 type RowActions = {
   setProperty: (rowId: string, val: string) => void;
   setCell: (rowId: string, col: number, val: string) => void;
   toggleMerge: (rowId: string) => void;
   move: (rowId: string, dir: -1 | 1) => void;
   remove: (rowId: string) => void;
-  paste: (e: React.ClipboardEvent<HTMLInputElement>, rowId: string, col: number) => void;
+  paste: (e: React.ClipboardEvent<HTMLElement>, rowId: string, col: number) => void;
 };
 
 const TableRow = memo(function TableRow({
@@ -49,8 +78,7 @@ const TableRow = memo(function TableRow({
   return (
     <tr className="hover:bg-gray-50/40">
       <td className="p-2 pl-3">
-        <input
-          type="text"
+        <CellInput
           value={row.property}
           onChange={(e) => actions.setProperty(row.id, e.target.value)}
           onPaste={(e) => actions.paste(e, row.id, 0)}
@@ -62,8 +90,7 @@ const TableRow = memo(function TableRow({
 
       {multi && row.merged ? (
         <td className="p-2" colSpan={colCount}>
-          <input
-            type="text"
+          <CellInput
             value={row.values[0] || ""}
             onChange={(e) => actions.setCell(row.id, 0, e.target.value)}
             placeholder="Same value for all columns (e.g. Bright & Clear)"
@@ -74,8 +101,7 @@ const TableRow = memo(function TableRow({
       ) : (
         row.values.map((v, c) => (
           <td key={c} className="p-2">
-            <input
-              type="text"
+            <CellInput
               value={v}
               onChange={(e) => actions.setCell(row.id, c, e.target.value)}
               onPaste={(e) => actions.paste(e, row.id, c + 1)}
@@ -119,6 +145,8 @@ export function PropertiesTableEditor({
   label = "Physico-Chemical Properties Table",
   value,
   onChange,
+  topHeader,
+  topHeaderPlaceholder = "e.g. HYCOM 150 P (defaults to product name)",
 }: PropertiesTableEditorProps) {
   const headers = value.headers.length > 0 ? value.headers : [""];
   const colCount = headers.length;
@@ -130,7 +158,13 @@ export function PropertiesTableEditor({
 
   const update = useCallback((fn: (d: PropertiesTableData) => PropertiesTableData) => {
     const { value: current, onChange: emit } = latest.current;
-    emit(fn({ headers: current.headers.length ? current.headers : [""], rows: current.rows }));
+    emit(
+      fn({
+        ...current,
+        propertyHeader: current.propertyHeader ?? "",
+        headers: current.headers.length ? current.headers : [""],
+      }),
+    );
   }, []);
 
   const mapRow = useCallback(
@@ -177,6 +211,7 @@ export function PropertiesTableEditor({
 
   const addColumn = () =>
     update((d) => ({
+      ...d,
       headers: [...d.headers, ""],
       rows: d.rows.map((r) => ({
         ...r,
@@ -191,6 +226,7 @@ export function PropertiesTableEditor({
     update((d) => {
       const nextHeaders = d.headers.filter((_, i) => i !== col);
       return {
+        ...d,
         headers: nextHeaders.length ? nextHeaders : [""],
         rows: d.rows.map((r) => {
           const values = r.merged ? r.values.slice(0, -1) : r.values.filter((_, i) => i !== col);
@@ -261,13 +297,30 @@ export function PropertiesTableEditor({
         <div className="border border-gray-200/80 rounded-2xl overflow-x-auto bg-white shadow-xs">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
+              {topHeader !== undefined && (
+                <tr className="bg-[#002b5c] text-white">
+                  <th
+                    colSpan={colCount + 2}
+                    className="py-3 px-4 text-center font-extrabold uppercase tracking-wider text-xs sm:text-sm border-b border-[#001f42]"
+                  >
+                    {topHeader.trim() || topHeaderPlaceholder}
+                  </th>
+                </tr>
+              )}
               <tr className="bg-gray-50/80 border-b border-gray-200/80 text-[10px] uppercase font-bold text-gray-400 tracking-wider">
-                <th className="py-2.5 px-4 align-bottom">Test Property Name</th>
+                <th className="py-2 px-2 align-bottom">
+                  <CellInput
+                    value={value.propertyHeader ?? ""}
+                    onChange={(e) => update((d) => ({ ...d, propertyHeader: e.target.value }))}
+                    placeholder="Property column title"
+                    aria-label="Property column heading"
+                    className="w-full min-w-[140px] px-2 py-1.5 bg-white border border-gray-200 rounded-lg text-[10px] font-bold uppercase tracking-wider text-gray-600 placeholder:text-gray-400 placeholder:normal-case focus:outline-none focus:ring-1 focus:ring-[#D8232A]"
+                  />
+                </th>
                 {headers.map((h, c) => (
                   <th key={c} className="py-2 px-2 align-bottom">
                     <div className="flex items-center gap-1">
-                      <input
-                        type="text"
+                      <CellInput
                         value={h}
                         onChange={(e) => setHeader(c, e.target.value)}
                         placeholder={multi ? `Column ${c + 1}` : "Typical Value / Unit"}

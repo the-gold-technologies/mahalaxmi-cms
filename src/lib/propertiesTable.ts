@@ -1,7 +1,8 @@
 /**
  * Physico-Chemical Properties table — shared data helpers.
  *
- * Stored format (Product.tableHeaders + Product.propertiesTable), read by the website:
+ * Stored format (Product.tablePropertyHeader + tableHeaders + propertiesTable), read by the website:
+ *   tablePropertyHeader: "Characteristics"          → title of the first (property) column ("" = none)
  *   tableHeaders:    ["46", "68", "100"]            → names of the VALUE columns ([] = single column)
  *   propertiesTable: [
  *     { property: "Viscosity @ 40°C", value: "", values: ["46", "68", "100"] }, // one value per column
@@ -16,6 +17,7 @@ export interface StoredPropertyRow {
 }
 
 export interface StoredPropertiesTable {
+  tablePropertyHeader: string;
   tableHeaders: string[];
   propertiesTable: StoredPropertyRow[];
 }
@@ -30,6 +32,8 @@ export interface EditorRow {
 }
 
 export interface PropertiesTableData {
+  /** Title of the first (property name) column */
+  propertyHeader: string;
   headers: string[];
   rows: EditorRow[];
 }
@@ -94,13 +98,18 @@ export function normalizeHeaders(rawHeaders: unknown, rawRows: unknown): string[
 }
 
 /** Stored DB data → editor model */
-export function fromStored(rawHeaders: unknown, rawRows: unknown): PropertiesTableData {
+export function fromStored(
+  rawHeaders: unknown,
+  rawRows: unknown,
+  rawPropertyHeader?: unknown,
+): PropertiesTableData {
   const rows = toRows(rawRows);
   const headers = normalizeHeaders(rawHeaders, rows);
   const maxValues = rows.reduce((m, r) => Math.max(m, r.values?.length || 0), 0);
   const colCount = Math.max(headers.length, maxValues, 1);
 
   return {
+    propertyHeader: str(rawPropertyHeader),
     headers: pad(headers, colCount),
     rows: rows.map((r) => {
       const hasValues = Array.isArray(r.values) && r.values.length > 0;
@@ -118,6 +127,7 @@ export function fromStored(rawHeaders: unknown, rawRows: unknown): PropertiesTab
 export function toStored(data: PropertiesTableData): StoredPropertiesTable {
   const n = Math.max(data.headers.length, 1);
   const headers = pad(data.headers, n).map((h) => h.trim());
+  const tablePropertyHeader = (data.propertyHeader || "").trim();
 
   const rows = data.rows
     .map((r) => ({
@@ -129,12 +139,14 @@ export function toStored(data: PropertiesTableData): StoredPropertiesTable {
 
   if (n === 1) {
     return {
+      tablePropertyHeader,
       tableHeaders: headers[0] ? [headers[0]] : [],
       propertiesTable: rows.map((r) => ({ property: r.property, value: r.values[0] })),
     };
   }
 
   return {
+    tablePropertyHeader,
     tableHeaders: headers.map((h, i) => h || `Column ${i + 1}`),
     propertiesTable: rows.map((r) =>
       r.merged
@@ -186,5 +198,5 @@ export function applyGrid(
     rows[ri] = row;
   });
 
-  return { headers, rows };
+  return { ...data, headers, rows };
 }
