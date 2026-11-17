@@ -17,7 +17,6 @@ interface PropertiesTableEditorProps {
   value: PropertiesTableData;
   onChange: (next: PropertiesTableData) => void;
   topHeader?: string;
-  topHeaderPlaceholder?: string;
 }
 
 const inputCls =
@@ -146,7 +145,6 @@ export function PropertiesTableEditor({
   value,
   onChange,
   topHeader,
-  topHeaderPlaceholder = "e.g. HYCOM 150 P (defaults to product name)",
 }: PropertiesTableEditorProps) {
   const headers = value.headers.length > 0 ? value.headers : [""];
   const colCount = headers.length;
@@ -297,13 +295,13 @@ export function PropertiesTableEditor({
         <div className="border border-gray-200/80 rounded-2xl overflow-x-auto bg-white shadow-xs">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              {topHeader !== undefined && (
+              {!!topHeader?.trim() && (
                 <tr className="bg-[#002b5c] text-white">
                   <th
                     colSpan={colCount + 2}
                     className="py-3 px-4 text-center font-extrabold uppercase tracking-wider text-xs sm:text-sm border-b border-[#001f42]"
                   >
-                    {topHeader.trim() || topHeaderPlaceholder}
+                    {topHeader.trim()}
                   </th>
                 </tr>
               )}

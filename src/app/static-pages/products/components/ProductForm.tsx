@@ -363,13 +363,13 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                 label="Description Section Heading"
                 value={descriptionTitle}
                 onChange={(e) => setDescriptionTitle(e.target.value)}
-                placeholder="Description (default)"
+                placeholder="e.g. Description (leave blank to hide heading)"
               />
               <InputField
                 label="Application Areas Section Heading"
                 value={applicationAreasTitle}
                 onChange={(e) => setApplicationAreasTitle(e.target.value)}
-                placeholder="Application Areas (default)"
+                placeholder="e.g. Application Areas (leave blank to hide heading)"
               />
             </div>
 
@@ -402,13 +402,13 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                 label="Benefits Section Heading"
                 value={performanceBenefitsTitle}
                 onChange={(e) => setPerformanceBenefitsTitle(e.target.value)}
-                placeholder="Performance Benefits (default)"
+                placeholder="e.g. Performance Benefits (leave blank to hide heading)"
               />
               <InputField
                 label="Special Features Section Heading"
                 value={specialFeaturesTitle}
                 onChange={(e) => setSpecialFeaturesTitle(e.target.value)}
-                placeholder="Special Features (default)"
+                placeholder="e.g. Special Features (leave blank to hide heading)"
               />
             </div>
 
@@ -442,7 +442,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                 label="Table Section Title"
                 value={propertiesTableTitle}
                 onChange={(e) => setPropertiesTableTitle(e.target.value)}
-                placeholder="Physico-Chemical Properties (default)"
+                placeholder="e.g. Physico-Chemical Properties (leave blank to hide)"
                 tooltip="Heading displayed above the laboratory test table."
               />
 
@@ -450,8 +450,8 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                 label="Table Top Banner Title"
                 value={tableTopHeader}
                 onChange={(e) => setTableTopHeader(e.target.value)}
-                placeholder={name ? `${name} (default)` : "e.g. HYCOM 150 P"}
-                tooltip="Title appearing inside the top solid blue banner bar of the table (e.g. HYCOM 150 P). Defaults to product name if blank."
+                placeholder="e.g. HYCOM 150 P (leave blank to hide banner)"
+                tooltip="Title appearing inside the top solid blue banner bar of the table (e.g. HYCOM 150 P). Leave blank to hide the banner bar."
               />
             </div>
 
@@ -459,7 +459,6 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
               value={propertiesTable}
               onChange={setPropertiesTable}
               topHeader={tableTopHeader}
-              topHeaderPlaceholder={name ? name : "HYCOM 150 P"}
             />
           </div>
 
