@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { InputField } from "@/components/InputField";
 import { TextAreaField } from "@/components/TextAreaField";
 import { SaveButton } from "@/components/SaveButton";
+import { ConfirmModal } from "@/components/ConfirmModal";
 
 export interface BlogCategory {
   id: string;
@@ -29,6 +30,7 @@ export function BlogCategoryModal({
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
 
   const [editingCat, setEditingCat] = useState<BlogCategory | null>(null);
   const [name, setName] = useState("");
@@ -128,11 +130,14 @@ export function BlogCategoryModal({
     }
   };
 
-  const handleDelete = async (id: string, catName: string) => {
-    if (!confirm(`Are you sure you want to delete category "${catName}"?`)) return;
+  const handleDelete = (id: string, catName: string) => {
+    setDeleteTarget({ id, name: catName });
+  };
 
+  const confirmDeleteCategory = async () => {
+    if (!deleteTarget) return;
     try {
-      const res = await fetch(`/api/blogs/categories?id=${id}`, {
+      const res = await fetch(`/api/blogs/categories?id=${deleteTarget.id}`, {
         method: "DELETE",
       });
       const json = await res.json();
@@ -145,6 +150,8 @@ export function BlogCategoryModal({
       }
     } catch {
       toast.error("Network error deleting category");
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -308,6 +315,15 @@ export function BlogCategoryModal({
           </button>
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Delete Category"
+        message={`Are you sure you want to delete category "${deleteTarget?.name}"?`}
+        confirmLabel="Delete"
+        onConfirm={confirmDeleteCategory}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

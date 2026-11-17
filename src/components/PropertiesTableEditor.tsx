@@ -2,6 +2,7 @@
 
 import React, { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { Columns3, Combine, Plus, Trash2, X } from "lucide-react";
+import { ConfirmModal } from "@/components/ConfirmModal";
 import {
   applyGrid,
   emptyRow,
@@ -149,6 +150,7 @@ export function PropertiesTableEditor({
   const headers = value.headers.length > 0 ? value.headers : [""];
   const colCount = headers.length;
   const multi = colCount > 1;
+  const [pendingColumnDelete, setPendingColumnDelete] = React.useState<number | null>(null);
 
   // Keep latest data in a ref so row callbacks stay stable (memoized rows skip re-render)
   const latest = useRef({ value, onChange });
@@ -218,9 +220,7 @@ export function PropertiesTableEditor({
       })),
     }));
 
-  const removeColumn = (col: number) => {
-    const hasData = value.rows.some((r) => !r.merged && (r.values[col] || "").trim());
-    if (hasData && !window.confirm("This column has values. Remove it anyway?")) return;
+  const performRemoveColumn = (col: number) => {
     update((d) => {
       const nextHeaders = d.headers.filter((_, i) => i !== col);
       return {
@@ -236,6 +236,16 @@ export function PropertiesTableEditor({
         }),
       };
     });
+    setPendingColumnDelete(null);
+  };
+
+  const removeColumn = (col: number) => {
+    const hasData = value.rows.some((r) => !r.merged && (r.values[col] || "").trim());
+    if (hasData) {
+      setPendingColumnDelete(col);
+      return;
+    }
+    performRemoveColumn(col);
   };
 
   const setHeader = (col: number, val: string) =>
@@ -363,6 +373,17 @@ export function PropertiesTableEditor({
           : "Add columns to compare several grades side by side. Leave the column heading empty for a simple two-column table."}{" "}
         Tip: paste rows copied from Excel into any cell to fill the table.
       </p>
+
+      <ConfirmModal
+        isOpen={pendingColumnDelete !== null}
+        title="Remove Column"
+        message="This column already has values. Are you sure you want to delete this column and its data?"
+        confirmLabel="Remove Column"
+        onConfirm={() => {
+          if (pendingColumnDelete !== null) performRemoveColumn(pendingColumnDelete);
+        }}
+        onCancel={() => setPendingColumnDelete(null)}
+      />
     </div>
   );
 }

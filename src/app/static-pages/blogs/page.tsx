@@ -16,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 import { PageHeader } from "@/components/PageHeader";
 import { BlogsHeroSection, BlogCategoryModal } from "./components";
+import { ConfirmModal } from "@/components/ConfirmModal";
 
 interface BlogPost {
   id: string;
@@ -46,6 +47,7 @@ export default function BlogsCMSPage() {
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
 
   const fetchBlogsData = async () => {
     try {
@@ -78,11 +80,14 @@ export default function BlogsCMSPage() {
     fetchBlogsData();
   }, []);
 
-  const handleDeleteBlog = async (id: string, title: string) => {
-    if (!confirm(`Are you sure you want to delete article "${title}"?`)) return;
+  const handleDeleteBlog = (id: string, title: string) => {
+    setDeleteTarget({ id, title });
+  };
 
+  const confirmDeleteBlog = async () => {
+    if (!deleteTarget) return;
     try {
-      const res = await fetch(`/api/blogs?id=${id}`, {
+      const res = await fetch(`/api/blogs?id=${deleteTarget.id}`, {
         method: "DELETE",
       });
       const json = await res.json();
@@ -94,6 +99,8 @@ export default function BlogsCMSPage() {
       }
     } catch {
       toast.error("Network error deleting article");
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -323,6 +330,15 @@ export default function BlogsCMSPage() {
         isOpen={isCategoryModalOpen}
         onClose={() => setIsCategoryModalOpen(false)}
         onCategoriesUpdated={fetchBlogsData}
+      />
+
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Delete Article"
+        message={`Are you sure you want to delete article "${deleteTarget?.title}"?`}
+        confirmLabel="Delete"
+        onConfirm={confirmDeleteBlog}
+        onCancel={() => setDeleteTarget(null)}
       />
     </section>
   );

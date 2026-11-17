@@ -20,6 +20,7 @@ import { TextAreaField } from "@/components/TextAreaField";
 import { StringListEditor } from "@/components/StringListEditor";
 import { PropertiesTableEditor } from "@/components/PropertiesTableEditor";
 import { ImageUploadField } from "@/components/ImageUploadField";
+import { ConfirmModal } from "@/components/ConfirmModal";
 import {
   emptySection,
   SECTION_TYPE_LABELS,
@@ -53,6 +54,7 @@ const iconBtn =
 
 export function ProductSectionsEditor({ sections, setSections }: ProductSectionsEditorProps) {
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const [deleteTarget, setDeleteTarget] = useState<EditorSection | null>(null);
 
   const patch = useCallback(
     (id: string, changes: Partial<EditorSection>) =>
@@ -73,9 +75,13 @@ export function ProductSectionsEditor({ sections, setSections }: ProductSections
     });
 
   const remove = (section: EditorSection) => {
-    const label = section.title || SECTION_TYPE_LABELS[section.type];
-    if (!window.confirm(`Remove the "${label}" section?`)) return;
-    setSections((prev) => prev.filter((s) => s.id !== section.id));
+    setDeleteTarget(section);
+  };
+
+  const confirmRemove = () => {
+    if (!deleteTarget) return;
+    setSections((prev) => prev.filter((s) => s.id !== deleteTarget.id));
+    setDeleteTarget(null);
   };
 
   return (
@@ -252,6 +258,15 @@ export function ProductSectionsEditor({ sections, setSections }: ProductSections
           );
         })}
       </div>
+
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Remove Section"
+        message={`Are you sure you want to remove the "${deleteTarget?.title || (deleteTarget ? SECTION_TYPE_LABELS[deleteTarget.type] : "this")}" section?`}
+        confirmLabel="Remove"
+        onConfirm={confirmRemove}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

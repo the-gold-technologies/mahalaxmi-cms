@@ -20,6 +20,7 @@ import { InputField } from "@/components/InputField";
 import { TextAreaField } from "@/components/TextAreaField";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { SaveButton } from "@/components/SaveButton";
+import { ConfirmModal } from "@/components/ConfirmModal";
 import { uploadFiles } from "@/lib/uploadHelpers";
 
 interface Product {
@@ -64,6 +65,17 @@ export default function ProductsCatalogCMSPage() {
   // Category Modal state
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [categoryModalLoading, setCategoryModalLoading] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    action: () => Promise<void>;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    action: async () => {},
+  });
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
   // Category Form Fields
@@ -175,42 +187,53 @@ export default function ProductsCatalogCMSPage() {
     }
   };
 
-  const handleDeleteCategory = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete category "${name}"?`)) return;
-
-    try {
-      const res = await fetch(`/api/products/categories?id=${id}`, {
-        method: "DELETE",
-      });
-      const json = await res.json();
-      if (json.success) {
-        toast.success("Category deleted successfully");
-        fetchCatalog();
-      } else {
-        toast.error(json.error || "Failed to delete category");
-      }
-    } catch {
-      toast.error("Network error deleting category");
-    }
+  const handleDeleteCategory = (id: string, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: "Delete Category",
+      message: `Are you sure you want to delete category "${name}"?`,
+      action: async () => {
+        try {
+          const res = await fetch(`/api/products/categories?id=${id}`, {
+            method: "DELETE",
+          });
+          const json = await res.json();
+          if (json.success) {
+            toast.success("Category deleted successfully");
+            fetchCatalog();
+            setIsCategoryModalOpen(false);
+          } else {
+            toast.error(json.error || "Failed to delete category");
+          }
+        } catch {
+          toast.error("Network error deleting category");
+        }
+      },
+    });
   };
 
-  const handleDeleteProduct = async (id: string, prodName: string) => {
-    if (!confirm(`Are you sure you want to delete "${prodName}"?`)) return;
-
-    try {
-      const res = await fetch(`/api/products?id=${id}`, {
-        method: "DELETE",
-      });
-      const json = await res.json();
-      if (json.success) {
-        toast.success("Product deleted successfully");
-        fetchCatalog();
-      } else {
-        toast.error(json.error || "Failed to delete product");
-      }
-    } catch (err: any) {
-      toast.error(err?.message || "Failed to delete product");
-    }
+  const handleDeleteProduct = (id: string, prodName: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: "Delete Product",
+      message: `Are you sure you want to delete "${prodName}"?`,
+      action: async () => {
+        try {
+          const res = await fetch(`/api/products?id=${id}`, {
+            method: "DELETE",
+          });
+          const json = await res.json();
+          if (json.success) {
+            toast.success("Product deleted successfully");
+            fetchCatalog();
+          } else {
+            toast.error(json.error || "Failed to delete product");
+          }
+        } catch (err: any) {
+          toast.error(err?.message || "Failed to delete product");
+        }
+      },
+    });
   };
 
   const filteredProducts = products.filter((p) => {
@@ -554,6 +577,19 @@ export default function ProductsCatalogCMSPage() {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        confirmLabel="Delete"
+        onConfirm={async () => {
+          const act = confirmDialog.action;
+          setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+          await act();
+        }}
+        onCancel={() => setConfirmDialog((prev) => ({ ...prev, isOpen: false }))}
+      />
     </section>
   );
 }
