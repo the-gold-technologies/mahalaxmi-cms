@@ -77,7 +77,13 @@ function toRows(raw: unknown): StoredPropertyRow[] {
  */
 export function normalizeHeaders(rawHeaders: unknown, rawRows: unknown): string[] {
   const rows = toRows(rawRows);
-  const headers = Array.isArray(rawHeaders) ? rawHeaders.map((h) => str(h).trim()) : [];
+  // Older saves auto-filled blank headings as "Column 1", "Column 2"… — treat those as blank
+  const headers = Array.isArray(rawHeaders)
+    ? rawHeaders.map((h, i) => {
+        const t = str(h).trim();
+        return t === `Column ${i + 1}` ? "" : t;
+      })
+    : [];
   const maxValues = rows.reduce((m, r) => Math.max(m, r.values?.length || 0), 0);
 
   if (
@@ -147,7 +153,8 @@ export function toStored(data: PropertiesTableData): StoredPropertiesTable {
 
   return {
     tablePropertyHeader,
-    tableHeaders: headers.map((h, i) => h || `Column ${i + 1}`),
+    // Blank headings stay blank — never substitute a default label
+    tableHeaders: headers,
     propertiesTable: rows.map((r) =>
       r.merged
         ? { property: r.property, value: r.values[0] }
