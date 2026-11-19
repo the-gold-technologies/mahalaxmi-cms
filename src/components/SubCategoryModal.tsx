@@ -67,9 +67,17 @@ export const SubCategoryModal: React.FC<SubCategoryModalProps> = ({
 
   const handleAddSubCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = newSubCatName.trim();
+    const trimmed = newSubCatName.trim().toUpperCase();
     if (!trimmed) {
       toast.error("Please enter a sub-classification name");
+      return;
+    }
+
+    const existing = subCategories.find((s) => s.name.toUpperCase() === trimmed);
+    if (existing) {
+      toast.error(`"${trimmed}" already exists`);
+      if (onSelect) onSelect(existing.name);
+      onClose();
       return;
     }
 
@@ -104,7 +112,7 @@ export const SubCategoryModal: React.FC<SubCategoryModalProps> = ({
       title: "Delete Sub-Classification",
       message: `Are you sure you want to delete "${item.name}"? ${
         item.count > 0
-          ? `It is currently assigned to ${item.count} product(s), which will be unassigned.`
+          ? `All ${item.count} product(s) in this sub-classification will also be permanently deleted.`
           : ""
       }`,
       action: async () => {

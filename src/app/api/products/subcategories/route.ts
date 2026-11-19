@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { deleteSeoPage } from "@/lib/pageSections";
+import { deleteCloudinaryAssetsFromData } from "@/lib/cloudinaryCleanup";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -14,14 +16,32 @@ async function getPersistedSubcategories(): Promise<string[]> {
     });
     if (!page?.description) return [];
     const parsed = JSON.parse(page.description);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+
+    // Deduplicate case-insensitively and normalize to uppercase
+    const map = new Map<string, string>();
+    for (const item of parsed) {
+      const s = String(item || "")
+        .trim()
+        .toUpperCase();
+      if (s) map.set(s, s);
+    }
+    return Array.from(map.values());
   } catch {
     return [];
   }
 }
 
 async function savePersistedSubcategories(list: string[]): Promise<void> {
-  const uniqueList = Array.from(new Set(list.map((s) => s.trim()))).filter(Boolean);
+  const map = new Map<string, string>();
+  for (const item of list) {
+    const s = String(item || "")
+      .trim()
+      .toUpperCase();
+    if (s) map.set(s, s);
+  }
+  const uniqueList = Array.from(map.values());
+
   await prisma.page.upsert({
     where: { slug: CONFIG_SLUG },
     update: { description: JSON.stringify(uniqueList) },
@@ -60,15 +80,15 @@ export async function GET(request: Request) {
     // 2. Fetch standalone/persisted sub-categories (which may have 0 products)
     const persisted = await getPersistedSubcategories();
 
+    // Key is normalized UPPERCASE
     const map = new Map<string, { name: string; categorySlug?: string; count: number }>();
 
     // Seed persisted items first with count 0
     for (const name of persisted) {
-      const trimmed = name.trim();
-      if (!trimmed) continue;
-      const key = trimmed.toUpperCase();
-      map.set(key, {
-        name: trimmed,
+      const norm = name.trim().toUpperCase();
+      if (!norm) continue;
+      map.set(norm, {
+        name: norm,
         count: 0,
       });
     }
@@ -78,17 +98,17 @@ export async function GET(request: Request) {
       const title = p.subCategoryTitle?.trim();
       if (!title) continue;
 
-      const key = title.toUpperCase();
-      if (!map.has(key)) {
-        map.set(key, {
-          name: title,
+      const norm = title.toUpperCase();
+      if (!map.has(norm)) {
+        map.set(norm, {
+          name: norm,
           categorySlug: p.categorySlug,
           count: 0,
         });
       }
-      map.get(key)!.count += 1;
-      if (!map.get(key)!.categorySlug) {
-        map.get(key)!.categorySlug = p.categorySlug;
+      map.get(norm)!.count += 1;
+      if (!map.get(norm)!.categorySlug) {
+        map.get(norm)!.categorySlug = p.categorySlug;
       }
     }
 
@@ -116,19 +136,19 @@ export async function POST(request: Request) {
       );
     }
 
-    const trimmed = name.trim();
+    const norm = name.trim().toUpperCase();
     const currentList = await getPersistedSubcategories();
 
-    const exists = currentList.some((s) => s.toLowerCase() === trimmed.toLowerCase());
+    const exists = currentList.some((s) => s.toUpperCase() === norm);
     if (!exists) {
-      currentList.push(trimmed);
+      currentList.push(norm);
       await savePersistedSubcategories(currentList);
     }
 
     return NextResponse.json({
       success: true,
       data: {
-        name: trimmed,
+        name: norm,
         count: 0,
       },
     });
@@ -153,30 +173,35 @@ export async function DELETE(request: Request) {
       );
     }
 
-    const trimmed = name.trim();
+    const norm = name.trim().toUpperCase();
 
     // 1. Remove from persisted store
     const currentList = await getPersistedSubcategories();
-    const filteredList = currentList.filter((s) => s.toLowerCase() !== trimmed.toLowerCase());
+    const filteredList = currentList.filter((s) => s.trim().toUpperCase() !== norm);
     await savePersistedSubcategories(filteredList);
 
-    // 2. Clear subCategoryTitle on all matching products
-    const res = await prisma.product.updateMany({
+    // 2. Find and delete all matching products
+    const matchingProducts = await prisma.product.findMany({
       where: {
         subCategoryTitle: {
-          equals: trimmed,
+          equals: norm,
           mode: "insensitive",
         },
       },
-      data: {
-        subCategoryTitle: null,
-      },
     });
+
+    for (const prod of matchingProducts) {
+      await prisma.product.delete({
+        where: { id: prod.id },
+      });
+      await deleteSeoPage(`products/${prod.categorySlug}/${prod.slug}`).catch(() => {});
+      deleteCloudinaryAssetsFromData(prod).catch(() => {});
+    }
 
     return NextResponse.json({
       success: true,
-      message: `Removed "${trimmed}" from ${res.count} products`,
-      affectedCount: res.count,
+      message: `Deleted "${norm}" and its ${matchingProducts.length} product(s)`,
+      affectedCount: matchingProducts.length,
     });
   } catch (error: any) {
     console.error("Error deleting subcategory:", error);

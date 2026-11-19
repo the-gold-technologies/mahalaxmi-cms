@@ -353,7 +353,10 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                     value: s.name,
                     label: `${s.name}${s.count > 0 ? ` (${s.count})` : ""}`,
                   })),
-                  ...(subCategoryTitle && !subCategories.some((s) => s.name === subCategoryTitle)
+                  ...(subCategoryTitle &&
+                  !subCategories.some(
+                    (s) => s.name.toUpperCase() === subCategoryTitle.toUpperCase(),
+                  )
                     ? [{ value: subCategoryTitle, label: subCategoryTitle }]
                     : []),
                 ]}

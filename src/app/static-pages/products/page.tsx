@@ -250,21 +250,30 @@ export default function ProductsCatalogCMSPage() {
         ? products
         : products.filter((p) => p.categorySlug === selectedCategory);
 
-    const set = new Set<string>();
+    const map = new Map<string, string>();
     relevantProducts.forEach((p) => {
       const sub = p.subCategoryTitle?.trim();
       if (sub) {
-        set.add(sub);
+        const key = sub.toUpperCase();
+        if (!map.has(key)) {
+          map.set(key, sub.toUpperCase());
+        }
       }
     });
 
     if (selectedCategory === "all") {
       allSubCategories.forEach((s) => {
-        if (s.name?.trim()) set.add(s.name.trim());
+        const sub = s.name?.trim();
+        if (sub) {
+          const key = sub.toUpperCase();
+          if (!map.has(key)) {
+            map.set(key, sub.toUpperCase());
+          }
+        }
       });
     }
 
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
+    return Array.from(map.values()).sort((a, b) => a.localeCompare(b));
   }, [products, selectedCategory, allSubCategories]);
 
   const getSubCatCount = (subCat: string) => {
