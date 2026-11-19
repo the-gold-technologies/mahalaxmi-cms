@@ -10,18 +10,18 @@ import {
   X,
   FileText,
   Search,
-  FolderPlus,
   FolderTree,
   Sparkles,
+  RotateCcw,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { PageHeader } from "@/components/PageHeader";
 import { InputField } from "@/components/InputField";
 import { TextAreaField } from "@/components/TextAreaField";
-import { ImageUploadField } from "@/components/ImageUploadField";
 import { SaveButton } from "@/components/SaveButton";
 import { ConfirmModal } from "@/components/ConfirmModal";
-import { uploadFiles } from "@/lib/uploadHelpers";
+import { CustomDropdown } from "@/components/CustomDropdown";
+import { SubCategoryModal } from "@/components/SubCategoryModal";
 
 interface Product {
   id: string;
@@ -60,10 +60,12 @@ export default function ProductsCatalogCMSPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   // Category Modal state
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isSubCatModalOpen, setIsSubCatModalOpen] = useState(false);
   const [categoryModalLoading, setCategoryModalLoading] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
@@ -83,16 +85,24 @@ export default function ProductsCatalogCMSPage() {
   const [catSlug, setCatSlug] = useState("");
   const [catShortDesc, setCatShortDesc] = useState("");
   const [catFullDesc, setCatFullDesc] = useState("");
-  const [catImages, setCatImages] = useState<(File | string | null)[]>([]);
+
+  const [allSubCategories, setAllSubCategories] = useState<{ name: string; count: number }[]>([]);
 
   const fetchCatalog = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/products");
-      const json = await res.json();
+      const [prodRes, subRes] = await Promise.all([
+        fetch("/api/products", { cache: "no-store" }),
+        fetch("/api/products/subcategories", { cache: "no-store" }),
+      ]);
+      const json = await prodRes.json();
+      const subJson = await subRes.json();
       if (json.success) {
         setProducts(json.data.products || []);
         setCategories(json.data.categories || []);
+      }
+      if (subJson.success && Array.isArray(subJson.data)) {
+        setAllSubCategories(subJson.data);
       }
     } catch (err) {
       console.error("Error loading products:", err);
@@ -113,7 +123,6 @@ export default function ProductsCatalogCMSPage() {
     setCatSlug("");
     setCatShortDesc("");
     setCatFullDesc("");
-    setCatImages([]);
     setIsCategoryModalOpen(true);
   };
 
@@ -123,7 +132,6 @@ export default function ProductsCatalogCMSPage() {
     setCatSlug(cat.slug);
     setCatShortDesc(cat.shortDesc || "");
     setCatFullDesc(cat.fullDesc || "");
-    setCatImages(cat.coverImage ? [cat.coverImage] : []);
     setIsCategoryModalOpen(true);
   };
 
@@ -149,20 +157,15 @@ export default function ProductsCatalogCMSPage() {
     setCategoryModalLoading(true);
 
     try {
-      let finalCoverUrl = "";
-      const validImages = catImages.filter((img): img is File | string => !!img);
-      if (validImages.length > 0) {
-        const [uploaded] = await uploadFiles(validImages);
-        finalCoverUrl = uploaded || "";
-      }
-
-      const payload = {
+      const payload: any = {
         name: catName.trim(),
         slug: catSlug.trim().toLowerCase(),
         shortDesc: catShortDesc.trim(),
         fullDesc: catFullDesc.trim(),
-        coverImage: finalCoverUrl,
       };
+      if (editingCategory?.coverImage) {
+        payload.coverImage = editingCategory.coverImage;
+      }
 
       const url = "/api/products/categories";
       const method = editingCategory ? "PUT" : "POST";
@@ -236,14 +239,99 @@ export default function ProductsCatalogCMSPage() {
     });
   };
 
+  const handleCategoryChange = (catSlug: string) => {
+    setSelectedCategory(catSlug);
+    setSelectedSubCategory("all");
+  };
+
+  const availableSubCategories = React.useMemo(() => {
+    const relevantProducts =
+      selectedCategory === "all"
+        ? products
+        : products.filter((p) => p.categorySlug === selectedCategory);
+
+    const set = new Set<string>();
+    relevantProducts.forEach((p) => {
+      const sub = p.subCategoryTitle?.trim();
+      if (sub) {
+        set.add(sub);
+      }
+    });
+
+    if (selectedCategory === "all") {
+      allSubCategories.forEach((s) => {
+        if (s.name?.trim()) set.add(s.name.trim());
+      });
+    }
+
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [products, selectedCategory, allSubCategories]);
+
+  const getSubCatCount = (subCat: string) => {
+    return products.filter((p) => {
+      const matchesCat = selectedCategory === "all" || p.categorySlug === selectedCategory;
+      return matchesCat && p.subCategoryTitle?.trim().toLowerCase() === subCat.toLowerCase();
+    }).length;
+  };
+
+  const currentCategoryObj = categories.find((c) => c.slug === selectedCategory);
+
+  const categoryOptions = React.useMemo(() => {
+    const list = [
+      {
+        value: "all",
+        label: "All Categories",
+        count: products.length,
+      },
+    ];
+    categories.forEach((cat) => {
+      list.push({
+        value: cat.slug,
+        label: cat.name,
+        count: products.filter((p) => p.categorySlug === cat.slug).length,
+      });
+    });
+    return list;
+  }, [categories, products]);
+
+  const subCategoryOptions = React.useMemo(() => {
+    const allCount =
+      selectedCategory === "all"
+        ? products.filter((p) => !!p.subCategoryTitle?.trim()).length
+        : products.filter(
+            (p) => p.categorySlug === selectedCategory && !!p.subCategoryTitle?.trim(),
+          ).length;
+
+    const list = [
+      {
+        value: "all",
+        label: availableSubCategories.length === 0 ? "No Sub-Categories" : "All Sub-Categories",
+        count: allCount,
+      },
+    ];
+
+    availableSubCategories.forEach((subCat) => {
+      list.push({
+        value: subCat,
+        label: subCat,
+        count: getSubCatCount(subCat),
+      });
+    });
+
+    return list;
+  }, [availableSubCategories, selectedCategory, products]);
+
   const filteredProducts = products.filter((p) => {
     const matchesCat = selectedCategory === "all" || p.categorySlug === selectedCategory;
+    const matchesSubCat =
+      selectedSubCategory === "all" ||
+      p.subCategoryTitle?.trim().toLowerCase() === selectedSubCategory.toLowerCase();
     const matchesSearch =
       !searchQuery ||
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (p.subtitle && p.subtitle.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (p.subCategoryTitle && p.subCategoryTitle.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCat && matchesSearch;
+    return matchesCat && matchesSubCat && matchesSearch;
   });
 
   return (
@@ -262,88 +350,122 @@ export default function ProductsCatalogCMSPage() {
         </Link>
       </div>
 
-      {/* Category Pills & Search Filter Card with Fixed Bottom Category Action */}
+      {/* Filter Card: Category Dropdown + Sub-Category Dropdown + Search */}
       <div className="flex flex-col gap-4 bg-white p-5 rounded-3xl border border-gray-100 shadow-sm">
-        {/* Row 1: Scrollable Category Pills + Search */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar flex-1 min-w-0">
-            <button
-              type="button"
-              onClick={() => setSelectedCategory("all")}
-              className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                selectedCategory === "all"
-                  ? "bg-[#0B0F29] text-white shadow-sm"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              All Categories ({products.length})
-            </button>
-            {categories.map((cat) => {
-              const count = products.filter((p) => p.categorySlug === cat.slug).length;
-              const isSelected = selectedCategory === cat.slug;
-              return (
-                <div key={cat.slug} className="flex items-center group/cat">
+        {/* Row 1: Filters & Search */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+          {/* Category Dropdown */}
+          <div className="col-span-1 md:col-span-4">
+            <CustomDropdown
+              label="Category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              options={categoryOptions}
+              headerAction={
+                currentCategoryObj ? (
                   <button
                     type="button"
-                    onClick={() => setSelectedCategory(cat.slug)}
-                    className={`px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
-                      isSelected
-                        ? "bg-[#D8232A] text-white shadow-sm"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
+                    onClick={() => openEditCategoryModal(currentCategoryObj)}
+                    className="text-[11px] text-[#D8232A] hover:underline inline-flex items-center gap-1 font-semibold normal-case cursor-pointer"
                   >
-                    <span>{cat.name}</span>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                        isSelected ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
-                      }`}
-                    >
-                      {count}
-                    </span>
+                    <Edit2 className="w-2.5 h-2.5" /> Edit Category
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => openEditCategoryModal(cat)}
-                    className="opacity-0 group-hover/cat:opacity-100 ml-1 p-1 text-gray-400 hover:text-gray-900 transition-opacity cursor-pointer"
-                    title={`Edit Category "${cat.name}"`}
-                  >
-                    <Edit2 className="w-3 h-3" />
-                  </button>
-                </div>
-              );
-            })}
+                ) : undefined
+              }
+            />
           </div>
 
-          <div className="relative w-full md:w-64 shrink-0">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search grade / viscosity..."
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium focus:ring-1 focus:ring-[#D8232A] focus:border-[#D8232A] outline-none"
+          {/* Sub-Classification / Sub-Category Dropdown */}
+          <div className="col-span-1 md:col-span-4">
+            <CustomDropdown
+              label="Sub-Classification"
+              value={selectedSubCategory}
+              onChange={setSelectedSubCategory}
+              options={subCategoryOptions}
+              disabled={availableSubCategories.length === 0}
+              headerAction={
+                <button
+                  type="button"
+                  onClick={() => setIsSubCatModalOpen(true)}
+                  className="text-[11px] text-[#D8232A] hover:underline inline-flex items-center gap-1 font-semibold normal-case cursor-pointer"
+                >
+                  <Plus className="w-2.5 h-2.5" /> Manage
+                </button>
+              }
             />
+          </div>
+
+          {/* Search Box */}
+          <div className="col-span-1 md:col-span-4">
+            <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+              Search Products
+            </label>
+            <div className="relative">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search grade / viscosity..."
+                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-2xl text-xs font-medium focus:ring-2 focus:ring-[#D8232A]/20 focus:border-[#D8232A] outline-none transition-all"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Row 2: Fixed Bottom Side of Card for Category Action */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100/80">
+        {/* Row 2: Fixed Bottom Side of Card for Category Action & Filter Info */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100/80">
           <div className="flex items-center gap-2 text-[11px] text-gray-400 font-medium">
             <span>{categories.length} Categories</span>
             <span>•</span>
             <span>
               Showing {filteredProducts.length} of {products.length} products
             </span>
+            {(selectedCategory !== "all" || selectedSubCategory !== "all" || searchQuery) && (
+              <>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedCategory("all");
+                    setSelectedSubCategory("all");
+                    setSearchQuery("");
+                  }}
+                  className="text-[#D8232A] hover:underline font-bold inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <RotateCcw className="w-3 h-3" /> Reset Filters
+                </button>
+              </>
+            )}
           </div>
 
-          <button
-            type="button"
-            onClick={openNewCategoryModal}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-red-50/70 hover:bg-red-100/80 text-[#D8232A] text-xs font-bold rounded-full border border-[#D8232A]/20 transition-all cursor-pointer shadow-2xs"
-          >
-            <Plus className="w-3.5 h-3.5 text-[#D8232A]" />
-            <span>Add / Manage Categories</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsSubCatModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-full border border-gray-200 transition-all cursor-pointer shadow-2xs"
+            >
+              <Plus className="w-3.5 h-3.5 text-gray-500" />
+              <span>Manage Sub-Classifications</span>
+            </button>
+            <button
+              type="button"
+              onClick={openNewCategoryModal}
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-red-50/70 hover:bg-red-100/80 text-[#D8232A] text-xs font-bold rounded-full border border-[#D8232A]/20 transition-all cursor-pointer shadow-2xs"
+            >
+              <Plus className="w-3.5 h-3.5 text-[#D8232A]" />
+              <span>Add / Manage Categories</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -374,7 +496,7 @@ export default function ProductsCatalogCMSPage() {
                     {p.categoryName || p.categorySlug}
                   </span>
                   {p.isFeatured && (
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 flex items-center gap-1">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 flex items-center gap-1 shrink-0">
                       <Sparkles className="w-3 h-3" /> Featured
                     </span>
                   )}
@@ -490,7 +612,7 @@ export default function ProductsCatalogCMSPage() {
                     {editingCategory ? "Edit Category" : "Add New Category"}
                   </h3>
                   <p className="text-xs text-gray-400 font-medium">
-                    Configure product group classification and catalog cover banner.
+                    Configure product group classification and description.
                   </p>
                 </div>
               </div>
@@ -540,14 +662,6 @@ export default function ProductsCatalogCMSPage() {
                 placeholder="Detailed explanation of this lubrication division..."
               />
 
-              <ImageUploadField
-                label="Category Cover Graphic"
-                images={catImages}
-                onImagesChange={setCatImages}
-                maxImages={1}
-                tooltip="Upload category banner or icon graphic."
-              />
-
               <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 {editingCategory && (
                   <button
@@ -589,6 +703,18 @@ export default function ProductsCatalogCMSPage() {
           await act();
         }}
         onCancel={() => setConfirmDialog((prev) => ({ ...prev, isOpen: false }))}
+      />
+
+      <SubCategoryModal
+        isOpen={isSubCatModalOpen}
+        onClose={() => setIsSubCatModalOpen(false)}
+        onSelect={(name) => {
+          setSelectedSubCategory(name || "all");
+          fetchCatalog();
+        }}
+        currentSelected={selectedSubCategory}
+        currentCategorySlug={selectedCategory !== "all" ? selectedCategory : undefined}
+        onUpdated={fetchCatalog}
       />
     </section>
   );

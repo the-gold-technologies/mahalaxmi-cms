@@ -12,7 +12,6 @@ import {
   FlaskConical,
   ShieldCheck,
   LayoutList,
-  Plus,
   Globe,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -78,6 +77,19 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
   const [targetKeywords, setTargetKeywords] = useState("");
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [headingOptions, setHeadingOptions] = useState("h1");
+  const [subCategories, setSubCategories] = useState<{ name: string; count: number }[]>([]);
+
+  const fetchSubCategories = async () => {
+    try {
+      const res = await fetch("/api/products/subcategories", { cache: "no-store" });
+      const json = await res.json();
+      if (json.success && Array.isArray(json.data)) {
+        setSubCategories(json.data);
+      }
+    } catch {
+      // ignore
+    }
+  };
 
   // Load Categories & Product Data
   useEffect(() => {
@@ -94,6 +106,9 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
             setCategoryName(catJson.data[0].name);
           }
         }
+
+        // 2. Fetch subcategories
+        await fetchSubCategories();
 
         // 2. Fetch product if editing
         if (!isNew && productId) {
@@ -328,11 +343,20 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
                       ]
                 }
               />
-              <InputField
+              <SelectField
                 label="Sub-Classification"
                 value={subCategoryTitle}
                 onChange={(e) => setSubCategoryTitle(e.target.value)}
-                placeholder="e.g. Hydraulic Oils / Diesel Oils"
+                options={[
+                  { value: "", label: "-- No Sub-Classification --" },
+                  ...subCategories.map((s) => ({
+                    value: s.name,
+                    label: `${s.name}${s.count > 0 ? ` (${s.count})` : ""}`,
+                  })),
+                  ...(subCategoryTitle && !subCategories.some((s) => s.name === subCategoryTitle)
+                    ? [{ value: subCategoryTitle, label: subCategoryTitle }]
+                    : []),
+                ]}
               />
               <InputField
                 label="Tagline / Subtitle"
