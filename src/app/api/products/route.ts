@@ -102,9 +102,14 @@ export async function GET(request: Request) {
       }
     }
 
+    const normalizedProducts = products.map((p: any) => ({
+      ...p,
+      subCategoryTitle: p.subCategoryTitle ? p.subCategoryTitle.trim().toUpperCase() : null,
+    }));
+
     return NextResponse.json({
       success: true,
-      data: { products, categories },
+      data: { products: normalizedProducts, categories },
       seo,
     });
   } catch (error) {
@@ -129,6 +134,10 @@ export async function POST(request: Request) {
       _max: { order: true },
     });
     const order = (highestOrder._max.order ?? -1) + 1;
+
+    if (typeof rest.subCategoryTitle === "string") {
+      rest.subCategoryTitle = rest.subCategoryTitle.trim().toUpperCase() || null;
+    }
 
     const product = await prisma.product.create({
       data: {
@@ -156,6 +165,10 @@ export async function PUT(request: Request) {
         { success: false, error: "Product ID is required" },
         { status: 400 },
       );
+    }
+
+    if (typeof data.subCategoryTitle === "string") {
+      data.subCategoryTitle = data.subCategoryTitle.trim().toUpperCase() || null;
     }
 
     const existing = await prisma.product.findUnique({

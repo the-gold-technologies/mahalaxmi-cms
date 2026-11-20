@@ -121,7 +121,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
             setSubtitle(p.subtitle || "");
             setCategorySlug(p.categorySlug || "");
             setCategoryName(p.categoryName || "");
-            setSubCategoryTitle(p.subCategoryTitle || "");
+            setSubCategoryTitle(p.subCategoryTitle ? p.subCategoryTitle.trim().toUpperCase() : "");
             setContainerImages(p.containerImage ? [p.containerImage] : []);
             setDescriptionTitle(p.descriptionTitle || "");
             setDescription(p.description || "");
@@ -200,7 +200,7 @@ export function ProductForm({ productId, isNew = false }: ProductFormProps) {
         subtitle: subtitle.trim(),
         categorySlug,
         categoryName: categories.find((c) => c.slug === categorySlug)?.name || categoryName,
-        subCategoryTitle: subCategoryTitle.trim(),
+        subCategoryTitle: subCategoryTitle.trim().toUpperCase(),
         containerImage: finalContainerImageUrl,
         descriptionTitle: descriptionTitle.trim(),
         description: description.trim(),
