@@ -9,6 +9,35 @@ import {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function slugExistsResponse() {
+  return NextResponse.json(
+    {
+      success: false,
+      error: "This URL slug already exists. Please use a different URL slug.",
+    },
+    { status: 409 },
+  );
+}
+
+/** Turns a Prisma/runtime error into a readable API response instead of a bare 500. */
+function errorResponse(error: unknown) {
+  const err = error as { code?: string; meta?: { target?: unknown }; message?: string };
+  if (err?.code === "P2002") {
+    return slugExistsResponse();
+  }
+  if (err?.code === "P2025") {
+    return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+  }
+  if (err?.code === "P2003") {
+    return NextResponse.json(
+      { success: false, error: "Selected category does not exist. Pick a valid main category." },
+      { status: 400 },
+    );
+  }
+  const message = err?.message?.split("\n").filter(Boolean).pop() || "Internal Server Error";
+  return NextResponse.json({ success: false, error: message, code: err?.code }, { status: 500 });
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -130,6 +159,9 @@ export async function POST(request: Request) {
       );
     }
 
+    const slugTaken = await prisma.product.findUnique({ where: { slug }, select: { id: true } });
+    if (slugTaken) return slugExistsResponse();
+
     const highestOrder = await prisma.product.aggregate({
       _max: { order: true },
     });
@@ -151,7 +183,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: product });
   } catch (error) {
     console.error("Error creating product:", error);
-    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
+    return errorResponse(error);
   }
 }
 
@@ -175,6 +207,14 @@ export async function PUT(request: Request) {
       where: { id },
     });
 
+    if (data.slug && data.slug !== existing?.slug) {
+      const slugTaken = await prisma.product.findUnique({
+        where: { slug: data.slug },
+        select: { id: true },
+      });
+      if (slugTaken && slugTaken.id !== id) return slugExistsResponse();
+    }
+
     const product = await prisma.product.update({
       where: { id },
       data,
@@ -197,7 +237,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ success: true, data: product });
   } catch (error) {
     console.error("Error updating product:", error);
-    return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
+    return errorResponse(error);
   }
 }
 
